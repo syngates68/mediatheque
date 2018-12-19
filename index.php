@@ -1,25 +1,24 @@
-<?php
+<?php session_start();
 
-require ('controller/controller.php');
+use Controller\Controller;
+use App\Autoload;
+
+require 'App/Autoload.php'; 
+Autoload::register(); 
 
 if (isset($_GET['p'])){
     $p = $_GET['p'];
     if ($p == 'abonnement'){
-        getAbonnement();
+        Controller::getAbonnement();
     }
     elseif ($p == 'login'){
-        getLogin();
+        Controller::getLogin();
     }
-    //A REVOIR AVEC BDD
-    /*elseif ($p == 'login'){
-        if (isset($_POST['mail']) && isset($_POST['pass'])){
-            getLogin($_POST['mail'], $_POST['pass']);
-        }
-        else{
-            getLogin('', '');
-        }
-    }*/
+    elseif ($p == 'home'){
+        Controller::getHome();
+    }
 }
 else{
-    getHome();
+    header('HTTP/1.0 404 Not Found');
+    exit;
 }

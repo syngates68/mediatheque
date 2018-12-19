@@ -1,48 +1,45 @@
-<?php session_start(); 
+<?php 
 
-use \Mediatheque\Model\Video;
-use \Mediatheque\Model\Theme;
-use \Mediatheque\Model\Abonnement;
+namespace Controller;
 
-$root = str_replace('\\', '/', dirname(__DIR__));
+use Model\Video;
+use Model\Theme;
+use Model\Abonnement;
 
-require_once('Model/Video.php');
-require_once('Model/Theme.php');
-require_once('Model/Abonnement.php');
+require ('vendor/autoload.php');
 
-function getHome(){
-    $videos = Video::getAllVideos();
-    $themes = Theme::getAllThemes();
-    //$date_format = $model->getTime('');
-    require ('view/homeView.php');
-}
+//$root = str_replace('\\', '/', dirname(__DIR__));
 
-function getAbonnement(){
-    $abos = Abonnement::getAllAbonnements();
-    require ('view/abonnementView.php');
-}
+class Controller{
 
-function getLogin(){
-    require ('view/loginView.php');
-}
+    private static $twig = NULL;
 
-//A REVOIR AVEC BDD
-/*function getLogin($mail = '', $pass = ''){
-    
-    $pass = md5(md5($pass));
-    
-    $datas = getUser($mail, $pass);
-    if (sizeof(getUser($mail, $pass)) == 0){
-        $alert = 'Aucun résultat pour ces informations';
-    }
-    else{
-        header('Location: board');
-        foreach ($datas as $data){
-            $_SESSION['name'] = $data['name'];
+    static function loadTwig(){    
+        \ComposerAutoloaderInitb80da45cb6974f22f3f089979c4acd7e::getLoader();
+        $loader = new \Twig_Loader_Filesystem('view');
+        if (is_null(self::$twig)){
+            return self::$twig = new \Twig_Environment($loader);
         }
+        return self::$twig;
     }
 
-    require ('view/backoffice/loginView.php');
-}*/
+    static function getHome(){
+        $template = self::loadTwig()->load('template.twig');
+        $videos = Video::getAllVideos();
+        $themes = Theme::getAllThemes();
+        echo self::loadTwig()->render('home.twig', ['videos' => $videos]);
+    }
+    
+    static function getAbonnement(){
+        $template = self::loadTwig()->load('template.twig');
+        $abos = Abonnement::getAllAbonnements();
+        echo self::loadTwig()->render('abonnement.twig', ['abos' => $abos]);
+    }
+    
+    static function getLogin(){
+        echo self::loadTwig()->render('login.twig');
+    }
+    
+}
 
 

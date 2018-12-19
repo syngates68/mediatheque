@@ -2,7 +2,7 @@
 
 class Model{
 
-    protected static function dbConnect(){
+    static function dbConnect(){
 
         if ($_SERVER['SERVER_NAME'] == 'localhost'){
             $db_name = 'mediatheque';
@@ -19,7 +19,7 @@ class Model{
         }
     }
     
-    public static function _getAll($table, $select, $inner, $where, $limit, $order){
+    static function _getAll($table, $select, $inner, $where, $limit, $order){
         $db = self::dbConnect();
         $sql = 'SELECT'.$select.'FROM '.$table.$inner;
         if ($where != ''){
@@ -28,11 +28,21 @@ class Model{
         $sql .= $order;
         //echo $sql;
         $req = $db->query($sql);
-        $datas = $req->fetchAll(PDO::FETCH_ASSOC);
+        $datas = $req->fetchAll(PDO::FETCH_OBJ);
     
         return $datas;
     }
-    
+
+    static function _create(array $datas){
+        foreach ($datas as $data => $value){
+            $method = 'set'.ucfirst($data);
+
+            if (method_exists(__CLASS__, $method)){
+                $this->$method($value);
+            }
+        }
+    }
+        
     public function formatDate($date){
         setlocale(LC_TIME, 'fra', 'fr_FR');
         $date = strtotime($date);
