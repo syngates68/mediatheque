@@ -1,4 +1,6 @@
-<?php require ('inc/head.php'); ?>
+{% block main %}
+
+{% include 'inc/head.twig' %}
 
   <body>
 
@@ -29,7 +31,8 @@
           <h1><i class="fas fa-video"></i><strong>D<span class="violet">o</span>ntatune</strong></h1>
         </div>
         </div>
-          <?= $content; ?>
+          {% block content %}
+          {% endblock %}
       </div>
     </div>
 
@@ -42,6 +45,8 @@
       </div>
     </div>
 
-    <?php require ('inc/end.php'); ?>
+    {% include 'inc/end.twig' %}
+
   </body>
 </html>
+{% endblock %}
