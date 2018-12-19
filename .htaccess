@@ -2,7 +2,6 @@ Options +FollowSymlinks
 RewriteEngine on
 #RewriteBase dontatune/
 
+RewriteCond  %{REQUEST_FILENAME} !-f
 
-RewriteRule ^home index.php [L]
-RewriteRule ^abonnement index.php?p=abonnement [L]
-RewriteRule ^login index.php?p=login [L]
+RewriteRule ^(.*)$ index.php?p=$1 [QSA,L]
