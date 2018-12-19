@@ -1,18 +1,24 @@
 <?php session_start(); 
 
+use \Mediatheque\Model\Video;
+use \Mediatheque\Model\Theme;
+use \Mediatheque\Model\Abonnement;
+
 $root = str_replace('\\', '/', dirname(__DIR__));
 
-require('model/model.php');
+require_once('Model/Video.php');
+require_once('Model/Theme.php');
+require_once('Model/Abonnement.php');
 
 function getHome(){
-    $videos = getAll('video v', ' v.titre, v.id_theme, v.gratuite, v.lien, v.prix, v.date_ajout, t.nom as theme, t.couleur ', ' left join theme t on v.id_theme = t.id ', '', '', ' ORDER BY v.gratuite DESC');
-    $themes = getAll('theme', ' id, nom, couleur ', '', '', '', '');
-    getTime('');
+    $videos = Video::getAllVideos();
+    $themes = Theme::getAllThemes();
+    //$date_format = $model->getTime('');
     require ('view/homeView.php');
 }
 
 function getAbonnement(){
-    $abos = getAll('type_abonnement', ' id, nom, essai ', '', '', '', '');
+    $abos = Abonnement::getAllAbonnements();
     require ('view/abonnementView.php');
 }
 

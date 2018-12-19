@@ -45,7 +45,6 @@ ob_start(); ?>
           </div>
           <div class="d-flex justify-content-between align-items-center infos">
           <?= ($video['gratuite']) ? '<p class="text-muted free">Gratuite</p>' : '<p class="text-muted price">'.$video['prix'].'€</p>'; ?>
-            <p><?= getTime($video['date_ajout']); ?></p>
           </div>
         </div>
         </div>
