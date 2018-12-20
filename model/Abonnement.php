@@ -2,9 +2,7 @@
 
 namespace Model;
 
-use Model;
-
-require_once('Model.php');
+//use Model\Model;
 
 class Abonnement extends Model{
 
@@ -53,7 +51,7 @@ class Abonnement extends Model{
 
 	static function getAllAbonnements(){
 
-        return self::_getAll('type_abonnement', ' id, nom, essai ', '', '', '', '');
+        return self::_getAll('type_abonnement', ' id, nom, essai ', '', '', '');
 
     }
 

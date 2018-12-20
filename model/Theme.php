@@ -2,9 +2,7 @@
 
 namespace Model;
 
-use Model;
-
-require_once('Model.php');
+//use Model;
 
 class Theme extends Model{
 
@@ -44,7 +42,7 @@ class Theme extends Model{
     
     static function getAllThemes(){
 
-        return self::_getAll('theme', ' id, nom, couleur ', '', '', '', '');
+        return self::_getAll('theme', ' id, nom, couleur ', '', '', '');
 
     }
 

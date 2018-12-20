@@ -23,7 +23,7 @@ class Router{
 
     public function _run(){
         if (!isset($this->routes[$_SERVER['REQUEST_METHOD']])){
-            throw new \Exception('Pas de correspondance');
+            throw new Exception('Pas de correspondance');
         }
         else{
             foreach ($this->routes[$_SERVER['REQUEST_METHOD']] as $route){
@@ -31,7 +31,7 @@ class Router{
                     return $route->_call();
                 }
             }
-            throw new \Exception('La requête n\'a pas aboutie');
+            throw new Exception('La requête n\'a pas aboutie');
         }
     }
 

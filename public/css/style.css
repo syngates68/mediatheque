@@ -104,7 +104,7 @@ CONNEXION/INSCRIPTION
   .login_body h2{ text-align: center; }
   .login_body h3{ border-bottom: 2px solid #4a0087; margin-bottom: 20px; }
 
-.filter_black{ background: rgba(78, 78, 78, 0.616); height: 100vh; }
+.filter_black{ background: rgba(0, 0, 0, 0.616); height: 100vh; }
 .sign{ margin-top: 20px; margin-top: 10vh; }
   .sign button{ width: 70%; margin: 10px auto; display: block; border-radius: 0;  border: 0; }  
 

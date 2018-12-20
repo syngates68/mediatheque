@@ -1,27 +1,15 @@
 <?php
 
+namespace Model;
+
+use App\Database;
+use \PDO;
+
 class Model{
-
-    static function dbConnect(){
-
-        if ($_SERVER['SERVER_NAME'] == 'localhost'){
-            $db_name = 'mediatheque';
-            $user = 'root';
-            $mdp = '';
-        }
     
-        try{
-            $db = new PDO('mysql:host=localhost;dbname='.$db_name.';charset=utf8', ''.$user.'', ''.$mdp.'');
-            return $db;
-        }
-        catch(Exception $e){
-            die('Erreur : '.$e->getMessage());
-        }
-    }
-    
-    static function _getAll($table, $select, $inner, $where, $limit, $order){
-        $db = self::dbConnect();
-        $sql = 'SELECT'.$select.'FROM '.$table.$inner;
+    static function _getAll($table, $select, $where, $limit, $order){
+        $db = Database::dbConnect();
+        $sql = 'SELECT'.$select.'FROM '.$table;
         if ($where != ''){
             $sql .= ' WHERE '.$where.$limit;
         }
@@ -29,6 +17,20 @@ class Model{
         //echo $sql;
         $req = $db->query($sql);
         $datas = $req->fetchAll(PDO::FETCH_OBJ);
+    
+        return $datas;
+    }
+
+    static function _getInner($table, $select, $inner, $where, $limit, $order){
+        $db = Database::dbConnect();
+        $sql = 'SELECT'.$select.'FROM '.$table.$inner;
+        if ($where != ''){
+            $sql .= ' WHERE '.$where.$limit;
+        }
+        $sql .= $order;
+        //echo $sql;
+        $req = $db->query($sql);
+        $datas = $req->fetchAll(PDO::FETCH_ASSOC);
     
         return $datas;
     }

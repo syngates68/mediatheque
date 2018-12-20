@@ -9,8 +9,10 @@ class Autoload{
     }
 
     static function __autoload($class_name){
-        $class_name = str_replace('\\', '/', $class_name);
-        require($class_name.'.php');
+        $path = dirname(__DIR__).'/'.$class_name;
+        $path = str_replace('\\', '/', $path);
+        //echo $path;
+        require_once($path . '.php');
     }
 
 }
