@@ -3,6 +3,7 @@
 namespace Controller;
 
 use Model\Abonnement;
+use App\Factory;
 
 class AbonnementController extends Controller{
 

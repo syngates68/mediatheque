@@ -44,15 +44,10 @@ class Abonnement extends Model{
 	}
 	   
 	// Requêtes BDD
-	
-	public function __construct(array $datas){
-		self::_create($datas);
-	}
 
-	static function getAllAbonnements(){
+	public static function getAllAbonnements(){
 
-        return self::_getAll('type_abonnement', ' id, nom, essai ', '', '', '');
-
+		return self::_getAll('type_abonnement', ' id, nom, essai ', '', '', '');
     }
 
 }

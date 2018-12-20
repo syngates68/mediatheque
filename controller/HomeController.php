@@ -4,6 +4,7 @@ namespace Controller;
 
 use Model\Video;
 use Model\Theme;
+use App\Factory;
 
 class HomeController extends Controller{
 
@@ -15,5 +16,3 @@ class HomeController extends Controller{
     }
     
 }
-
-

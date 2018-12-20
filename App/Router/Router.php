@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Router;
+use \PDO;
 
 class Router{
 

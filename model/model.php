@@ -3,9 +3,18 @@
 namespace Model;
 
 use App\Database;
+use App\Factory;
 use \PDO;
 
-class Model{
+abstract class Model{
+
+    protected $table;
+
+    public function __construct(){
+        $explode = explode('\\', get_class($this));
+        $class_name = lcfirst(end($explode));
+        $this->table = $class_name;
+    }
     
     static function _getAll($table, $select, $where, $limit, $order){
         $db = Database::dbConnect();
@@ -30,17 +39,17 @@ class Model{
         $sql .= $order;
         //echo $sql;
         $req = $db->query($sql);
-        $datas = $req->fetchAll(PDO::FETCH_ASSOC);
+        $datas = $req->fetchAll(PDO::FETCH_OBJ);
     
         return $datas;
     }
 
-    static function _create(array $datas){
+    public function _create(array $datas){
         foreach ($datas as $data => $value){
             $method = 'set'.ucfirst($data);
 
             if (method_exists(__CLASS__, $method)){
-                $this->$method($value);
+                $this->method($value);
             }
         }
     }

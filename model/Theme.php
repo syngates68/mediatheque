@@ -35,12 +35,8 @@ class Theme extends Model{
 	}
 
 	// Requêtes BDD
-	
-	public function __construct(array $datas){
-		self::_create($datas);
-	}
     
-    static function getAllThemes(){
+    public static function getAllThemes(){
 
         return self::_getAll('theme', ' id, nom, couleur ', '', '', '');
 
