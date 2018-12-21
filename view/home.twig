@@ -9,23 +9,14 @@
 
   <div class="elmt_video">
     <div class="card mb-4 shadow-sm">
-      <div class="video"> 
-      <iframe src="https://www.youtube.com/embed/{{ v.lien }}" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-      {% if (v.gratuite == NULL) %}
-        <div class="blur"> <p> <i class="fas fa-lock"></i> Contenu payant </p> </div>
-      {% endif %}
+      <div class="video" id="video"> 
+      <img src="{{ v.miniature }}" alt="Miniature de la vidéo {{v.title}}">
+      <div class="blur" id="{{v.id}}"> {% if (v.gratuite == 0) %} <p> <i class="fas fa-lock"></i> Contenu payant </p> {% else %} <button type="submit" class="btn btn-success"> <i class="fas fa-video"></i> </button> {% endif %} </div>
       </div>
       <div class="card-body">
         <h2 class="title"> {{ v.titre }} 
-        <span class="badge badge-secondary" style="background:<?= $video->couleur; ?>">{{ v.theme }}</span> 
+        <span class="badge badge-secondary" style="background:{{ v.couleur }}">{{ v.theme }}</span> 
         </h2>
-        <div>
-          {% if v.gratuite == 1 %}
-            <a role="button" class="btn btn-sm btn-show btn-success" href="#"><i class="fas fa-eye"></i>Voir</a>
-          {% else %}
-            <a role="button" class="btn btn-sm btn-show btn-primary" href="#"><i class="fas fa-euro-sign"></i>Acheter</a>
-          {% endif %}
-        </div>
         <div class="d-flex justify-content-between align-items-center infos">
           {% if v.gratuite == 1 %}
             <p class="text-muted free">Gratuite</p>
@@ -39,5 +30,4 @@
 
   {% endfor %}
   </div>
-
 {% endblock %}

@@ -38,20 +38,22 @@ VIDEOS
 
 .list .card{ width: 32% !important; display: inline-block; }
 
-.video{ position: relative; padding-bottom: 56.25%; padding-top: 25px; height: 0; display: inline-block; }
-  .video iframe{ position: absolute; top: 0; left: 0; width: 100%; height: 100%; }
-  .video .blur{ position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(97, 97, 97, 0.685); }
-  .video .blur p{ position: absolute; top: 40% !important; padding: 10px; background: red; color: #FFF; left: 13%; width: 75%; text-align: center; }
-
-.title{ font-size: 15px; }
+.video{ background: #000; position: relative; padding-bottom: 56.25%; padding-top: 25px; height: 0; display: inline-block; }
+  .video img{ position: absolute; top: 0; left: 0; padding-top: 10px; padding-bottom: 10px; width: 100%; height: 100%; }
+  .video .blur{ position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(97, 97, 97, 0.247); }
+  .video .blur p, .blur button{ position: absolute; top: 40% !important; padding: 10px; color: #FFF; text-align: center; }
+  .video .blur p{ background: red; width: 75%; left: 13%; }
+  .video .blur button{ background: #343a4052; width: 20%; left: 40%; border: 0; border-radius: 10px; }
+  .video .blur button:hover{ background: #4a0087; }
+  .title{ font-size: 12px; }
 
 .list_videos, .abonnement{ text-align: center; padding: 10px; margin-left: 16.5%; }
   .list_videos h1, .abonnement h1{ text-align: left; color: #FFF; border-bottom: 2px solid #56029b; font-size: 20px; width: 50% !important; font-weight: 800; }
 
 .elmt_video, .elmt_abo{ width: 32%; display: inline-block; margin: 0 auto; }
 
-.card{ border: 2px solid #4a0087; border-radius: 0; }
-  .card .card-body{ display: inline-block; }
+.card{ border: 0; border-radius: 0; box-shadow: none !important; }
+  .card .card-body{ padding: 10px 0 !important; display: inline-block; background: #313131 !important; color: #FFF; }
   .card .card-body h2{ text-align: left; }
   .card .btn-show{ display: block; margin: 20px auto; width: 50% !important; border-radius: 0; }
   .card .btn-show i{ margin-right: 5px !important; }
