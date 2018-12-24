@@ -11,8 +11,7 @@ class Video extends Model{
     private $_id_theme;
     private $_date_ajout;
     private $_gratuit;
-	private $_lien;
-	private $_miniature;
+    private $_lien;
     private $_prix;
 
     public function get_id(){
@@ -63,14 +62,6 @@ class Video extends Model{
 		$this->_lien = $_lien;
 	}
 
-	public function get_miniature(){
-		return $this->_miniature;
-	}
-
-	public function set_miniature($_miniature){
-		$this->_miniature = $_miniature;
-	}
-
 	public function get_prix(){
 		return $this->_prix;
 	}
@@ -82,7 +73,38 @@ class Video extends Model{
 	// Requêtes BDD
 
     public static function getAllVideos(){
-        return self::_getInner('video v', ' v.titre, v.id_theme, v.gratuite, v.lien, v.miniature, v.prix, v.date_ajout, t.nom as theme, t.couleur ', ' left join theme t on v.id_theme = t.id ', '', '', ' ORDER BY v.gratuite DESC');
-    }
+        return self::_getInner('video v', ' v.id, v.titre, v.id_theme, v.gratuite, v.lien, v.miniature, v.prix, v.date_ajout, t.nom as theme, t.couleur ', ' left join theme t on v.id_theme = t.id ', '', '', ' ORDER BY v.gratuite DESC');
+	}
+	
+	/***************************************/
+	public static function buildModel(array $line){
+		$v = new Video([
+			"id" => $line['id'],
+			"titre" => $line['titre'],
+			"id_theme" => $line['id_theme'],
+			"date_ajout" => $line['date_ajout'],
+			"gratuite" => $line['gratuite'],
+			"lien" => $line['lien'],
+			"miniature" => $line['miniature'],
+			"prix" => $line['prix']
+		]);
+		return $v;
+	}
+
+	public static function buildInner(array $line){
+		$tab = array(
+			"id" => $line['id'],
+			"titre" => $line['titre'],
+			"id_theme" => $line['id_theme'],
+			"date_ajout" => $line['date_ajout'],
+			"gratuite" => $line['gratuite'],
+			"lien" => $line['lien'],
+			"miniature" => $line['miniature'],
+			"prix" => $line['prix'],
+			"theme" => $line['theme'],
+			"couleur" => $line['couleur']
+		);
+		return $tab;
+	}
 
 }

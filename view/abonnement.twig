@@ -8,15 +8,14 @@
 
     <div class="container">
       <div class="card-deck mb-3 text-center">
-
         {% for a in abos %}
         <div class="elmt_abo">
         <div class="card mb-4 shadow-sm">
           <div class="card-header">
-            <h4 class="my-0 font-weight-normal">{{ a.nom }}</h4>
+            <h4 class="my-0 font-weight-normal">{{ a.get_nom }}</h4>
           </div>
           <div class="card-body">
-            <button type="button" class="btn btn-lg btn-block btn-outline-primary">{% if a.essai == 1 %} Essayer {% else %} Souscrire {% endif %}</button>
+            <button type="button" class="btn btn-lg btn-block btn-outline-primary">{% if a.get_essai == 1 %} Essayer {% else %} Souscrire {% endif %}</button>
           </div>
         </div>
         </div>

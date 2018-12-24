@@ -42,28 +42,30 @@ VIDEOS
   .video img{ position: absolute; top: 0; left: 0; padding-top: 10px; padding-bottom: 10px; width: 100%; height: 100%; }
   .video .blur{ position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(97, 97, 97, 0.247); }
   .video .blur p, .blur button{ position: absolute; top: 40% !important; padding: 10px; color: #FFF; text-align: center; }
-  .video .blur p{ background: red; width: 75%; left: 13%; }
+  .video .blur p{ background: rgba(209, 209, 209, 0.589); color: #FF3333; width: 75%; left: 13%; }
   .video .blur button{ background: #343a4052; width: 20%; left: 40%; border: 0; border-radius: 10px; }
   .video .blur button:hover{ background: #4a0087; }
   .title{ font-size: 12px; }
 
-.list_videos, .abonnement{ text-align: center; padding: 10px; margin-left: 16.5%; }
-  .list_videos h1, .abonnement h1{ text-align: left; color: #FFF; border-bottom: 2px solid #56029b; font-size: 20px; width: 50% !important; font-weight: 800; }
+.list_videos, .abonnement, .profil{ text-align: center; padding: 10px; margin-left: 16.5%; }
+  .list_videos h1, .abonnement h1, .profil h1{ text-align: left; color: #FFF; border-bottom: 2px solid #56029b; font-size: 20px; width: 50% !important; font-weight: 800; }
 
 .elmt_video, .elmt_abo{ width: 32%; display: inline-block; margin: 0 auto; }
 
-.card{ border: 0; border-radius: 0; box-shadow: none !important; }
-  .card .card-body{ padding: 10px 0 !important; display: inline-block; background: #313131 !important; color: #FFF; }
-  .card .card-body h2{ text-align: left; }
-  .card .btn-show{ display: block; margin: 20px auto; width: 50% !important; border-radius: 0; }
-  .card .btn-show i{ margin-right: 5px !important; }
-  .card .badge{ display: block; width: 25%; }
+.elmt_video .card{ border: 0; border-radius: 0; box-shadow: none !important; margin-bottom: 0 !important; }
+  .elmt_video .card .card-body{ padding: 10px 0 !important; display: inline-block; background: #313131 !important; color: #FFF; }
+  .elmt_video .card .card-body h2{ text-align: left; }
+  .tag{ margin-top: 5px; font-size: 13px !important; text-align: left; }
+  .elmt_video .card .btn-show{ display: block; margin: 20px auto; width: 50% !important; border-radius: 0; }
+  .elmt_video .card .btn-show i{ margin-right: 5px !important; }
+  .elmt_video .card .badge{ display: block; width: 25%; }
 
 .infos{ font-size: 12px; padding: 10px; }
   .infos p{ vertical-align: middle; }
 
-.free{ color: #058700 !important; font-size: 15px; }
-.price{ color: #058 !important; font-size: 15px; }
+.free, .price{ font-weight: 800; }
+.free{ color: #058700 !important; }
+.price{ color: #058 !important; }
 
 /*.filtres{ width: 70%; margin: 0 auto; padding: 30px; text-align: center; display: none; }
   .filtres .filtre_theme, .filtre_gratuit{ display: inline-block; width: 49%; }
@@ -96,6 +98,12 @@ ABONNEMENT
 .pricing-header{ color: #FFF; }
 .abonnement .card-body button{ border-radius: 0; background: #4a0087; border: 0; color: #FFF; }
 .abonnement .card-body button:hover{ background: #360063; }
+
+/*******************************************************
+PROFIl
+********************************************************/
+
+.profil img{ text-align: left; width: 200px; height: 200px; border-radius: 200px; }
 
 /*******************************************************
 CONNEXION/INSCRIPTION

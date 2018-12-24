@@ -2,14 +2,14 @@
 
 namespace Controller;
 
-use Model\Abonnement;
+use Model\TypeAbonnement;
 use App\Factory;
 
 class AbonnementController extends Controller{
 
     static function getAbonnement(){
         $template = self::loadTwig()->load('template.twig');
-        $abos = Abonnement::getAllAbonnements();
+        $abos = TypeAbonnement::getAllTypeAbonnements();
         echo self::loadTwig()->render('abonnement.twig', ['abos' => $abos]);
     }
     

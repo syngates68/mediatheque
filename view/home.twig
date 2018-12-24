@@ -1,4 +1,5 @@
 {% extends 'template.twig' %}
+
 {% block title %} Accueil {% endblock %}
 {% block content %}
 
@@ -14,16 +15,8 @@
       <div class="blur" id="{{v.id}}"> {% if (v.gratuite == 0) %} <p> <i class="fas fa-lock"></i> Contenu payant </p> {% else %} <button type="submit" class="btn btn-success"> <i class="fas fa-video"></i> </button> {% endif %} </div>
       </div>
       <div class="card-body">
-        <h2 class="title"> {{ v.titre }} 
-        <span class="badge badge-secondary" style="background:{{ v.couleur }}">{{ v.theme }}</span> 
-        </h2>
-        <div class="d-flex justify-content-between align-items-center infos">
-          {% if v.gratuite == 1 %}
-            <p class="text-muted free">Gratuite</p>
-          {% else %}
-            <p class="text-muted price">{{ v.prix }}€</p>
-          {% endif %}
-        </div>
+        <h2 class="title"> {{ v.titre }} | {% if v.gratuite == 1 %} <span class="text-muted free">Gratuite</span> {% else %} <span class="text-muted price">{{ v.prix }}€</span> {% endif %}</h2>
+        <p class="tag" style="color:{{ v.couleur }}">{{ v.theme }}</p> 
       </div>
       </div>
   </div>

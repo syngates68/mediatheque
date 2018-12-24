@@ -10,10 +10,11 @@ abstract class Model{
 
     protected $table;
 
-    public function __construct(){
+    public function __construct(array $datas){
         $explode = explode('\\', get_class($this));
         $class_name = lcfirst(end($explode));
         $this->table = $class_name;
+        $this->hydrate($datas);
     }
     
     static function _getAll($table, $select, $where, $limit, $order){
@@ -23,11 +24,17 @@ abstract class Model{
             $sql .= ' WHERE '.$where.$limit;
         }
         $sql .= $order;
-        //echo $sql;
+
         $req = $db->query($sql);
-        $datas = $req->fetchAll(PDO::FETCH_OBJ);
     
-        return $datas;
+        $res = [];
+
+        while ($line = $req->fetch()){
+            array_push($res, static::buildModel($line));
+            //var_dump($res);
+        }
+
+        return $res;
     }
 
     static function _getInner($table, $select, $inner, $where, $limit, $order){
@@ -37,30 +44,53 @@ abstract class Model{
             $sql .= ' WHERE '.$where.$limit;
         }
         $sql .= $order;
-        //echo $sql;
+
         $req = $db->query($sql);
-        $datas = $req->fetchAll(PDO::FETCH_OBJ);
     
+        $res = [];
+
+        while ($line = $req->fetch()){
+            array_push($res, static::buildInner($line));
+            //var_dump($res);
+        }
+
+        return $res;
+    }
+
+    static function _getOne($table, $select, $inner, $where, $param = []){
+        $db = Database::dbConnect();
+        $sql = 'SELECT'.$select.'FROM '.$table.$inner.'WHERE '.$where;
+        $exec = [];
+        if (!empty($param)){
+            foreach ($datas as $data => $value){
+                $exec += [$data => $value];
+            }
+        }
+        $req = $db->prepare($sql);
+        $req->exec($exec);
+
+        $datas = $req->fetchAll(PDO::FETCH_OBJ);
+
         return $datas;
     }
 
-    public function _create(array $datas){
+    public function hydrate(array $datas){
         foreach ($datas as $data => $value){
-            $method = 'set'.ucfirst($data);
+            $method = 'set_'.$data;
 
-            if (method_exists(__CLASS__, $method)){
-                $this->method($value);
+            if (method_exists($this, $method)){
+                $this->$method($value);
             }
         }
     }
         
-    public function formatDate($date){
+    /*public function formatDate($date){
         setlocale(LC_TIME, 'fra', 'fr_FR');
         $date = strtotime($date);
         $date = strftime("%d/%m/%y", $date);
     
         return $date;
-    }
+    }*/
 
     public function __destruct(){
 

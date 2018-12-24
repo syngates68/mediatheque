@@ -3,6 +3,7 @@
 use Controller\HomeController;
 use Controller\AbonnementController;
 use Controller\LoginController;
+use Controller\UtilisateurController;
 use App\Autoload;
 use App\Router\Router;
 
@@ -24,5 +25,6 @@ $router->_get('/', function(){ HomeController::getHome(); });
 $router->_get('/home', function(){ HomeController::getHome(); });
 $router->_get('/abonnement', function(){ AbonnementController::getAbonnement(); });
 $router->_get('/login', function(){ LoginController::getLogin(); });
+$router->_get('/profil', function(){ UtilisateurController::getProfil(); });
 
 $router->_run();

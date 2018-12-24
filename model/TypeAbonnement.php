@@ -2,13 +2,13 @@
 
 namespace Model;
 
-//use Model;
+//use Model\Model;
 
-class Theme extends Model{
+class TypeAbonnement extends Model{
 
     private $_id;
     private $_nom;
-    private $_couleur;
+    private $_essai;
 
     public function get_id(){
 		return $this->_id;
@@ -26,31 +26,29 @@ class Theme extends Model{
 		$this->_nom = $_nom;
 	}
 
-	public function get_couleur(){
-		return $this->_couleur;
+	public function get_essai(){
+		return $this->_essai;
 	}
 
-	public function set_couleur($_couleur){
-		$this->_couleur = $_couleur;
+	public function set_essai($_essai){
+		$this->_essai = $_essai;
 	}
-
+  
 	// Requêtes BDD
-    
-    public static function getAllThemes(){
 
-        return self::_getAll('theme', ' id, nom, couleur ', '', '', '');
+	public static function getAllTypeAbonnements(){
 
+        return self::_getAll('type_abonnement', ' id, nom, essai ', '', '', '');
 	}
 	
 	/***************************************/
 	public static function buildModel(array $line){
-		$t = new Theme([
+		$t = new TypeAbonnement([
 			"id" => $line['id'],
 			"nom" => $line['nom'],
-			"couleur" => $line['couleur']
+			"essai" => $line['essai']
 		]);
         return $t;
 	}
-
 
 }

@@ -16,7 +16,7 @@
               <i class="fas fa-search"></i><a href="#">Rechercher</a>
             </div>
             <div class="filter-item">
-              <i class="fas fa-user"></i><a href="#">Profil</a>
+              <i class="fas fa-user"></i><a href="profil">Profil</a>
             </div>
           </div>
           <a role="button" class="btn btn-success" href="abonnement"><i class="fas fa-video"></i>S'abonner</a>
@@ -31,16 +31,17 @@
           <h1><i class="fas fa-video"></i><strong>D<span class="violet">o</span>ntatune</strong></h1>
         </div>
         </div>
-          {% block content %}
-          {% endblock %}
       </div>
     </div>
+
+    {% block content %}
+    {% endblock %}
 
     <div class="side_nav_mobile" id="side_nav_mobile"> 
       <div class="filters_nav">
           <a href="home">Accueil</a>
           <a href="#">Rechercher</a>
-          <a href="#">Profil</a>
+          <a href="profil">Profil</a>
           <a role="button" class="btn btn-success" href="abonnement"><i class="fas fa-video"></i>S'abonner</a>
       </div>
     </div>
