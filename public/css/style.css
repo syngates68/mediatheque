@@ -48,13 +48,13 @@ VIDEOS
   .title{ font-size: 12px; }
 
 .list_videos, .abonnement, .profil{ text-align: center; padding: 10px; margin-left: 16.5%; }
-  .list_videos h1, .abonnement h1, .profil h1{ text-align: left; color: #FFF; border-bottom: 2px solid #56029b; font-size: 20px; width: 50% !important; font-weight: 800; }
+  .list_videos h1, .abonnement h1, .profil h1{ text-align: left; color: #FFF; padding-bottom: 10px; border-bottom: 2px solid #56029b; font-size: 20px; width: 50% !important; font-weight: 800; }
 
-.elmt_video, .elmt_abo{ width: 32%; display: inline-block; margin: 0 auto; }
+.elmt_video, .elmt_abo{ width: 32%; display: inline-block; margin: 0 auto; padding-top: 30px; }
 
 .elmt_video .card{ border: 0; border-radius: 0; box-shadow: none !important; margin-bottom: 0 !important; }
   .elmt_video .card .card-body{ padding: 10px 0 !important; display: inline-block; background: #313131 !important; color: #FFF; }
-  .elmt_video .card .card-body h2{ text-align: left; }
+  .elmt_video .card .card-body h2{ text-align: left; font-weight: 800; }
   .tag{ margin-top: 5px; font-size: 13px !important; text-align: left; }
   .elmt_video .card .btn-show{ display: block; margin: 20px auto; width: 50% !important; border-radius: 0; }
   .elmt_video .card .btn-show i{ margin-right: 5px !important; }
@@ -75,13 +75,13 @@ VIDEOS
   .filtres .input-group-text{ color: #4a0087; border-radius: 0; background: none; border: 0; border-bottom: 1px solid #4a0087; }*/
 
 .filters{ margin-top: 20px; border-bottom: 1px solid #FFF; }
-  .filters .filter-item{ border-left: 4px solid #000; display: block; margin-bottom: 10px; padding: 10px; }
+  .filters .filter-item{ border-left: 4px solid transparent; display: block; margin-bottom: 10px; padding: 10px; }
   .filters .active{ border-left: 4px solid #058700; }
   .filters .filter-item a{ width: 70%; display: inline-block; text-align: left; color: #FFF; }
   .filters .filter-item a:hover{ color: rgb(180, 179, 179); text-decoration: none; transition-duration: 0.3s; }
   .filters .filter-item i{ width: 29%; display: inline-block; }
 
-.side_nav{ position: fixed; height: 100%; background: #000; color:#FFF; text-align: center; padding: 10px; font-size: 15px; border-right: 2px solid #222222; }
+.side_nav{ position: fixed; height: 100%; background: linear-gradient(#000, #202020); color:#FFF; text-align: center; padding: 10px; font-size: 15px; border-right: 2px solid #222222; }
   .side_nav h1{ font-size: 20px; }
   .side_nav .btn{ border: 0; margin-top: 20px; width: 90%; border-radius: 0; background: #4a0087; }
   .side_nav .btn:hover{ background: #360063; }

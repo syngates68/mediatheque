@@ -60,18 +60,18 @@ abstract class Model{
     static function _getOne($table, $select, $inner, $where, $param = []){
         $db = Database::dbConnect();
         $sql = 'SELECT'.$select.'FROM '.$table.$inner.'WHERE '.$where;
-        $exec = [];
-        if (!empty($param)){
-            foreach ($datas as $data => $value){
-                $exec += [$data => $value];
-            }
-        }
+
         $req = $db->prepare($sql);
-        $req->exec($exec);
+        $req->execute($param);
 
-        $datas = $req->fetchAll(PDO::FETCH_OBJ);
+        $res = [];
 
-        return $datas;
+        while ($line = $req->fetch()){
+            array_push($res, static::buildModel($line));
+            //var_dump($res);
+        }
+
+        return $res;
     }
 
     public function hydrate(array $datas){

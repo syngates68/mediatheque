@@ -11,7 +11,7 @@
   <div class="elmt_video">
     <div class="card mb-4 shadow-sm">
       <div class="video" id="video"> 
-      <img src="{{ v.miniature }}" alt="Miniature de la vidéo {{v.title}}">
+      <img src="{{ BASEURL ~ v.miniature }}" alt="Miniature de la vidéo {{v.title}}">
       <div class="blur" id="{{v.id}}"> {% if (v.gratuite == 0) %} <p> <i class="fas fa-lock"></i> Contenu payant </p> {% else %} <button type="submit" class="btn btn-success"> <i class="fas fa-video"></i> </button> {% endif %} </div>
       </div>
       <div class="card-body">

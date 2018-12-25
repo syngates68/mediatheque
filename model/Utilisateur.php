@@ -72,8 +72,15 @@ class Utilisateur extends Model{
 
     // Requêtes BDD
     
-    public static function getUser($id){
-        return self::_getOne('utilisateur u', ' u.nom, u.prenom, u.pseudo, u.date_creation, u.mail, u.pass ', '', 'id = :id', [
+    public static function getUser($mail, $pass){
+        return self::_getOne('utilisateur u ', ' * ', '', 'u.mail = :mail AND u.pass = :pass', [
+			'mail' => $mail,
+			'pass' => $pass
+		]);
+	}
+
+	public static function getUserById($id){
+		return self::_getOne('utilisateur u', ' u.nom, u.prenom, u.pseudo, u.date_creation, u.mail, u.pass ', '', 'id = :id', [
             'id' => $id
         ]);
 	}
