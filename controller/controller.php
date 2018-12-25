@@ -6,7 +6,7 @@ use Model\Video;
 use Model\Theme;
 use Model\Abonnement;
 
-require ('vendor/autoload.php');
+require (ROOT.DS.'vendor/autoload.php');
 
 class Controller{
 
@@ -14,7 +14,7 @@ class Controller{
 
     static function loadTwig(){    
         \ComposerAutoloaderInitb80da45cb6974f22f3f089979c4acd7e::getLoader();
-        $loader = new \Twig_Loader_Filesystem('view');
+        $loader = new \Twig_Loader_Filesystem(ROOT.DS.'view');
         if (is_null(self::$twig)){
             return self::$twig = new \Twig_Environment($loader, [
                 'cache' => false

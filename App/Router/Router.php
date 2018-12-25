@@ -1,38 +1,50 @@
 <?php
 
 namespace App\Router;
-use \PDO;
+
+use Exception;
 
 class Router{
 
     private $url;
+    private $controller;
+    private $method;
     private $routes = [];
 
     public function __construct($url){
         $this->url = $url;
+        $this->parseUrl($this->url);
+        $route = new Route($this->controller, $this->method);
+        $this->routes[] = $route;
+        $this->_run();
     }
 
-    public function _get($path, $callable){
-        $route = new Route($path, $callable);
-        $this->routes['GET'][] = $route;
+    public function parseUrl($url){
+        $url = explode('/', $url);
+        //var_dump($url);
+        $this->controller = $this->loadController($url[3]);
+        $this->method = $this->loadMethod($url[4]);
     }
 
-    public function _post($path, $callable){
-        $route = new Route($path, $callable);
-        $this->routes['POST'][] = $route;
+    public function loadController($c){
+        return ucfirst($c.'Controller');
+    }
+
+    public function loadMethod($m){
+        return strtolower($_SERVER['REQUEST_METHOD']).''.ucfirst($m);
     }
 
     public function _run(){
-        if (!isset($this->routes[$_SERVER['REQUEST_METHOD']])){
+        if (!isset($this->routes)){
             throw new Exception('Pas de correspondance');
         }
         else{
-            foreach ($this->routes[$_SERVER['REQUEST_METHOD']] as $route){
-                if ($route->_match($this->url)){
-                    return $route->_call();
+            foreach ($this->routes as $route){
+                if ($route->_match($this->controller, $this->method)){
+                    return true;
                 }
             }
-            throw new Exception('La requête n\'a pas aboutie');
+            //throw new Exception('La requête n\'a pas aboutie');
         }
     }
 

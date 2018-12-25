@@ -4,31 +4,39 @@ namespace App\Router;
 
 class Route{
 
-    private $path;
-    private $callable;
-    private $matches;
+    private $controller;
+    private $method;
+    private $class_name;
 
-    public function __construct($path, $callable){
-        $this->path = trim($path, '/');
-        $this->callable = $callable;
+    public function __construct($controller, $method){
+        $this->controller = trim($controller, '/');
+        $this->method = $method;
     }
 
-    public function _match($url){
-        $url = trim($url, '/');
-        $path = preg_replace('#:([\w]+)#', '([^/]+)', $this->path);
-        $regex = "#^$path$#i";
+    public function _match($controller, $method){
+        $req = ROOT.DS.'Controller'.DS.$this->controller.'.php';
+        //echo $this->controller;
+        $this->class_name = 'Controller\\'.$this->controller;
 
-        if (!preg_match($regex, $url, $matches)){
+        if (!file_exists($req))
             return false;
-        }
-        $this->matches = $matches;
-        return true;
-        //array_shift($matches);
-        //var_dump($matches);
-    }
+        else{
+            
+            require_once $req;
 
-    public function _call(){
-        return call_user_func_array($this->callable, $this->matches);
+            if (class_exists($this->class_name)){
+
+                $c = new $this->class_name;
+
+                $method = array($c, $this->method);
+
+                if (!is_callable($method, true, $callable_name)){
+                    return false;
+                }
+                return call_user_func($method);           
+            }
+
+        }
     }
 
 }
