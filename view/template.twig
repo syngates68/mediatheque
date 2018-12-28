@@ -5,60 +5,45 @@
 
     {% set BASEURL = constant('BASEURL') %}
 
-    <nav class="navbar navbar-expand-lg navbar-dark fixed-top bg-dark">
-      <a class="navbar-brand" href="{{BASEURL}}home/board"><i class="fas fa-video"></i><strong>D<span class="violet">o</span>ntatune</strong></a>
-
-      <div class="collapse navbar-collapse" id="navbarSupportedContent">
-      
-        <form class="form-inline my-2 my-lg-0">
-          <button class="btn btn-outline-success my-2 my-sm-0" type="submit"><i class="fas fa-search"></i></button>
-          <input class="form-control mr-sm-2" type="search" placeholder="Rechercher une vidéo" aria-label="Search">
-        </form>
+    <nav class="navbar navbar-expand-lg main_navbar">
+      <div class="open">
+        <div class="bar1"></div>
+        <div class="bar2"></div>
+        <div class="bar3"></div>
       </div>
+
+      <a class="navbar-brand" href="{{BASEURL}}home/board"><i class="fas fa-video"></i><strong>D<span class="violet">o</span>ntatune</strong></a> 
+
+      <form class="form-inline my-2 my-lg-0">
+        <input class="form-control mr-sm-2" type="search" placeholder="Rechercher" aria-label="Search">
+        <button class="btn btn-outline-success my-2 my-sm-0" type="submit"><i class="fas fa-search"></i></button>
+      </form>
+
     </nav>
 
-    <div class="container-fluid site_content">
-      <div class="row">
-        <div class="col-sm-2 side_nav" id="side_nav">
-          <div class="filters">
-            <div class="filter-item">
-              <i class="fas fa-home"></i><a href="{{BASEURL}}home/board">Accueil</a>
-            </div>
-            <div class="filter-item">
-              <i class="fas fa-sliders-h"></i></i><a href="#">Filtrer</a>
-            </div>
-            <div class="filter-item">
-              <i class="fas fa-user"></i><a href="{{BASEURL}}utilisateur/profil">Profil</a>
-            </div>
-            <div class="filter-item">
-              <i class="fas fa-sign-out-alt"></i></i><a href="{{BASEURL}}utilisateur/sign_out">Deconnexion</a>
-            </div>
-          </div>
-          <a role="button" class="btn btn-success" href="{{BASEURL}}home/abonnement"><i class="fas fa-video"></i>S'abonner</a>
-        </div>
-        <div class="col-sm-12 nav_mobile">
-        <div class="open">
-            <div class="bar1"></div>
-            <div class="bar2"></div>
-            <div class="bar3"></div>
-        </div>
-        <div class="items">
-          <h1><i class="fas fa-video"></i><strong>D<span class="violet">o</span>ntatune</strong></h1>
-        </div>
-        </div>
+    <nav class="hide_navbar">
+      <div class="nav_item">
+        <i class="fas fa-home"></i><a href="{{BASEURL}}home/board">Accueil</a>
       </div>
-    </div>
+      <div class="nav_item">
+        <i class="fas fa-sliders-h"></i><a href="{{BASEURL}}home/board">Filtrer</a>
+      </div>
+      <div class="nav_item">
+        <i class="fas fa-user"></i><a href="{{BASEURL}}utilisateur/profil">Profil</a>
+      </div>  
+      <div class="nav_item search">
+        <i class="fas fa-search"></i><a href="{{BASEURL}}utilisateur/profil">Rechercher</a>
+      </div>
+      <div class="nav_item">
+        <i class="fas fa-sign-out-alt"></i><a href="{{BASEURL}}utilisateur/sign_out">Deconnexion</a>
+      </div>   
+      <div class="separator"><div>
+      <a role="button" class="btn btn-success" href="{{BASEURL}}home/abonnement"><i class="fas fa-video"></i>S'abonner</a>
+    </nav>
 
+    <div class="site_content">
     {% block content %}
     {% endblock %}
-
-    <div class="side_nav_mobile" id="side_nav_mobile"> 
-      <div class="filters_nav">
-          <a href="{{BASEURL}}home/board">Accueil</a>
-          <a href="#">Rechercher</a>
-          <a href="{{BASEURL}}utilisateur/profil">Profil</a>
-          <a role="button" class="btn btn-success" href="{{BASEURL}}home/abonnement"><i class="fas fa-video"></i>S'abonner</a>
-      </div>
     </div>
 
     {% include 'inc/end.twig' %}

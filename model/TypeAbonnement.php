@@ -7,7 +7,9 @@ namespace Model;
 class TypeAbonnement extends Model{
 
     private $_id;
-    private $_nom;
+	private $_nom;
+	private $_description;
+	private $_prix;
     private $_essai;
 
     public function get_id(){
@@ -26,6 +28,22 @@ class TypeAbonnement extends Model{
 		$this->_nom = $_nom;
 	}
 
+	public function get_description(){
+		return $this->_description;
+	}
+
+	public function set_description($_description){
+		$this->_description = $_description;
+	}
+
+	public function get_prix(){
+		return $this->_prix;
+	}
+
+	public function set_prix($_prix){
+		$this->_prix = $_prix;
+	}
+
 	public function get_essai(){
 		return $this->_essai;
 	}
@@ -38,7 +56,7 @@ class TypeAbonnement extends Model{
 
 	public static function getAllTypeAbonnements(){
 
-        return self::_getAll('type_abonnement', ' id, nom, essai ', '', '', '');
+        return self::_getAll('type_abonnement', ' id, nom, description, prix, essai ', '', '', '');
 	}
 	
 	/***************************************/
@@ -46,6 +64,8 @@ class TypeAbonnement extends Model{
 		$t = new TypeAbonnement([
 			"id" => $line['id'],
 			"nom" => $line['nom'],
+			"description" => $line['description'],
+			"prix" => $line['prix'],
 			"essai" => $line['essai']
 		]);
         return $t;

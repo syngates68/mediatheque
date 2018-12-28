@@ -77,7 +77,7 @@ class Video extends Model{
 	}
 
 	public static function getLastVideo(){
-		return self::_getInner('video v', ' v.id, v.titre, v.id_theme, v.gratuite, v.lien, v.miniature, v.prix, v.date_ajout, t.nom as theme, t.couleur ', ' left join theme t on v.id_theme = t.id ', 'v.date_ajout = (SELECT MAX(date_ajout) FROM video)', '', '');
+		return self::_getInner('video v', ' v.id, v.titre, v.id_theme, v.gratuite, v.lien, v.miniature, v.prix, v.date_ajout, t.nom as theme, t.couleur ', ' left join theme t on v.id_theme = t.id ', 'v.date_ajout = (SELECT MAX(date_ajout) FROM video WHERE gratuite = 1)', '', '');
 	}
 	
 	/***************************************/

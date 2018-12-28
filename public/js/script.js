@@ -1,13 +1,23 @@
 $(function(){
 
-    //AFFICHAGE DU MENU SUR MOBILE
+    //AFFICHAGE DU MENU SUR PC
     $('.open').click(function(){
         $(this).toggleClass('change');
         if ($(this).hasClass('change')){
-            $('#side_nav_mobile').fadeIn(500);
+            $('.hide_navbar').addClass('opened');
+            $('.site_content').addClass('with_sidebar');
         }
         else{
-            $('#side_nav_mobile').fadeOut(500);
+            $('.hide_navbar').removeClass('opened');
+            $('.site_content').removeClass('with_sidebar');
+        }
+    });
+
+    $('.site_content').click(function(){
+        $('.hide_navbar').removeClass('opened');
+        $('.site_content').removeClass('with_sidebar');
+        if ($('.open').hasClass('change')){
+            $('.open').toggleClass('change');
         }
     });
 

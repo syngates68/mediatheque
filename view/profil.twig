@@ -1,27 +1,24 @@
 {% extends 'template.twig' %}
-{% block title %} Profil {% endblock %}
+{% block title %}  {{ session.pseudo }} {% endblock %}
 {% block content %}
 
-    <div class="col-sm-12 col-md-12 col-lg-10 profil">
-    <div class="profil_head">
-        <img src="{{BASEURL ~ session.pic }}">
-        <span> {{ session.pseudo }} </span>
-    </div>
-    <div class="profil_infos">
-        <h2> Informations </h2>
-        <p> Nom : {{ session.nom }} </p>
-        <p> Prenom : {{ session.prenom }} </p>
-        <p> Date de création : {{ session.date_creation }} </p>
-        <p> Mail : {{ session.mail }} </p>
-        <button type="button" class="btn btn-success">Modifier</button>
-        <button type="button" class="btn btn-danger">Supprimer</button>
-    </div>
-    <div class="profil_videos">
-        <h2> Informations </h2>
-        <p> Nom : {{ session.nom }} </p>
-        <p> Prenom : {{ session.prenom }} </p>
-        <p> Date de création : {{ session.date_creation }} </p>
-        <p> Mail : {{ session.mail }} </p>
-    </div>
+    <div class="profil">
+        <div class="profil_head">
+            <img src="{{BASEURL ~ session.pic }}">
+            <span> {{ session.pseudo }} </span>
+        </div>
+        <div class="profil_infos">   
+            <h2> Informations </h2>
+            <p> Nom : {{ session.nom }} </p>
+            <p> Prenom : {{ session.prenom }} </p>
+            <p> Date de création : {{ session.date_creation }} </p>
+            <p> Mail : {{ session.mail }} </p>
+            <button type="button" class="btn btn-success">Modifier</button>
+            <button type="button" class="btn btn-danger">Supprimer</button>
+            <h2> Votre abonnement </h2>
+            <div class="alert alert-danger"> Vous n'avez encore souscrit à aucun abonnement </div>
+            <h2> Vos paiements </h2>
+            <div class="alert alert-danger"> Vous n'avez aucun paiement à afficher </div>
+        </div>
     </div>
 {% endblock %}

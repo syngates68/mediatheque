@@ -3,46 +3,43 @@
 {% block title %} Accueil {% endblock %}
 {% block content %}
 
-  <div class="col-sm-12 col-md-12 col-lg-10 list_videos">
-  <h1> Les dernières vidéos </h1>
-
-  <div class="lv_container">
   {% for lv in last_video %}
 
-  <div class="last_video">
-    <div class="card mb-4 shadow-sm">
-      <div class="video" id="video"> 
+  <div class="lv_container">
+    <div class="video" id="video"> 
       <img src="{{ BASEURL ~ lv.miniature }}" alt="Miniature de la vidéo {{lv.title}}">
-      <div class="blur" id="{{lv.id}}"> {% if (lv.gratuite == 0) %} <p> <i class="fas fa-lock"></i> Contenu payant </p> {% else %} <button type="submit" class="btn btn-success"> <i class="fas fa-video"></i> </button> {% endif %} </div>
+    </div>
+
+    <div class="lv_infos">
+      <div class="lv_infos_content">
+        <h2> A la Une </h2>
+        <p class="title"> {{ lv.titre }} </p>
+        <a role="button" class="btn btn-success" href="#"><i class="fas fa-video"></i>Voir</a>
       </div>
     </div>
   </div>
 
-  <div class="lv_infos">
-    <h2> A la Une </h2>
-    <p class="title"> {{ lv.titre }} </p>
-  </div>
-
   {% endfor %}
-  </div>
+
+  <h1> Les dernières vidéos </h1>
+  <div class="list_videos">
 
   {% for v in videos %}
 
   <div class="elmt_video">
-    <div class="card mb-4 shadow-sm">
       <div class="video" id="video"> 
-      <img src="{{ BASEURL ~ v.miniature }}" alt="Miniature de la vidéo {{v.title}}">
-      <div class="blur" id="{{v.id}}"> {% if (v.gratuite == 0) %} <p> <i class="fas fa-lock"></i> Contenu payant </p> {% else %} <button type="submit" class="btn btn-success"> <i class="fas fa-video"></i> </button> {% endif %} </div>
+        <img src="{{ BASEURL ~ v.miniature }}" alt="Miniature de la vidéo {{v.title}}">
+        <div class="blur" id="{{v.id}}"> {% if (v.gratuite == 0) %} <button type="submit" class="btn btn-danger"> <i class="fas fa-shopping-cart"></i> </button> {% else %} <button type="submit" class="btn btn-success"> <i class="fas fa-video"></i> </button> {% endif %} </div>
       </div>
-      <div class="card-body">
-        <h2 class="title"> {{ v.titre }} | {% if v.gratuite == 1 %} <span class="text-muted free">Gratuite</span> {% else %} <span class="text-muted price">{{ v.prix }}€</span> {% endif %}</h2>
-        <p class="tag" style="color:{{ v.couleur }}">{{ v.theme }}</p> 
-      </div>
+      <div class="v_infos">
+        <h2> {{ v.titre }} | {% if v.gratuite == 1 %} <span class="text-muted free">Gratuite</span> {% else %} <span class="text-muted price">{{ v.prix }}€</span> {% endif %}</h2>
+        <p style="color:{{ v.couleur }}">{{ v.theme }}</p> 
       </div>
   </div>
 
   {% endfor %}
 
   </div>
+
   <script src="{{BASEURL}}js/video.js"></script>
 {% endblock %}
