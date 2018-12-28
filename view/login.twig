@@ -1,4 +1,6 @@
-{% include 'inc/head.twig' %}
+{% extends 'inc/head.twig' %}
+{% block title %} Connexion {% endblock %}
+{% block main %}
 
 <body class="login_body">
 <div class="filter_black">
@@ -61,8 +63,19 @@
         </div>
     </div>
     </div>
+
+    {% if session.error_connect is defined %} 
+
+    <div class="alert alert-danger" role="alert">
+    
+    {{ session.error_connect }}
+
+    </div>
+
+    {% endif %}
+    
 </div>
 
 </body>
-
 {% include 'inc/end.twig' %}
+{% endblock %}

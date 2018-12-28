@@ -1,4 +1,5 @@
 $(function(){
+
     //AFFICHAGE DU MENU SUR MOBILE
     $('.open').click(function(){
         $(this).toggleClass('change');
@@ -34,4 +35,5 @@ $(function(){
             return false;
         }
     });
+
 });

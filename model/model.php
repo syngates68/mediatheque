@@ -44,7 +44,7 @@ abstract class Model{
             $sql .= ' WHERE '.$where.$limit;
         }
         $sql .= $order;
-
+        //echo $sql;
         $req = $db->query($sql);
     
         $res = [];

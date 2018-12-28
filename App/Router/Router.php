@@ -7,8 +7,8 @@ use Exception;
 class Router{
 
     private $url;
-    private $controller;
-    private $method;
+    private $controller = DEFAULT_MODULE;
+    private $method = DEFAULT_FUNCTION;
     private $routes = [];
 
     public function __construct($url){

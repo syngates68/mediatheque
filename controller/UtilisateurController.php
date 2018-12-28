@@ -12,6 +12,13 @@ class UtilisateurController extends Controller{
         //$profil = Profil::getUser();
         echo self::loadTwig()->render('profil.twig');
     }
+
+    static function getSign_Out(){
+        session_start();
+        session_destroy();
+        header('Location:'.BASEURL.'home/login');
+        exit;
+    }
     
 }
 

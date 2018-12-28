@@ -6,6 +6,26 @@
   <div class="col-sm-12 col-md-12 col-lg-10 list_videos">
   <h1> Les dernières vidéos </h1>
 
+  <div class="lv_container">
+  {% for lv in last_video %}
+
+  <div class="last_video">
+    <div class="card mb-4 shadow-sm">
+      <div class="video" id="video"> 
+      <img src="{{ BASEURL ~ lv.miniature }}" alt="Miniature de la vidéo {{lv.title}}">
+      <div class="blur" id="{{lv.id}}"> {% if (lv.gratuite == 0) %} <p> <i class="fas fa-lock"></i> Contenu payant </p> {% else %} <button type="submit" class="btn btn-success"> <i class="fas fa-video"></i> </button> {% endif %} </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="lv_infos">
+    <h2> A la Une </h2>
+    <p class="title"> {{ lv.titre }} </p>
+  </div>
+
+  {% endfor %}
+  </div>
+
   {% for v in videos %}
 
   <div class="elmt_video">
@@ -22,5 +42,7 @@
   </div>
 
   {% endfor %}
+
   </div>
+  <script src="{{BASEURL}}js/video.js"></script>
 {% endblock %}

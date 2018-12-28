@@ -12,6 +12,7 @@ class Utilisateur extends Model{
     private $_pseudo;
     private $_date_creation;
 	private $_mail;
+	private $_pic;
     private $_pass;
     
     public function get_id(){
@@ -62,6 +63,14 @@ class Utilisateur extends Model{
 		$this->_mail = $_mail;
 	}
 
+	public function get_pic(){
+		return $this->_pic;
+	}
+
+	public function set_pic($_pic){
+		$this->_pic = $_pic;
+	}
+
 	public function get_pass(){
 		return $this->_pass;
 	}
@@ -80,7 +89,7 @@ class Utilisateur extends Model{
 	}
 
 	public static function getUserById($id){
-		return self::_getOne('utilisateur u', ' u.nom, u.prenom, u.pseudo, u.date_creation, u.mail, u.pass ', '', 'id = :id', [
+		return self::_getOne('utilisateur u', ' u.nom, u.prenom, u.pseudo, u.date_creation, u.mail, u.pic, u.pass ', '', 'id = :id', [
             'id' => $id
         ]);
 	}
@@ -94,6 +103,7 @@ class Utilisateur extends Model{
 			"pseudo" => $line['pseudo'],
 			"date_creation" => $line['date_creation'],
 			"mail" => $line['mail'],
+			"pic" => $line['pic'],
 			"pass" => $line['pass']
 		]);
 		return $u;

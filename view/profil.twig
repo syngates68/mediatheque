@@ -3,7 +3,25 @@
 {% block content %}
 
     <div class="col-sm-12 col-md-12 col-lg-10 profil">
-    <h1> LaStreetDu67 </h1>
-    <img src="{{BASEURL}}images/remy.png">
+    <div class="profil_head">
+        <img src="{{BASEURL ~ session.pic }}">
+        <span> {{ session.pseudo }} </span>
+    </div>
+    <div class="profil_infos">
+        <h2> Informations </h2>
+        <p> Nom : {{ session.nom }} </p>
+        <p> Prenom : {{ session.prenom }} </p>
+        <p> Date de création : {{ session.date_creation }} </p>
+        <p> Mail : {{ session.mail }} </p>
+        <button type="button" class="btn btn-success">Modifier</button>
+        <button type="button" class="btn btn-danger">Supprimer</button>
+    </div>
+    <div class="profil_videos">
+        <h2> Informations </h2>
+        <p> Nom : {{ session.nom }} </p>
+        <p> Prenom : {{ session.prenom }} </p>
+        <p> Date de création : {{ session.date_creation }} </p>
+        <p> Mail : {{ session.mail }} </p>
+    </div>
     </div>
 {% endblock %}
