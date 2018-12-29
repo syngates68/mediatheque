@@ -6,11 +6,13 @@ class Route{
 
     private $controller;
     private $method;
+    private $param;
     private $class_name;
 
-    public function __construct($controller, $method){
+    public function __construct($controller, $method, $param){
         $this->controller = trim($controller, '/');
         $this->method = $method;
+        $this->param = $param;
     }
 
     public function _match($controller, $method){
@@ -32,6 +34,9 @@ class Route{
 
                 if (!is_callable($method, true, $callable_name)){
                     return false;
+                }
+                if ($this->param != NULL){
+                    return call_user_func_array($method, array($this->param)); 
                 }
                 return call_user_func($method);           
             }

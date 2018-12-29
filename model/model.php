@@ -37,15 +37,23 @@ abstract class Model{
         return $res;
     }
 
-    static function _getInner($table, $select, $inner, $where, $limit, $order){
+    static function _getInner($table, $select, $inner, $where, $limit, $order, $param = []){
         $db = Database::dbConnect();
         $sql = 'SELECT'.$select.'FROM '.$table.$inner;
         if ($where != ''){
             $sql .= ' WHERE '.$where.$limit;
         }
         $sql .= $order;
-        //echo $sql;
-        $req = $db->query($sql);
+
+        //print_r($sql);
+        
+        if (!empty($param)){
+            $req = $db->prepare($sql);
+            $req->execute($param);
+        }
+        else{
+            $req = $db->query($sql);
+        }
     
         $res = [];
 
@@ -60,7 +68,7 @@ abstract class Model{
     static function _getOne($table, $select, $inner, $where, $param = []){
         $db = Database::dbConnect();
         $sql = 'SELECT'.$select.'FROM '.$table.$inner.'WHERE '.$where;
-
+        //echo $sql;
         $req = $db->prepare($sql);
         $req->execute($param);
 

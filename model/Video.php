@@ -11,7 +11,8 @@ class Video extends Model{
     private $_id_theme;
     private $_date_ajout;
     private $_gratuit;
-    private $_lien;
+	private $_lien;
+	private $_miniature;
     private $_prix;
 
     public function get_id(){
@@ -62,6 +63,14 @@ class Video extends Model{
 		$this->_lien = $_lien;
 	}
 
+	public function get_miniature(){
+		return $this->_miniature;
+	}
+
+	public function set_miniature($_miniature){
+		$this->_miniature = $_miniature;
+	}
+
 	public function get_prix(){
 		return $this->_prix;
 	}
@@ -73,11 +82,17 @@ class Video extends Model{
 	// Requêtes BDD
 
     public static function getAllVideos(){
-        return self::_getInner('video v', ' v.id, v.titre, v.id_theme, v.gratuite, v.lien, v.miniature, v.prix, v.date_ajout, t.nom as theme, t.couleur ', ' left join theme t on v.id_theme = t.id ', '', '', ' ORDER BY v.gratuite DESC');
+        return self::_getInner('video v', ' v.id, v.titre, v.id_theme, v.gratuite, v.lien, v.miniature, v.prix, v.date_ajout, t.nom as theme, t.couleur ', ' left join theme t on v.id_theme = t.id ', '', '', ' ORDER BY v.gratuite DESC', []);
 	}
 
 	public static function getLastVideo(){
-		return self::_getInner('video v', ' v.id, v.titre, v.id_theme, v.gratuite, v.lien, v.miniature, v.prix, v.date_ajout, t.nom as theme, t.couleur ', ' left join theme t on v.id_theme = t.id ', 'v.date_ajout = (SELECT MAX(date_ajout) FROM video WHERE gratuite = 1)', '', '');
+		return self::_getInner('video v', ' v.id, v.titre, v.id_theme, v.gratuite, v.lien, v.miniature, v.prix, v.date_ajout, t.nom as theme, t.couleur ', ' left join theme t on v.id_theme = t.id ', 'v.date_ajout = (SELECT MAX(date_ajout) FROM video WHERE gratuite = 1)', '', '', []);
+	}
+
+	public static function getVideoById($id){
+		return self::_getOne('video v ', '  v.id, v.titre, v.id_theme, v.gratuite, v.lien, v.miniature, v.prix, v.date_ajout ', '', 'v.id = :id', [
+            'id' => $id
+        ]);
 	}
 	
 	/***************************************/

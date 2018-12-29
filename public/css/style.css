@@ -60,16 +60,35 @@ HOME
   .price{ color: #2900bd !important; }
 
 .video{ width: 100%; background: #000; position: relative; padding-bottom: 56.25%; padding-top: 25px; height: 0; display: inline-block; }
-  .video img{ position: absolute; top: 0; left: 0; padding-top: 10px; padding-bottom: 10px; width: 100%; height: 100%; }
+  .video img, .video iframe{ position: absolute; top: 0; left: 0; padding-top: 10px; padding-bottom: 10px; width: 100%; height: 100%; }
   .video .blur{ position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(97, 97, 97, 0.247); }
-  .video .blur p, .blur button{ position: absolute; top: 40% !important; padding: 10px; color: #FFF; text-align: center; }
+  .video .blur p, .blur a{ position: absolute; top: 40% !important; padding: 10px; color: #FFF; text-align: center; }
   .video .blur p{ background: rgba(209, 209, 209, 0.589); color: #FF3333; width: 75%; left: 13%; }
-  .video .blur button{ background: #343a4052; width: 25%; left: 37.5%; border: 0; border-radius: 10px; }
-  .video .blur button:hover{ background: #4a0087; }
+  .video .blur a{ background: #343a4052; width: 25%; left: 37.5%; border: 0; border-radius: 10px; }
+  .video .blur a:hover{ background: #4a0087; }
   .video .blur .btn-danger{ background: #ad0628; }
   .video .blur .btn-danger:hover{ background: #91021f; }
 
 /*******************************************************
+VIDEO
+********************************************************/
+.aff_video{ background: #000; }
+
+.my_video{ width: 70%; margin: 0 auto 20px auto; color: #FFF; }
+  .my_video iframe{ border: none; }
+  .my_video .v_infos h2{ font-size: 20px; display: inline-block; width: 90%; }
+  .my_video .v_infos button{ display: inline-block; width: 9%; }
+  .my_video .fb-share-button{ background: #3b5998; border: none; border-radius: 0; }
+  .my_video .fb-share-button i{ margin-right: 10px; }
+
+.commentaires{ width: 70%; margin: 0 auto; color: #FFF; }
+  .commentaires h3{ border-bottom: 2px solid #4a0087; padding-bottom: 10px; font-size: 17px; }
+  .commentaire{ width: 70%; margin: 5px 0 10px 0; padding: 10px; }
+  .commentaire img{ display: inline-block; vertical-align: top; width: 70px; height: 70px; border-radius: 70px; border: 1px solid #000; }
+  .commentaire .c_infos{ padding-left: 20px; width: 80%; display: inline-block; vertical-align: middle; text-align: left; }
+  .commentaire p{ font-size: 12px; }
+
+  /*******************************************************
 ABONNEMENTS
 ********************************************************/
 
@@ -84,12 +103,12 @@ ABONNEMENTS
 PROFIL
 ********************************************************/
 
-.profil_head{ text-align: center; }
+.profil_head{ text-align: center; padding: 10px; }
   .profil_head img{ width: 30%; }
   .profil_head span{ font-size: 20px; }
 
-.profil_infos{ padding: 10px; }
-  .profil_infos h2{ padding-top: 20px; border-top: 1px solid #585858; }
+.profil_infos{ padding: 10px; width: 50%; }
+  .profil_infos h2{ padding-top: 20px; }
   .profil_infos button{ margin-bottom: 20px; }
 
 /*******************************************************
@@ -138,12 +157,23 @@ MEDIA QUERIES
   .list_videos{ padding: 10px; }
   .elmt_video{ width: 49%; }
 
-  .video .blur button{ width: 30%; left: 35%; top: 30% !important; }
+  .video .blur a{ width: 30%; left: 35%; top: 30% !important; }
+
+  .my_video{ width: 100%; }
+  .my_video .v_infos h2{  width: 100%; }
+  .my_video .v_infos button{ display: none; }
+  .my_video .fb-share-button{ display: block; margin: 0 auto; }
+  .commentaires{ width: 100%; }
+  .commentaire{ width: 90%; padding: 5px; }
+  .commentaire img{ width: 30px; height: 30px; border-radius: 30px; }
+  .commentaire .c_infos{ padding-left: 10px; }
 
   .elmt_abo{ width: 100% !important; }
 
   .profil_head img{ width: 100%; }
   .profil_head span{ font-size: 20px; }
+  .profil_infos{ width: 100%; }
+  .profil_infos h2{ border-top: 1px solid #585858; }
 
   .login_body{ background: none; color: #000; }
   .sign_in .input-group input, .sign_up .input-group input{ color: #000; }

@@ -9,12 +9,13 @@ class Router{
     private $url;
     private $controller = DEFAULT_MODULE;
     private $method = DEFAULT_FUNCTION;
+    private $param = NULL;
     private $routes = [];
 
     public function __construct($url){
         $this->url = $url;
         $this->parseUrl($this->url);
-        $route = new Route($this->controller, $this->method);
+        $route = new Route($this->controller, $this->method, $this->param);
         $this->routes[] = $route;
         $this->_run();
     }
@@ -24,6 +25,9 @@ class Router{
         //var_dump($url);
         $this->controller = $this->loadController($url[3]);
         $this->method = $this->loadMethod($url[4]);
+        if (isset($url[5])){
+            $this->param = $url[5];
+        }
     }
 
     public function loadController($c){
