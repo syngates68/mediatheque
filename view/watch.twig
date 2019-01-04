@@ -13,13 +13,13 @@
 
 {% block content %}
 
-  <div class="aff_video">
+<div class="aff_video">
 
   {% for v in video %}
 
-  <div class="my_video" id="shared">
+  <div class="my_video">
       <div class="video"> 
-        <iframe src="{{ v.get_lien }}" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        <iframe src="{{ v.get_lien }}" data-id="{{ v.get_id }}" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
       </div>
       <div class="v_infos">
         <h2> {{ v.get_titre }} </h2>
@@ -30,26 +30,12 @@
 
   {% endfor %}
 
-  <div class="commentaires">
-  <h3> Commentaires ({{ nb_com }})</h3>
-  {% if nb_com != 0 %}
-    {% for c in commentaires %}
-
-      <div class="commentaire">
-        <img src="{{BASEURL ~ c.avatar }}" alt="Photo de profil de {{ c.pseudo }}">
-        <div class="c_infos">
-          <p> <b> {{ c.pseudo }} </b> le {{c.date_commentaire|date("d/m/Y")}} </p>
-          <p class="com">{{ c.commentaire|nl2br }}</p>
-        </div>
-      </div>
-
-    {% endfor %}
-  {% else %}
-    <div class="alert alert-danger"> Aucun commentaire pour cette vidéo </div>
-  {% endif %}
+  <div class="commentaires" id="commentaires">
+  {% include 'commentaires.twig' %}
   </div>
 
-  </div>
+</div>
 
   <script src="{{BASEURL}}js/video.js"></script>
+  <script src="{{BASEURL}}js/textarea-expander.js"></script>
 {% endblock %}

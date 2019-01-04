@@ -7,12 +7,39 @@ $(function(){
     });
 
     $('.v_infos').on('click', 'button', function(){
-        if( $('.my_video').width() < 1000){
+        //alert($('.my_video').width());
+        if( $('.my_video').width() < 1100){
             $('.my_video').css('width', '100%');
         }
         else{
             $('.my_video').css('width', '70%');
         }
+    });
+
+    $(document).on('keyup', '#com_contain', function(){
+        $('#btn_com').css('visibility', 'visible');
+        if ($(this).val() == ''){
+            $('#btn_com').css('visibility', 'hidden');
+        }
+    });
+
+    $(document).on('click', '#btn_com', function(){
+        
+        var id = $('.video iframe').attr('data-id');
+        var content = $('#com_contain').val();
+
+        $.post('http://localhost/mediatheque/public/ajax/comment', {
+            id : id,
+            content : content
+        },
+
+        function(data){
+            $('.commentaires').html(data);
+           // alert(data);
+        });
+
+        return false;
+
     });
 
     var popupCenter = function(url, title, width, height){
@@ -36,5 +63,7 @@ $(function(){
         var shareUrl = "https://www.facebook.com/sharer/sharer.php?u=" + encodeURIComponent(url) + "&t=" + encodeURIComponent(title);
         popupCenter(shareUrl, "Partager sur Facebook");
     });
+
+    //$( "#commentaires" ).load("{{BASEURL}}view/commentaires.twig" );
 
 });

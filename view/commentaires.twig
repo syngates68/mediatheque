@@ -1,0 +1,25 @@
+{% set BASEURL = constant('BASEURL') %}
+<h3> Commentaires ({{ nb_com }})</h3>
+
+<textarea id="com_contain" class="form-control expand" {% if nb_com != 0 %} placeholder="Commenter cette vidéo" {% else %}placeholder="Soyez le premier à commenter cette vidéo" {% endif %}></textarea>
+<button class="btn btn-success" id="btn_com">Envoyer <i class="fas fa-paper-plane"></i></button>
+
+{% if nb_com != 0 %}
+
+    {% for c in commentaires %}
+
+        <div class="commentaire">
+        <img src="{{BASEURL ~ c.avatar }}" alt="Photo de profil de {{ c.pseudo }}">
+        <div class="c_infos">
+            <p> <b> {{ c.pseudo }} </b> <span>{{c.date_commentaire| formatDate }} <span> </p>
+            <p class="com">{{ c.commentaire|nl2br }}</p>
+        </div>
+        </div>
+
+    {% endfor %}
+
+{% else %}
+
+    <div class="alert alert-danger"> Aucun commentaire pour cette vidéo </div>
+
+{% endif %}

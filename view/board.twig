@@ -21,23 +21,27 @@
 
   {% endfor %}
 
-  <h1> Les dernières vidéos </h1>
-  <div class="list_videos">
+  <div class="container_videos">
 
-  {% for v in videos %}
+    <h1> Les dernières vidéos </h1>
+    <div class="list_videos">
 
-  <div class="elmt_video">
-      <div class="video"> 
-        <img src="{{ BASEURL ~ v.miniature }}" alt="Miniature de la vidéo {{v.title}}">
-        <div class="blur"> {% if (v.gratuite == 0) %} <a role="button" class="btn btn-danger" href="{{BASEURL}}video/watch/{{v.id}}"> <i class="fas fa-shopping-cart"></i> </a> {% else %} <a role="button" class="btn btn-success" href="{{BASEURL}}video/watch/{{v.id}}"> <i class="fas fa-video"></i> </a> {% endif %} </div>
-      </div>
-      <div class="v_infos">
-        <h2> {{ v.titre }} | {% if v.gratuite == 1 %} <span class="text-muted free">Gratuite</span> {% else %} <span class="text-muted price">{{ v.prix }}€</span> {% endif %}</h2>
-        <p style="color:{{ v.couleur }}">{{ v.theme }}</p> 
-      </div>
-  </div>
+    {% for v in videos %}
 
-  {% endfor %}
+    <div class="elmt_video">
+        <div class="video"> 
+          <img src="{{ BASEURL ~ v.miniature }}" alt="Miniature de la vidéo {{v.title}}">
+          <div class="blur"> {% if (v.gratuite == 0) %} <a role="button" class="btn btn-danger" href="{{BASEURL}}video/watch/{{v.id}}"> <i class="fas fa-shopping-cart"></i> </a> {% else %} <a role="button" class="btn btn-success" href="{{BASEURL}}video/watch/{{v.id}}"> <i class="fas fa-video"></i> </a> {% endif %} </div>
+        </div>
+        <div class="v_infos">
+          <h2> {{ v.titre }} | {% if v.gratuite == 1 %} <span class="text-muted free">Gratuite</span> {% else %} <span class="text-muted price">{{ v.prix }}€</span> {% endif %}</h2>
+          <p style="color:{{ v.couleur }}">{{ v.theme }}</p> 
+        </div>
+    </div>
+
+    {% endfor %}
+
+    </div>
 
   </div>
 

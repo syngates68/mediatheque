@@ -6,6 +6,8 @@ use Model\Video;
 use Model\Theme;
 use Model\Abonnement;
 
+use Config\FormatDate;
+
 require (ROOT.DS.'vendor/autoload.php');
 
 class Controller{
@@ -21,6 +23,7 @@ class Controller{
                 'cache' => false
             ]);
             self::$twig->addExtension(new \Twig_Extension_Debug());
+            self::$twig->addExtension(new FormatDate());
             self::$twig->addGlobal('session', $_SESSION);
             return self::$twig;
         }

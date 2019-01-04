@@ -89,9 +89,19 @@ class Utilisateur extends Model{
 	}
 
 	public static function getUserById($id){
-		return self::_getOne('utilisateur u', ' u.nom, u.prenom, u.pseudo, u.date_creation, u.mail, u.pic, u.pass ', '', 'id = :id', [
+		return self::_getOne('utilisateur u ', ' u.id, u.nom, u.prenom, u.pseudo, u.date_creation, u.mail, u.pic, u.pass ', '', 'id = :id', [
             'id' => $id
         ]);
+	}
+
+	public static function addUser($nom, $prenom, $pseudo, $mail, $pass){
+		return self::_create('utilisateur ', ' (nom, prenom, pseudo, mail, pass)', '(:nom, :prenom, :pseudo, :mail, :pass)', [
+			'nom' => $nom,
+			'prenom' => $prenom,
+			'pseudo' => $pseudo,
+			'mail' => $mail,
+			'pass' => $pass
+		]);
 	}
 	
 	/***************************************/

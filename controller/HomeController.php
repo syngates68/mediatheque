@@ -7,12 +7,12 @@ use Model\Theme;
 use Model\TypeAbonnement;
 use Model\Utilisateur;
 
-use App\Factory;
+use Config\Factory;
 
 class HomeController extends Controller{
 
     static function getBoard(){
-        if (isset($_SESSION['id'])){
+        if (isset($_SESSION['auth']['id'])){
             $template = self::loadTwig()->load('template.twig');
             $videos = Video::getAllVideos();
             $last_video = Video::getLastVideo();
@@ -40,14 +40,7 @@ class HomeController extends Controller{
         $user = Utilisateur::getUser($_POST['mail'], md5(md5($_POST['pass'])));
         if (!empty($user)){
             foreach ($user as $u){
-                unset($_SESSION['error_connect']);
-                $_SESSION['id'] = $u->get_id();
-                $_SESSION['pseudo'] = $u->get_pseudo();
-                $_SESSION['date_creation'] = $u->get_date_creation();
-                $_SESSION['nom'] = $u->get_nom();
-                $_SESSION['prenom'] = $u->get_prenom();
-                $_SESSION['mail'] = $u->get_mail();
-                $_SESSION['pic'] = $u->get_pic();
+                $_SESSION['auth']['id'] = $u->get_id();
                 header('location:'.BASEURL.'home/board');
                 exit;
             }
@@ -60,7 +53,16 @@ class HomeController extends Controller{
     }
 
     static function postInscription(){
+        $_SESSION['errors'] = [];
+        if ($_POST['pass'] != $_POST['pass2']){
+        }
         
+        if (empty($_SESSION['errors'])){
+            $user = Utilisateur::addUser($_POST['nom'], $_POST['prenom'], $_POST['pseudo'], $_POST['mail'], md5(md5($_POST['pass'])));
+            $_SESSION['success_inscription'] = 'Vous êtes désormais inscrit';
+            header('location:'.BASEURL.'home/login');
+            exit;
+        }
     }
     
 }

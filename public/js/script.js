@@ -39,11 +39,4 @@ $(function(){
         });
     }
 
-    $('#sign_in #btn_sign_in').on('click', function(){
-        if ($('#sign_in #username').val() == ''){
-            $('#sign_in #username').attr('placeholder', 'Le nom d\'utilisateur est vide');
-            return false;
-        }
-    });
-
 });

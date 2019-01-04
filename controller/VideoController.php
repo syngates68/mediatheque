@@ -8,7 +8,7 @@ use Model\TypeAbonnement;
 use Model\Utilisateur;
 use Model\Commentaire;
 
-use App\Factory;
+use Config\Factory;
 
 class VideoController extends Controller{
 

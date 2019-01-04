@@ -2,8 +2,8 @@
 
 namespace Model;
 
-use App\Database;
-use App\Factory;
+use Config\Database;
+use Config\Factory;
 use \PDO;
 
 abstract class Model{
@@ -68,7 +68,7 @@ abstract class Model{
     static function _getOne($table, $select, $inner, $where, $param = []){
         $db = Database::dbConnect();
         $sql = 'SELECT'.$select.'FROM '.$table.$inner.'WHERE '.$where;
-        //echo $sql;
+        //print_r($sql);
         $req = $db->prepare($sql);
         $req->execute($param);
 
@@ -80,6 +80,16 @@ abstract class Model{
         }
 
         return $res;
+    }
+
+    static function _create($table, $table_v, $values, $param = []){
+        $db = Database::dbConnect();
+        $sql = 'INSERT INTO '.$table.$table_v.' VALUES '.$values;
+        //print_r($sql);
+        $req = $db->prepare($sql);
+        $req->execute($param);
+
+        return true;
     }
 
     public function hydrate(array $datas){
