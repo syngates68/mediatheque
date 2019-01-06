@@ -11,7 +11,7 @@
         <div class="commentaire">
         <img src="{{BASEURL ~ c.avatar }}" alt="Photo de profil de {{ c.pseudo }}">
         <div class="c_infos">
-            <p> <b> {{ c.pseudo }} </b> <span>{{c.date_commentaire| formatDate }} <span> </p>
+            <p> <b> {{ c.pseudo }} </b> <span>{{ c.date_commentaire|formatDate }} <span> </p>
             <p class="com">{{ c.commentaire|nl2br }}</p>
         </div>
         </div>

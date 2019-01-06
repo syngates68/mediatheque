@@ -25,6 +25,7 @@ class Controller{
             self::$twig->addExtension(new \Twig_Extension_Debug());
             self::$twig->addExtension(new FormatDate());
             self::$twig->addGlobal('session', $_SESSION);
+            self::$twig->addGlobal('cookie', $_COOKIE);
             return self::$twig;
         }
         return self::$twig;

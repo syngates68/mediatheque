@@ -27,9 +27,15 @@ class HomeController extends Controller{
     }
 
     static function getAbonnement(){
-        $template = self::loadTwig()->load('template.twig');
-        $abos = TypeAbonnement::getAllTypeAbonnements();
-        echo self::loadTwig()->render('abonnement.twig', ['abos' => $abos]);
+        if (isset($_SESSION['auth']['id'])){
+            $template = self::loadTwig()->load('template.twig');
+            $abos = TypeAbonnement::getAllTypeAbonnements();
+            echo self::loadTwig()->render('abonnement.twig', ['abos' => $abos]);
+        }
+        else{
+            header('Location:'.BASEURL.'home/login');
+            exit;
+        }
     }
 
     static function getLogin(){
@@ -37,18 +43,40 @@ class HomeController extends Controller{
     }
 
     static function postConnect(){
-        $user = Utilisateur::getUser($_POST['mail'], md5(md5($_POST['pass'])));
-        if (!empty($user)){
+        if (isset($_COOKIE['auth'])){
+            $auth = $_COOKIE['auth'];
+            $auth = explode('----', $auth);
+            $user = Utilisateur::getUserById($auth[0]);
             foreach ($user as $u){
-                $_SESSION['auth']['id'] = $u->get_id();
-                header('location:'.BASEURL.'home/board');
-                exit;
+                $key = sha1($u->get_pseudo() . $u->get_pass());
+                if ($key = $auth[1]){
+                    $_SESSION['auth']['id'] = $u->get_id();
+                    setcookie('auth', $u->get_id() . '----' . sha1($u->get_pseudo() . $u->get_pass()), time() + 3600 * 24 * 3, '/', '', false, true);
+                    header('location:'.BASEURL.'home/board');
+                    exit;
+                }
+                else{
+                    setcookie('auth', '', time() - 3600, '/', '', false, true);
+                }
             }
         }
         else{
-            $_SESSION['error_connect'] = 'Mauvaises informations rentrées';
-            header('location:'.BASEURL.'home/login');
-            exit;
+            $user = Utilisateur::getUser($_POST['mail'], md5(md5($_POST['pass'])));
+            if (!empty($user)){
+                foreach ($user as $u){
+                    if (isset($_POST['cookie_init'])){
+                        setcookie('auth', $u->get_id() . '----' . sha1($u->get_pseudo() . $u->get_pass()), time() + 3600 * 24 * 3, '/', '', false, true);
+                    }
+                    $_SESSION['auth']['id'] = $u->get_id();
+                    header('location:'.BASEURL.'home/board');
+                    exit;
+                }
+            }
+            else{
+                $_SESSION['error_connect'] = 'Mauvaises informations rentrées';
+                header('location:'.BASEURL.'home/login');
+                exit;
+            }
         }
     }
 

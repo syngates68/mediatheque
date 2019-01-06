@@ -113,12 +113,13 @@ ABONNEMENTS
 PROFIL
 ********************************************************/
 
-.profil_head{ text-align: center; padding: 10px; }
-  .profil_head img{ width: 30%; }
-  .profil_head span{ font-size: 20px; }
+.profil{ padding: 50px; }
 
-.profil_infos{ padding: 10px; width: 50%; }
-  .profil_infos h2{ padding-top: 20px; }
+.profil_pic{ text-align: center; }
+  .profil_pic img{ width: 70%; }
+  .profil_pic h1{ font-size: 25px; font-weight: 800; }
+
+.profil_infos{ width: 50%; }
   .profil_infos button{ margin-bottom: 20px; }
 
 /*******************************************************
@@ -187,10 +188,10 @@ MEDIA QUERIES
 
   .elmt_abo{ width: 100% !important; }
 
-  .profil_head img{ width: 100%; }
-  .profil_head span{ font-size: 20px; }
-  .profil_infos{ width: 100%; }
-  .profil_infos h2{ border-top: 1px solid #585858; }
+  .profil{ padding: 20px; }
+  .profil_pic img{ width: 100%; }
+  .profil_infos{ margin-top: 20px; width: 100%; }
+  .profil_infos h2{ border-top: 1px solid #585858; margin-top: 20px; }
 
   .login_body{ background: none; color: #000; }
   .login_body .alert{ width: 80%; left: 10%; }
