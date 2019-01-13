@@ -81,12 +81,15 @@ class Video extends Model{
     
 	// Requêtes BDD
 
-    public static function getAllVideos(){
-        return self::_getInner('video v', ' v.id, v.titre, v.id_theme, v.gratuite, v.lien, v.miniature, v.prix, v.date_ajout, t.nom as theme, t.couleur ', ' left join theme t on v.id_theme = t.id ', '', '', ' ORDER BY v.gratuite DESC', []);
+	//SELECT v.id, v.titre, v.id_theme, v.gratuite, v.lien, v.miniature, v.prix, v.date_ajout, t.nom as theme, t.couleur, COALESCE(a1.nombre, 0) as nbr_achats from video v left join theme t on v.id_theme = t.id left join (SELECT a.id_video as id_video , COUNT(*) as nombre FROM achat a LEFT JOIN video v ON a.id_video = v.id WHERE v.id IN (SELECT id_video FROM achat WHERE id_video = id_video AND id_utilisateur = 1) GROUP BY id_video)a1 on a1.id_video = v.id 
+    public static function getAllVideos($id_user){
+        return self::_getInner('video v', ' v.id, v.titre, v.id_theme, v.gratuite, v.lien, v.miniature, v.prix, v.date_ajout, t.nom as theme, t.couleur, COALESCE(a1.nombre, 0) as nbr_achats ', ' left join theme t on v.id_theme = t.id left join (SELECT a.id_video as id_video , COUNT(*) as nombre FROM achat a LEFT JOIN video v ON a.id_video = v.id WHERE v.id IN (SELECT id_video FROM achat WHERE id_video = id_video AND id_utilisateur = :id) GROUP BY id_video)a1 on a1.id_video = v.id ', '', '', ' ORDER BY v.gratuite DESC', [
+			'id' => $id_user
+		]);
 	}
 
 	public static function getLastVideo(){
-		return self::_getInner('video v', ' v.id, v.titre, v.id_theme, v.gratuite, v.lien, v.miniature, v.prix, v.date_ajout, t.nom as theme, t.couleur ', ' left join theme t on v.id_theme = t.id ', 'v.date_ajout = (SELECT MAX(date_ajout) FROM video WHERE gratuite = 1)', '', '', []);
+		return self::_getAll('video v', ' v.id, v.titre, v.id_theme, v.gratuite, v.lien, v.miniature, v.prix, v.date_ajout ', ' v.date_ajout = (SELECT MAX(date_ajout) FROM video WHERE gratuite = 1)', '', '');
 	}
 
 	public static function getVideoById($id){
@@ -121,7 +124,8 @@ class Video extends Model{
 			"miniature" => $line['miniature'],
 			"prix" => $line['prix'],
 			"theme" => $line['theme'],
-			"couleur" => $line['couleur']
+			"couleur" => $line['couleur'],
+			"nbr_achats" => $line['nbr_achats']
 		);
 		return $tab;
 	}

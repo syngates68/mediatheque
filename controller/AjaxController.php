@@ -11,12 +11,14 @@ use Config\Factory;
 
 class AjaxController extends Controller{
 
-    static function postComment(){
+    public function postComment(){
         $commentaire = Commentaire::addComment($_SESSION['auth']['id'], $_POST['id'], $_POST['content']);
         $commentaires = Commentaire::getAllCommentaireByVideo($_POST['id']);
         $nb_com = sizeof(Commentaire::getAllCommentaireByVideo($_POST['id']));
-        //var_dump($commentaires);
-        echo self::loadTwig()->render('commentaires.twig', ['commentaires' => $commentaires, 'nb_com' => $nb_com]);
+        $this->set('commentaire', $commentaire);
+        $this->set('commentaires', $commentaires);
+        $this->set('nb_com', $nb_com);
+        $this->render('commentaires');
     }
     
 }

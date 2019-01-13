@@ -25,6 +25,7 @@ abstract class Model{
         }
         $sql .= $order;
 
+        //print_r($sql);
         $req = $db->query($sql);
     
         $res = [];
@@ -90,6 +91,17 @@ abstract class Model{
         $req->execute($param);
 
         return true;
+    }
+
+    static function _count($table, $count, $where){
+        $db = Database::dbConnect();
+        $sql = 'SELECT COUNT('.$count.') FROM '.$table;
+        if ($where != ''){
+            $sql .= ' WHERE '.$where;
+        }
+        $req = $db->query($sql);
+        var_dump($req);
+        return $req;
     }
 
     public function hydrate(array $datas){

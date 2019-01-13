@@ -17,10 +17,41 @@
             <p> Mail : {{ p.get_mail }} </p>
             <button type="button" class="btn btn-success">Modifier</button>
             <button type="button" class="btn btn-danger">Supprimer</button>
-            <h2> Votre abonnement </h2>
-            <div class="alert alert-danger"> Vous n'avez encore souscrit à aucun abonnement </div>
-            <h2> Vos paiements </h2>
-            <div class="alert alert-danger"> Vous n'avez aucun paiement à afficher </div>
+
+            <a data-toggle="collapse" href="#abonnement" role="button" aria-expanded="false" aria-controls="collapseExample">
+                Votre abonnement
+            </a>
+            <div class="collapse" id="abonnement">
+            <div class="card card-body">
+                <div class="alert alert-danger"> Vous n'avez encore souscrit à aucun abonnement </div>
+            </div>
+            </div>
+
+            <a data-toggle="collapse" href="#paiements" role="button" aria-expanded="false" aria-controls="collapseExample">
+                Vos paiements ({{ nb_paiements }})
+            </a>
+            <div class="collapse" id="paiements" class="paiements">
+                <div class="card card-body">
+                {% if nb_paiements != 0 %}
+
+                {% for p in paiements %}
+                    <p> 
+                    Paiement <B>{{ p.payment_id }}</B> du {{ p.payment_date | date("m/d/Y") }} - 
+                    {% if p.payment_status == "approved" %}
+                        <span style="color:green"> Validé </span>
+                    {% else %}
+                        <span style="color:red"> Non validé </span>
+                    {% endif %}
+                    </p>
+                    <p> Somme : <b>{{ p.payment_currency }} {{ p.payment_amount }}</b> </p>
+                    <hr>
+                {% endfor %}
+
+                {% else %}
+                    <div class="alert alert-danger"> Vous n'avez aucun paiement à afficher </div>
+                {% endif %}
+                </div>
+            </div>
         </div>
     </div>
 {% endfor %}

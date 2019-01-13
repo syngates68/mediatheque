@@ -4,103 +4,63 @@
 
 <body class="login_body">
 {% set BASEURL = constant('BASEURL') %}
-<div class="filter_black">
-    <h1><i class="fas fa-video"></i>D<span class="violet">o</span>ntatune</h1>
-    <h2> Plateforme de vidéos en ligne </h2>
 
-    <div class="container-fluid sign">
-    <div class="row">
-        <div class="col-sm-6 sign_in" id="sign_in">
-            <form method="post" action="connect">
-            <h3> C<span class="violet">o</span>nnexion </h3>
-            <div class="input-group mb-2">
-                <div class="input-group-prepend">
-                <div class="input-group-text"><i class="fas fa-user"></i></div>
-                </div>
-                <input type="text" class="form-control" id="username" name="mail" placeholder="Nom d'utilisateur ou email">
-            </div>
-            <div class="input-group mb-2">
-                <div class="input-group-prepend">
-                <div class="input-group-text"><i class="fas fa-lock"></i></div>
-                </div>
-                <input type="password" class="form-control" name="pass" id="password" placeholder="Mot de passe">
-            </div>
-            <div class="form-group form-check">
-                <input type="checkbox" class="form-check-input" name="cookie_init">
-                <label class="form-check-label" for="exampleCheck1">Se souvenir de moi</label>
-            </div>
-            <button id="btn_sign_in" class="btn btn-primary">Connexion</button>
-            </form>
-        </div>
-        <div class="col-sm-6 sign_up">
-            <form method="post" action="inscription" id="sign_up">
-            <h3> Inscripti<span class="violet">o</span>n </h3>
-            <div class="input-group mb-2">
-                <div class="input-group-prepend">
-                <div class="input-group-text"><i class="fas fa-user"></i></div>
-                </div>
-                <input type="text" class="form-control" id="name" name="nom" placeholder="Nom" required>
-            </div>
-            <div class="input-group mb-2">
-                <div class="input-group-prepend">
-                <div class="input-group-text"><i class="fas fa-user"></i></div>
-                </div>
-                <input type="text" class="form-control" id="prenom" name="prenom" placeholder="Prénom" required>
-            </div>
-            <div class="input-group mb-2">
-                <div class="input-group-prepend">
-                <div class="input-group-text"><i class="fas fa-at"></i></div>
-                </div>
-                <input type="mail" class="form-control" id="mail" placeholder="Adresse mail" name="mail" required>
-            </div>
-            <div class="input-group mb-2">
-                <div class="input-group-prepend">
-                <div class="input-group-text"><i class="fas fa-user"></i></div>
-                </div>
-                <input type="text" class="form-control" id="username" placeholder="Nom d'utilisateur" name="pseudo" required>
-            </div>
-            <div class="input-group mb-2">
-                <div class="input-group-prepend">
-                <div class="input-group-text"><i class="fas fa-lock"></i></div>
-                </div>
-                <input type="password" class="form-control" id="pass" placeholder="Mot de passe" name="pass" required>
-            </div>
-            <div class="input-group mb-2">
-                <div class="input-group-prepend">
-                <div class="input-group-text"><i class="fas fa-lock"></i></div>
-                </div>
-                <input type="password" class="form-control" id="pass2" placeholder="Confirmation" name="pass2" required>
-            </div>
-            <button type="submit" class="btn btn-success">Inscription</button>
-            <div class="alert alert-danger"> Tous les champs doivent êtres remplis </div>
-            </form>
-        </div>
-    </div>
-    </div>
+<div class="container-fluid sign">
 
-    {% if session.error_connect is defined %} 
+<h1><i class="fas fa-video"></i>D<span class="violet">o</span>ntatune</h1>
+<h2> Plateforme de vidéos en ligne </h2>
 
-    <div class="alert alert-danger alert-dismissible fade show" role="alert"> 
-    {{ session.error_connect }}
-    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-        <span aria-hidden="true">&times;</span>
-    </button>
-    </div>
 
-    {% endif %}
+{% if error_message is defined %} 
 
-    {% if session.success_inscription is defined %} 
-
-    <div class="alert alert-success alert-dismissible fade show" role="alert">
-    {{ session.success_inscription }}
-    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-        <span aria-hidden="true">&times;</span>
-    </button>
-    </div>
-
-    {% endif %}
-    
+<div class="alert alert-danger alert-dismissible fade show" role="alert"> 
+<i class="fas fa-exclamation-circle"></i> {{ error_message }}
+<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+    <span aria-hidden="true">&times;</span>
+</button>
 </div>
+
+{% endif %}
+
+{% if success_message is defined %} 
+
+<div class="alert alert-success alert-dismissible fade show" role="alert">
+<i class="fas fa-check"></i>{{ success_message }}
+<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+    <span aria-hidden="true">&times;</span>
+</button>
+</div>
+
+{% endif %}
+
+<div class="row">
+    <div class="col-sm-12 sign_in" id="sign_in">
+        <form method="post" action="login">
+        <h3> C<span class="violet">o</span>nnexion </h3>
+        <div class="input-group mb-2">
+            <div class="input-group-prepend">
+            <div class="input-group-text"><i class="fas fa-user"></i></div>
+            </div>
+            <input type="text" class="form-control" id="username" name="mail" placeholder="Nom d'utilisateur ou email" value="{{ value_mail }}">
+        </div>
+        <div class="input-group mb-2">
+            <div class="input-group-prepend">
+            <div class="input-group-text"><i class="fas fa-lock"></i></div>
+            </div>
+            <input type="password" class="form-control" name="pass" id="password" placeholder="Mot de passe" value="{{ value_pass }}">
+        </div>
+        <a href="#" class="forgotten_pass"> Mot de passe oublié </a>
+        <div class="form-group form-check">
+            <input type="checkbox" class="form-check-input" name="cookie_init">
+            <label class="form-check-label" for="exampleCheck1">Se souvenir de moi</label>
+        </div>
+        <button id="btn_sign_in" class="btn btn-primary">Connexion</button>
+        </form>
+        <a href="signUp" class="new"> Se créer un compte </a>
+    </div> 
+</div>
+
+    
 <script src="{{BASEURL}}js/validation.js"></script>
 </body>
 

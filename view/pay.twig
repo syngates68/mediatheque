@@ -1,0 +1,86 @@
+{% extends 'template.twig' %}
+
+{% block title %} Paiement de la vidéo {% endblock %}
+{% block content %}
+
+<div class="commande" id="commande">
+    <h1> Récapitulatif de la commande </h1>
+
+    <table class="table table-hover">
+
+      <tbody>
+    {% for v in video %}
+
+      <tr>
+          <td><img src="{{ BASEURL ~ v.get_miniature }}" alt="Miniature de {{ v.get_titre }}" data-id="{{ v.get_id }}" data-user="{{ id_utilisateur }}"></td>
+          <td>{{ v.get_titre }}</td>
+          <td>{{ v.get_prix }}€</td>
+      </tr>
+    {% endfor %}
+      </tbody>
+    
+    </table>
+
+    <div id="paypal-button" class="btn_paypal"></div>
+    <script>
+    paypal.Button.render({
+      env: 'sandbox',
+      client: {
+        sandbox: 'AS-5mDifqkwXocxDPyY43-McUUu61r1bBXJguRsTe4kLMYi825nJqpleIe8gX0a3k2F8Xoch3oNDjIEx'
+      },
+      style: {
+        color: 'blue',   // 'gold, 'blue', 'silver', 'black'
+        size:  'responsive', // 'medium', 'small', 'large', 'responsive'
+        shape: 'pill'    // 'rect', 'pill'
+      },
+      payment: function (data, actions) {
+        var id_video = $('#commande img').attr('data-id');
+        var id_utilisateur = $('#commande img').attr('data-user');
+        var CREATE_URL = 'http://localhost/mediatheque/payment.php?ref='+id_video+'$user='+id_utilisateur;
+
+        //alert(id_video);
+
+        return paypal.request.post(CREATE_URL)
+          .then(function(data) { 
+            if (data.success) { 
+               return data.paypal_response.id;   
+            } else { 
+               alert(data.msg);
+               return false;   
+            }
+        });
+      },
+        onAuthorize: function (data, actions) {
+            var id_video = $('#commande img').attr('data-id');
+            var id_utilisateur = $('#commande img').attr('data-user');
+            var EXECUTE_URL = 'http://localhost/mediatheque/payment_execute.php?ref='+id_video+'&user='+id_utilisateur;
+            var REDIRECT_URL = 'http://localhost/mediatheque/public/video/watch/'+id_video;
+            
+            var data = {
+            paymentID: data.paymentID,
+            payerID: data.payerID
+            };
+            return paypal.request.post(EXECUTE_URL, data)
+            .then(function (data) { 
+                $('#success_payment').html('Votre paiement a bien été accepté! Veuillez patienter, vous allez être redirigé vers la vidéo!').css('display', 'block');
+                setTimeout(function(){ window.location.replace(REDIRECT_URL); }, 3000);
+            if (data.success) { 
+          } else {
+            alert(data.msg);
+          }
+        });
+      },
+      onCancel: function(data, actions) {
+        $('#error_payment').html('La fenêtre de paiement a été fermée').css('display', 'block');
+      },
+      onError: function(err) {
+        $('#error_payment').html('Une erreur s\'est produite durant la communication avec les serveurs de PayPal, veuillez réessayer ultérieurement').css('display', 'block');
+      }
+    }, '#paypal-button');
+  </script>
+  <div id="error_payment" class="alert alert-danger"></div>
+  <div id="success_payment" class="alert alert-success"></div>
+</div>
+
+  <script src="{{BASEURL}}js/video.js"></script>
+{% endblock %}

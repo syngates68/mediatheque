@@ -3,18 +3,27 @@
 {% block title %} Accueil {% endblock %}
 {% block content %}
 
+  {% if success_connect is defined %}
+  <div class="alert alert-success alert-dismissible fade show success_connect" id="alert_connect" role="alert"> 
+  {{ success_connect }}
+  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+      <span aria-hidden="true">&times;</span>
+  </button>
+  </div>
+  {% endif %}
+
   {% for lv in last_video %}
 
   <div class="lv_container">
     <div class="video"> 
-      <img src="{{ BASEURL ~ lv.miniature }}" alt="Miniature de la vidéo {{lv.title}}">
+      <iframe src="{{ lv.get_lien }}?modestbranding=1&amp;rel=0&amp;autoplay=1&amp;autohide=1&amp;mute=1&amp;showinfo=0&amp;controls=0&amp;start=15" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
     </div>
 
     <div class="lv_infos">
       <div class="lv_infos_content">
         <h2> A la Une </h2>
-        <p class="title"> {{ lv.titre }} </p>
-        <a role="button" class="btn btn-success" href="{{BASEURL}}video/watch/{{lv.id}}"><i class="fas fa-video"></i>Voir</a>
+        <p class="title"> {{ lv.get_titre }} </p>
+        <a role="button" class="btn btn-success" href="{{BASEURL}}video/watch/{{lv.get_id}}"><i class="fas fa-video"></i>Voir</a>
       </div>
     </div>
   </div>
@@ -23,25 +32,51 @@
 
   <div class="container_videos">
 
-    <h1> Les dernières vidéos </h1>
     <div class="list_videos">
 
     {% for v in videos %}
-
     <div class="elmt_video">
         <div class="video"> 
           <img src="{{ BASEURL ~ v.miniature }}" alt="Miniature de la vidéo {{v.title}}">
-          <div class="blur"> {% if (v.gratuite == 0) %} <a role="button" class="btn btn-danger" href="{{BASEURL}}video/watch/{{v.id}}"> <i class="fas fa-shopping-cart"></i> </a> {% else %} <a role="button" class="btn btn-success" href="{{BASEURL}}video/watch/{{v.id}}"> <i class="fas fa-video"></i> </a> {% endif %} </div>
         </div>
         <div class="v_infos">
-          <h2> {{ v.titre }} | {% if v.gratuite == 1 %} <span class="text-muted free">Gratuite</span> {% else %} <span class="text-muted price">{{ v.prix }}€</span> {% endif %}</h2>
-          <p style="color:{{ v.couleur }}">{{ v.theme }}</p> 
+          <div class="v_text">
+            <h2> {{ v.titre }} </h2> 
+            {% if v.gratuite == 1 %} 
+              <span class="text-muted free"><i class="fas fa-check"></i></span> 
+            {% else %} 
+                {% if (v.nbr_achats == 1) %} 
+                  <span class="badge badge-success"> Achetée <i class="fas fa-check"></i></span> 
+                {% else %} 
+                  <span class="text-muted price">EUR {{ v.prix }}</span> 
+                {% endif %}
+            {% endif %}
+          </div>
+          <span class="fa fa-star checked"></span>
+          <span class="fa fa-star checked"></span>
+          <span class="fa fa-star checked"></span>
+          <span class="fa fa-star"></span>
+          <span class="fa fa-star"></span>
+          {% if (v.gratuite == 0) %}
+            {% if (v.nbr_achats == 1) %}
+              <a role="button" class="btn btn-success" href="{{BASEURL}}video/watch/{{v.id}}"> <i class="fas fa-video"></i> </a> 
+            {% else %}
+              <a role="button" class="btn btn-danger" href="{{BASEURL}}video/pay/{{v.id}}"> <i class="fas fa-shopping-cart"></i> </a> 
+            {% endif %}
+          {% else %} 
+            <a role="button" class="btn btn-success" href="{{BASEURL}}video/watch/{{v.id}}"> <i class="fas fa-video"></i> </a> 
+          {% endif %} 
         </div>
     </div>
 
     {% endfor %}
 
     </div>
+
+  </div>
+
+    </div>
+  </div>
 
   </div>
 

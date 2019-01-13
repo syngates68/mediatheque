@@ -12,6 +12,8 @@ require (ROOT.DS.'vendor/autoload.php');
 
 class Controller{
 
+    private $content = array();
+    private $rendered = false;
     private static $twig = NULL;
 
     static function loadTwig(){    
@@ -24,11 +26,30 @@ class Controller{
             ]);
             self::$twig->addExtension(new \Twig_Extension_Debug());
             self::$twig->addExtension(new FormatDate());
-            self::$twig->addGlobal('session', $_SESSION);
+            //self::$twig->addGlobal('session', $_SESSION);
             self::$twig->addGlobal('cookie', $_COOKIE);
             return self::$twig;
         }
         return self::$twig;
+    }
+
+    public function set($key, $value = NULL){
+        if (is_array($key)){
+           $this->content += $key;
+        }
+        elseif(isset($value)){
+            $this->content[$key] = $value;
+        }
+    }
+
+    public function render($viewName){
+        if($this->rendered){
+            return false;
+        }
+
+        $file = $viewName.'.twig';
+        $this->rendered = true;
+        echo self::loadTwig()->render($file, $this->content);     
     }
     
 }

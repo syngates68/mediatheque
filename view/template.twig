@@ -5,21 +5,32 @@
 
     {% set BASEURL = constant('BASEURL') %}
 
-    <nav class="navbar navbar-expand-lg main_navbar">
-      <div class="open">
-        <div class="bar1"></div>
-        <div class="bar2"></div>
-        <div class="bar3"></div>
-      </div>
+<nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top" id="navbar">
+    <a class="navbar-brand" href="{{BASEURL}}home/board"><i class="fas fa-video"></i><strong>D<span class="violet_navbar">o</span>ntatune</strong>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+    </button>
 
-      <a class="navbar-brand" href="{{BASEURL}}home/board"><i class="fas fa-video"></i><strong>D<span class="violet">o</span>ntatune</strong></a> 
-
-      <form class="form-inline my-2 my-lg-0">
-        <input class="form-control mr-sm-2" type="search" placeholder="Rechercher" aria-label="Search">
-        <button class="btn btn-outline-success my-2 my-sm-0" type="submit"><i class="fas fa-search"></i></button>
-      </form>
-
-    </nav>
+  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item active">
+        <a class="nav-link" href="{{BASEURL}}home/board">Accueil <span class="sr-only">(current)</span></a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="{{BASEURL}}utilisateur/profil">Profil</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="{{BASEURL}}utilisateur/achats">Mes achats</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="{{BASEURL}}home/abonnement">S'abonner</a>
+      </li>
+    </ul>
+    <form class="form-inline my-2 my-lg-0">
+      <a class="btn btn-success" role="button" href="{{BASEURL}}utilisateur/sign_out">Déconnexion</a>
+    </form>
+  </div>
+</nav>
 
     <nav class="hide_navbar">
       <div class="nav_item">

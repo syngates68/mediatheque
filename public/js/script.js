@@ -39,4 +39,16 @@ $(function(){
         });
     }
 
+    $(window).on('scroll', function(){
+        if($(this).scrollTop() > 20){
+            $('#navbar').css('line-height', '50px');
+            $('#navbar .navbar-brand').css('transform', 'translateX(-150%)');
+            $('#navbar .navbar-nav').css('transform', 'translateX(-20%)');
+        }
+        else{
+            $('#navbar').css('line-height', '25px');
+            $('#navbar .navbar-brand').css('transform', 'translateX(0)');
+            $('#navbar .navbar-nav').css('transform', 'translateX(0)');
+        }
+    });
 });

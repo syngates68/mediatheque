@@ -1,0 +1,49 @@
+{% extends 'template.twig' %}
+{% block title %} Mes achats {% endblock %}
+{% block content %}
+
+{% set total = 0 %}
+
+<div class="achats">
+
+<h1> Vos achats </h1>
+ 
+{% if nb_achats != 0 %}
+
+<table class="table table-hover">
+    <!--<thead>
+    <tr>
+        <th scope="col">Miniature</th>
+        <th scope="col">Titre</th>
+        <th scope="col">Date d'achat</th>
+        <th scope="col">Prix</th>
+    </tr>
+    </thead>-->
+    <tbody>
+
+{% for a in achats %}
+    <tr>
+        <td><img src="{{ BASEURL ~ a.miniature }}" alt="Miniature de la vidéo {{ a.titre }}"></td>
+        <td>{{ a.titre }}</td>
+        <td>{{ a.date_achat | date("m/d/Y") }}</td>
+        <td>{{ a.prix }}€</td>
+    </tr>
+
+    {% set total = total + a.prix %}
+
+{% endfor %}
+
+    </tbody>
+</table>
+
+<p class="total"><B>Total : </B>{{ total }}€</p>
+
+{% else %}
+
+<div class="alert alert-danger"> Vous n'avez encore procédé à aucun achat </div>
+
+{% endif %}
+
+</div>
+
+{% endblock %}

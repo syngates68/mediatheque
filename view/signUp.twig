@@ -1,0 +1,85 @@
+{% extends 'inc/head.twig' %}
+{% block title %} Inscription {% endblock %}
+{% block main %}
+
+<body class="login_body">
+{% set BASEURL = constant('BASEURL') %}
+
+<div class="container-fluid sign">
+
+<h1><i class="fas fa-video"></i>D<span class="violet">o</span>ntatune</h1>
+<h2> Plateforme de vidéos en ligne </h2>
+
+
+{% if error_message is defined %} 
+
+<div class="alert alert-danger alert-dismissible fade show" role="alert"> 
+<i class="fas fa-exclamation-circle"></i> {{ error_message }}
+<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+    <span aria-hidden="true">&times;</span>
+</button>
+</div>
+
+{% endif %}
+
+{% if success_message is defined %} 
+
+<div class="alert alert-success alert-dismissible fade show" role="alert">
+<i class="fas fa-check"></i>{{ success_message }}
+<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+    <span aria-hidden="true">&times;</span>
+</button>
+</div>
+
+{% endif %}
+
+<div class="row">
+    <div class="col-sm-12 sign_up">
+        <form method="post" action="inscription" id="sign_up">
+        <h3> Inscripti<span class="violet">o</span>n </h3>
+        <div class="input-group mb-2">
+            <div class="input-group-prepend">
+            <div class="input-group-text"><i class="fas fa-user"></i></div>
+            </div>
+            <input type="text" class="form-control" id="name" name="nom" placeholder="Nom" required value="{{ value_nom_insc }}">
+        </div>
+        <div class="input-group mb-2">
+            <div class="input-group-prepend">
+            <div class="input-group-text"><i class="fas fa-user"></i></div>
+            </div>
+            <input type="text" class="form-control" id="prenom" name="prenom" placeholder="Prénom" required value="{{ value_prenom_insc }}">
+        </div>
+        <div class="input-group mb-2">
+            <div class="input-group-prepend">
+            <div class="input-group-text"><i class="fas fa-at"></i></div>
+            </div>
+            <input type="mail" class="form-control" id="mail" placeholder="Adresse mail" name="mail" required value="{{ value_mail_insc }}">
+        </div>
+        <div class="input-group mb-2">
+            <div class="input-group-prepend">
+            <div class="input-group-text"><i class="fas fa-user"></i></div>
+            </div>
+            <input type="text" class="form-control" id="username" placeholder="Nom d'utilisateur" name="pseudo" required value="{{ value_pseudo_insc }}">
+        </div>
+        <div class="input-group mb-2">
+            <div class="input-group-prepend">
+            <div class="input-group-text"><i class="fas fa-lock"></i></div>
+            </div>
+            <input type="password" class="form-control" id="pass" placeholder="Mot de passe" name="pass" required value="{{ value_pass_insc }}">
+        </div>
+        <div class="input-group mb-2">
+            <div class="input-group-prepend">
+            <div class="input-group-text"><i class="fas fa-lock"></i></div>
+            </div>
+            <input type="password" class="form-control" id="pass2" placeholder="Confirmation" name="pass2" required value="{{ value_pass2_insc }}">
+        </div>
+        <button type="submit" class="btn btn-success">Inscription</button>
+        </form>
+    </div>
+</div>
+
+    
+<script src="{{BASEURL}}js/validation.js"></script>
+</body>
+
+{% endblock %}
