@@ -25,8 +25,8 @@
     <tr>
         <td><img src="{{ BASEURL ~ a.miniature }}" alt="Miniature de la vidéo {{ a.titre }}"></td>
         <td>{{ a.titre }}</td>
-        <td>{{ a.date_achat | date("m/d/Y") }}</td>
-        <td>{{ a.prix }}€</td>
+        <td>{{ a.date_achat | date("d/m/Y") }}</td>
+        <td>EUR {{ a.prix }}</td>
     </tr>
 
     {% set total = total + a.prix %}
@@ -36,7 +36,7 @@
     </tbody>
 </table>
 
-<p class="total"><B>Total : </B>{{ total }}€</p>
+<p class="total"><B>Total : </B>EUR {{ total }}</p>
 
 {% else %}
 

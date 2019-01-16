@@ -55,7 +55,7 @@ class Commentaire extends Model{
 	// Requêtes BDD
 
     public static function getAllCommentaireByVideo($id_video){
-        return self::_getInner('commentaire c ', ' c.id, c.id_utilisateur, c.id_video, c.commentaire, c.date_commentaire, u.pseudo as pseudo, u.pic as avatar ', ' inner join utilisateur u on c.id_utilisateur = u.id ', ' id_video = :id_video ', '', 'ORDER BY c.date_commentaire DESC', [
+        return self::_getInner('commentaire c ', ' c.id, c.id_utilisateur, c.id_video, c.commentaire, c.date_commentaire, u.pseudo as pseudo, u.pic as avatar, u.id as id_user ', ' inner join utilisateur u on c.id_utilisateur = u.id ', ' id_video = :id_video ', '', 'ORDER BY c.date_commentaire DESC', [
             'id_video' => $id_video
         ]);
 	}
@@ -88,7 +88,8 @@ class Commentaire extends Model{
 			"commentaire" => $line['commentaire'],
             "date_commentaire" => $line['date_commentaire'],
             "pseudo" => $line['pseudo'],
-            "avatar" => $line['avatar']
+			"avatar" => $line['avatar'],
+			"id_user" => $line['id_user']
 		);
 		return $tab;
 	}

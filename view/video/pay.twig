@@ -3,25 +3,21 @@
 {% block title %} Paiement de la vidéo {% endblock %}
 {% block content %}
 
-<div class="commande" id="commande">
-    <h1> Récapitulatif de la commande </h1>
+<div class="container commande" id="commande">
+  <h1> Récapitulatif de la commande </h1>
 
-    <table class="table table-hover">
+    <div class="card">
+      <img class="card-img-top" src="{{ BASEURL ~ video.get_miniature }}" alt="Miniature de {{ video.get_titre }}" data-id="{{ video.get_id }}" data-user="{{ id_utilisateur }}">
+      <div class="card-body">
+        <p class="card-text titre">{{ video.get_titre }}</p>
+        <p class="card-text prix">EUR {{ video.get_prix }}</p>
+        <p class="card-text">{{ video.get_description|nl2br }}</p>
+      </div>
 
-      <tbody>
-    {% for v in video %}
-
-      <tr>
-          <td><img src="{{ BASEURL ~ v.get_miniature }}" alt="Miniature de {{ v.get_titre }}" data-id="{{ v.get_id }}" data-user="{{ id_utilisateur }}"></td>
-          <td>{{ v.get_titre }}</td>
-          <td>{{ v.get_prix }}€</td>
-      </tr>
-    {% endfor %}
-      </tbody>
-    
-    </table>
-
+    </div>
     <div id="paypal-button" class="btn_paypal"></div>
+
+
     <script>
     paypal.Button.render({
       env: 'sandbox',
@@ -36,7 +32,7 @@
       payment: function (data, actions) {
         var id_video = $('#commande img').attr('data-id');
         var id_utilisateur = $('#commande img').attr('data-user');
-        var CREATE_URL = 'http://localhost/mediatheque/payment.php?ref='+id_video+'$user='+id_utilisateur;
+        var CREATE_URL = 'http://localhost/mediatheque/payment.php?ref='+id_video+'&user='+id_utilisateur;
 
         //alert(id_video);
 

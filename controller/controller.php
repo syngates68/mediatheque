@@ -5,12 +5,16 @@ namespace Controller;
 use Model\Video;
 use Model\Theme;
 use Model\Abonnement;
+use Model\Utilisateur;
 
-use Config\FormatDate;
+use Library\FormatDate;
+use Library\ShortText;
 
 require (ROOT.DS.'vendor/autoload.php');
 
 class Controller{
+
+    protected $current_controller;
 
     private $content = array();
     private $rendered = false;
@@ -26,8 +30,9 @@ class Controller{
             ]);
             self::$twig->addExtension(new \Twig_Extension_Debug());
             self::$twig->addExtension(new FormatDate());
+            self::$twig->addExtension(new ShortText());
             //self::$twig->addGlobal('session', $_SESSION);
-            self::$twig->addGlobal('cookie', $_COOKIE);
+            //self::$twig->addGlobal('cookie', $_COOKIE);
             return self::$twig;
         }
         return self::$twig;
@@ -47,7 +52,7 @@ class Controller{
             return false;
         }
 
-        $file = $viewName.'.twig';
+        $file = strtolower(str_replace('Controller', '', $this->current_controller)).'/'.$viewName.'.twig';
         $this->rendered = true;
         echo self::loadTwig()->render($file, $this->content);     
     }

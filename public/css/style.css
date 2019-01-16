@@ -2,7 +2,7 @@
 GENERAL
 ********************************************************/
 
-body{ position: relative; font-family: 'Roboto', 'sans-serif'; overflow-x: hidden !important; min-height: 100vh; margin-top: 35px; }
+body{ position: relative; font-family: 'Roboto', 'sans-serif'; overflow-x: hidden !important; min-height: 100vh; margin-top: 40px; }
 h1{ font-size: 30px; }
 .violet{ color: #4a0087; }
 .site_content{ transition-duration: 0.5s; }
@@ -17,14 +17,14 @@ NAVBAR
   .navbar .nav-link{ display: inline; }
   .navbar .navbar-nav{ transition-duration: 0.5s; }
 
-  .open{ cursor: pointer; }
+  .open{ display: none; cursor: pointer; }
   .bar1, .bar2, .bar3{ width: 25px; height: 2px; background: #FFF; margin: 6px 0; transition: 0.4s; }
   .change .bar1{ transform: rotate(-45deg) translate(-4px, 4px); }
   .change .bar2{ transform: translateX(-200%); }
   .change .bar3{ transform: rotate(45deg) translate(-7px, -7px); }
 
-.hide_navbar{ overflow-y: scroll; transform: translateX(-100%); transition-duration: 0.5s; width: 20%; position: absolute; left: 0; bottom: 0; top: 56px; background: #000; z-index: 200000; padding: 20px; }
-  .hide_navbar .nav_item{ padding: 10px; text-align: center; }
+.hide_navbar{ overflow-y: scroll; transform: translateX(-100%); transition-duration: 0.5s; width: 20%; position: absolute; left: 0; bottom: 0; top: 50px; background: #000; z-index: 200000; padding: 20px; }
+  .hide_navbar .nav_item{ padding: 10px; }
   .hide_navbar .nav_item i{ display: inline-block; width: 20%; color: #FFF; }
   .hide_navbar .nav_item a{ display: inline-block; width: 79%; color: #FFF; }
   .hide_navbar .nav_item a:hover{ text-decoration: none; }
@@ -36,6 +36,11 @@ NAVBAR
 .with_sidebar{ transform: translateX(20%); transition-duration: 0.5s; }
 
 .search{ display: none; }
+
+.account{ font-size: 12px; margin-right: 10px; width: 30px; height: 30px; border-radius: 30px; border: 2px solid #4a0087; line-height: 25px; text-align: center; transition-duration: 0.3s; }
+.account:hover{ background: #FFF; border-color: #FFF; color: #4a0087 !important; transition-duration: 0.3s; }
+
+.sign_out{ font-size: 12px; }
 
 /*******************************************************
 HOME
@@ -70,35 +75,46 @@ HOME
   .elmt_video .v_infos .btn-danger:hover{ background-image:linear-gradient(60deg, #bd2d49, #91021f); }
 
 .video{ width: 100%; position: relative; padding-bottom: 56.25%; padding-top: 25px; height: 0; }
-  .video img, .video iframe{ transition-duration: 0.5s; position: absolute; top: 0; left: 0; width: 100%; height: 100%; }
+  .video img, .video iframe{ transition-duration: 0.5s; position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none; }
 
   .checked{ color: orange; }
+
+.filtres .elmt_filtres{ padding: 20px; }
+.filtres label.title_form{ float: left; }
+.filtres .form-check{ text-align: left; width: 100%; }
+.filtres .tri_prix{ display: none; }
 
 /*******************************************************
 VIDEO
 ********************************************************/
-.aff_video{ background: #000; padding: 20px; }
+.aff_video{ padding: 20px; }
 
-.my_video{ width: 70%; margin: 0 auto; color: #FFF; }
+.my_video{ width: 70%; margin: 0 auto; }
   .my_video iframe{ border: none; }
+  .my_video .v_infos{ margin-top: 20px; }
   .my_video .v_infos h2{ font-size: 20px; display: inline-block; width: 90%; }
   .my_video .v_infos button{ display: inline-block; width: 9%; }
   .my_video .fb-share-button{ background: #3b5998; border: none; border-radius: 0; }
   .my_video .fb-share-button i{ margin-right: 10px; }
+  .my_video .v_infos .description{ margin-top: 20px; font-size: 13px; }
 
-.commentaires{ width: 70%; margin: 0 auto; color: #FFF; }
+.commentaires{ width: 70%; margin: 0 auto; }
   .commentaires h3{ padding-bottom: 10px; font-size: 17px; margin-top: 20px; }
-  .commentaires .form-control{ font-size: 15px; background: none !important; border: none; border-radius: 0; border-bottom: 2px solid #4a0087 !important; margin: 20px 0; min-height: 30px !important; resize: none; }
-  .commentaires .form-control:focus{ color: #FFF !important; }
+  .commentaires .form-control{ font-size: 15px; background: none !important; border-radius: 0; margin: 20px 0; min-height: 100px; }
   .commentaires button{ margin-bottom: 10px; float: right; border-radius: 0; background: #4a0087; border: none; visibility: hidden; }
   .commentaires button:hover{ background: #360063; border: none; }
   .commentaires button i{ margin-left: 5px; }
   .commentaires .alert{ clear: both; margin: 0 !important; }
-  .commentaire{ clear: both; width: 70%; margin-top: 5px; padding: 10px; }
-  .commentaire img{ display: inline-block; vertical-align: top; width: 70px; height: 70px; border-radius: 70px; border: 1px solid #000; }
-  .commentaire .c_infos{ padding-left: 20px; width: 80%; display: inline-block; vertical-align: middle; text-align: left; }
+  .commentaire{ clear: both; width: 70%; margin-top: 5px; padding: 10px; border: 2px solid #dedede; background-color: #f1f1f1; border-radius: 5px; }
+  .commentaire img{ display: inline-block; object-fit: cover; vertical-align: top; width: 70px; height: 70px; border-radius: 70px; }
+  .commentaire .c_infos{ padding-left: 20px; width: 85%; display: inline-block; vertical-align: middle; text-align: left; }
   .commentaire p{ font-size: 12px; }
   .commentaire span{ margin-left: 10px; }
+  .commentaire .supprimer{ float: right; }
+
+  .commentaires .modal{ transform: translateY(20%) !important; }
+  .commentaires .modal button{ visibility: visible; }
+  .commentaires .modal .annuler{ background: #e64545; margin-left: 10px; }
 
 /*******************************************************
 ABONNEMENTS
@@ -118,25 +134,27 @@ PROFIL
 .profil{ padding: 50px; }
 
 .profil a{ display: block; margin-top: 10px; }
+.profil a i{ margin-left: 5px; }
 
 .profil .paiements{ padding: 20px; }
 
-.profil_pic{ text-align: center; }
-  .profil_pic img{ width: 350px; height: 350px; border-radius: 350px; border: 1px solid #808080; }
-  .profil_pic h1{ font-size: 25px; font-weight: 800; }
-
-.profil_infos{ width: 50%; }
+.profil_infos{ text-align: center; margin: 0 auto; border: 1px solid #8f8f8f8f; border-radius: 5px; padding: 20px; }
+  .profil_infos img{ object-fit: cover; width: 250px; height: 250px; border-radius: 250px; border: 1px solid #808080; }
+  .profil_infos h1{ font-size: 25px; font-weight: 800; margin-top: 15px; margin-bottom: 0; }
+  .profil_infos .pseudo{ font-size: 14px; margin-top: 0 !important; }
   .profil_infos button{ margin-bottom: 20px; }
 
 /*******************************************************
 COMMANDE
 ********************************************************/
 
-.commande{ padding: 20px; width: 70%; margin: 0 auto; }
-.commande tr td{ width: 25%; vertical-align: middle; }
+.commande{ padding: 40px; }
+.commande h1{ text-align: center; text-transform: uppercase; font-size: 18px; }
+.commande .card{ margin: 0 auto; width: 50%; }
+.commande .card-body .titre{ display: inline-block; width: 70%; font-weight: bold; }
+.commande .card-body .prix{ display: inline-block; width: 29%; text-align: right; color: #3b5998; font-weight: bold; }
 /*.commande .total{ background: #000; color: #FFF; width: 25%; float: right; padding: 10px; }*/
-.commande img{ width: 100%; }
-.commande .btn_paypal{ width: 30%; float: right; }
+.commande .btn_paypal{ width: 50%; padding: 20px; margin: 0 auto; }
 #success_payment, #error_payment{ display: none; }
 
 /*******************************************************
@@ -161,17 +179,15 @@ CONNEXION/INSCRIPTION
 .sign{ width: 70%; margin: 0 auto; background: #ffffffa9; min-height: 100vh; }
 .sign .btn{ width: 100%; margin: 10px 0; display: block; border: 0; font-weight: 600; text-transform: uppercase; }  
 
-.sign_in{ padding: 20px; text-align: center; }
-  .sign_in button{ background: #4a0087; }
-  .sign_in button:hover{ background: #360063; }
+.sign_in, .sign_up{ padding: 20px; text-align: center; }
+  .sign_in button, .sign_up button{ letter-spacing: 1px; border: 3px solid #4a0087 !important; border-radius: 15px; background: none; color: #4a0087; width: 50% !important; margin: auto !important; }
+  .sign_in button:hover, .sign_up button:hover{ background: #360063; }
   .sign_in .forgotten_pass{ display: block; font-size: 13px; text-align: right; }
   .sign_in form, .sign_up form{ width: 50%; margin: 0 auto; }
   .sign_in .input-group, .sign_up .input-group{ margin-bottom: 20px !important; }
-  .sign_in .input-group input, .sign_up .input-group input{ background: none; border-bottom: 1px solid #4a0087 !important; border: 0; border-radius: 0 !important; }
-  .sign_in .input-group-text, .sign_up .input-group-text{ background: none !important; color: #4a0087; border: 0; border-radius: 0; }
   .sign_up{ padding: 20px; }
 
-  .sign_up h3{ text-align: right; }
+.new{ margin: auto; }
 
 /*******************************************************
 MEDIA QUERIES
@@ -179,54 +195,67 @@ MEDIA QUERIES
 
 @media (max-width: 700px){
 
-  h1{ font-size: 25px; }
+    body{ margin-top: 0; }
 
-  .main_navbar form{ display: none; }
-  .hide_navbar{ width: 70%; }
-  .search{ display: block; }
+    h1{ font-size: 25px; }
 
-  .with_sidebar{ transform: translateX(70%); }
+    .navbar{ position: static; }
+    .navbar-brand{ text-align: center; }
+    .open{ display: inline-block; }
 
-  .lv_infos{ width: 100%; position: static !important; background: none; padding: 10px; }
-  .lv_infos h2{ font-size: 25px; color: #000; }
-  .lv_infos p{ font-size: 20px; color: #000; }
-  .lv_infos a{ margin-top: 0; }
-  .lv_infos_content{ position: static; }
+    .main_navbar form{ display: none; }
+    .hide_navbar{ width: 70%; }
+    .search{ display: block; }
 
-  .elmt_video{ width: 100%; margin-bottom: 0; }
-  .elmt_video .v_infos{ margin-bottom: 0; }
+    .with_sidebar{ transform: translateX(70%); }
 
-  .video .blur a{ width: 30%; left: 35%; top: 30% !important; }
+    .lv_infos{ width: 100%; position: static !important; background: none; padding: 10px; }
+    .lv_infos h2{ font-size: 25px; color: #000; }
+    .lv_infos p{ font-size: 20px; color: #000; }
+    .lv_infos a{ margin-top: 0; }
+    .lv_infos_content{ position: static; width: 100%; }
 
-  .success_connect{ width: 80%; left: 10%; }
+    .list_videos{ padding: 0; }
+    .elmt_video{ width: 100%; margin-bottom: 0; }
+    .elmt_video .v_infos{ margin-bottom: 0; }
 
-  .aff_video{  padding: 0; }
-  .my_video{ width: 100%; }
-  .my_video .v_infos h2{  width: 100%; padding: 10px; }
-  .my_video .v_infos button{ display: none; }
-  .my_video .fb-share-button{ display: block; margin: 0 auto; }
-  .commentaires{ width: 100%; }
-  .commentaires .form-control{ margin: 20px auto; width: 90%; }
-  .commentaire{ width: 90%; padding: 5px; }
-  .commentaire img{ width: 30px; height: 30px; border-radius: 30px; }
-  .commentaire .c_infos{ padding-left: 10px; }
-  .commentaires .alert{ width: 90%; margin: 20px auto 0 auto !important; }
+    .video .blur a{ width: 30%; left: 35%; top: 30% !important; }
 
-  .elmt_abo{ width: 100% !important; }
+    .success_connect{ width: 80%; left: 10%; }
 
-  .profil{ padding: 20px; }
-  .profil_pic img{ width: 100%; }
-  .profil_infos{ margin-top: 20px; width: 100%; }
-  .profil_infos h2{ border-top: 1px solid #585858; margin-top: 20px; }
+    .aff_video{  padding: 0; }
+    .my_video{ width: 100%; }
+    .my_video .v_infos h2{  width: 100%; padding: 10px; }
+    .my_video .v_infos button{ display: none; }
+    .my_video .fb-share-button{ display: block; margin: 0 auto; }
+    .commentaires{ width: 100%; }
+    .commentaires .form-control{ margin: 20px auto; width: 90%; }
+    .commentaire{ width: 90%; padding: 5px; margin: 5px auto; }
+    .commentaire img{ width: 30px; height: 30px; border-radius: 30px; }
+    .commentaire .c_infos{ padding-left: 10px; }
+    .commentaires .alert{ width: 90%; margin: 20px auto 0 auto !important; }
 
-  .achats{ padding: 10px; width: 90%; }
+    .elmt_abo{ width: 100% !important; }
 
-  .login_body{ background: none; color: #000; }
-  .login_body .alert{ width: 80%; }
-  .login_body h1, .login_body h2{ color: #000; }
-  .sign{ width: 100%; }
-  .sign_in .input-group input, .sign_up .input-group input{ color: #000; }
-  .sign_in form, .sign_up form{ width: 90%; }
-  .filter_black{ background: none; }
+    .profil{ padding: 10px 0; }
+    .profil_infos{ border: none; border-radius: 0; width: 100%; }
+    .profil_infos h2{ border-top: 1px solid #585858; margin-top: 20px; }
+
+    .achats{ padding: 10px; width: 90%; }
+
+    .commande{ padding: 10px 0; }
+    .commande .card{ width: 100%; border: none; }
+    .commande .card img{ border-radius: 0; }
+    .commande .card-body .titre{ display: block; width: 100%; }
+    .commande .card-body .prix{ display: block; width: 100%; text-align: left; }
+    .commande .btn_paypal{ width: 70%; }
+
+    .login_body{ background: none; color: #000; }
+    .login_body .alert{ width: 80%; }
+    .login_body h1, .login_body h2{ color: #000; }
+    .sign{ width: 100%; }
+    .sign_in .input-group input, .sign_up .input-group input{ color: #000; }
+    .sign_in form, .sign_up form{ width: 90%; }
+    .filter_black{ background: none; }
 
 }

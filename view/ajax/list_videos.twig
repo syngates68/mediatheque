@@ -1,40 +1,6 @@
-{% extends 'template.twig' %}
-
-{% block title %} Accueil {% endblock %}
-{% block content %}
-
-  {% if success_connect is defined %}
-  <div class="alert alert-success alert-dismissible fade show success_connect" id="alert_connect" role="alert"> 
-  {{ success_connect }}
-  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-      <span aria-hidden="true">&times;</span>
-  </button>
-  </div>
-  {% endif %}
-
-  {% for lv in last_video %}
-
-  <div class="lv_container">
-    <div class="video"> 
-      <iframe src="{{ lv.get_lien }}?modestbranding=1&amp;rel=0&amp;autoplay=1&amp;autohide=1&amp;mute=1&amp;showinfo=0&amp;controls=0&amp;start=15" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-    </div>
-
-    <div class="lv_infos">
-      <div class="lv_infos_content">
-        <h2> A la Une </h2>
-        <p class="title"> {{ lv.get_titre }} </p>
-        <a role="button" class="btn btn-success" href="{{BASEURL}}video/watch/{{lv.get_id}}"><i class="fas fa-video"></i>Voir</a>
-      </div>
-    </div>
-  </div>
-
-  {% endfor %}
-
-  <div class="container_videos">
-
-    <div class="list_videos">
-
-    {% for v in videos %}
+{% set BASEURL = constant('BASEURL') %}
+<h1> Nos vidéos </h1>
+{% for v in videos %}
     <div class="elmt_video">
         <div class="video"> 
           <img src="{{ BASEURL ~ v.miniature }}" alt="Miniature de la vidéo {{v.title}}">
@@ -69,16 +35,4 @@
         </div>
     </div>
 
-    {% endfor %}
-
-    </div>
-
-  </div>
-
-    </div>
-  </div>
-
-  </div>
-
-  <script src="{{BASEURL}}js/video.js"></script>
-{% endblock %}
+{% endfor %}

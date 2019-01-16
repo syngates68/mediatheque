@@ -1,0 +1,37 @@
+{% set BASEURL = constant('BASEURL') %}
+<h3> {% if nb_com == 0 %} Aucun commentaire {% elseif nb_com == 1 %} 1 commentaire {% else %} {{ nb_com }} commentaires {% endif %}</h3>
+
+<textarea id="com_contain" class="form-control expand" {% if nb_com != 0 %} placeholder="Commenter cette vidéo" {% else %}placeholder="Soyez le premier à commenter cette vidéo" {% endif %}></textarea>
+<button class="btn btn-success" id="btn_com">Envoyer <i class="fas fa-paper-plane"></i></button>
+
+{% if nb_com != 0 %}
+
+    {% for c in commentaires %}
+
+        <div class="commentaire" {% if current_user == c.id_user %} style="background-color: #ddd !important; border-color: #ccc;" {% endif %} >
+        <img src="{{BASEURL ~ c.avatar }}" alt="Photo de profil de {{ c.pseudo }}">
+        <div class="c_infos">
+            <p class="c_infos_user"> <b> {{ c.pseudo }} </b> <span>{{ c.date_commentaire|formatDate }} <span> {% if current_user == c.id_user %} <span class="supprimer"> <a href="#" data-toggle="modal" data-target="#suppModal"><i class="fas fa-times"></i></a> </span> {% endif %} </p>
+            <p class="com">{{ c.commentaire|nl2br }}</p>
+        </div>
+        </div>
+
+        <div class="modal fade" id="suppModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+            <div class="modal-body">
+                <p> Confirmer la suppression du commentaire </p>
+                <button type="button" class="btn btn-secondary annuler" data-dismiss="modal">Annuler</button>
+                <button type="button" class="btn btn-primary">Oui</button>
+            </div>
+            </div>
+        </div>
+        </div>
+
+    {% endfor %}
+
+{% else %}
+
+    <div class="alert alert-danger"> Aucun commentaire pour cette vidéo </div>
+
+{% endif %}

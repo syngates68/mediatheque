@@ -28,12 +28,15 @@ $(function(){
         
             if (width > 700){
                 //alert('ordi');
-                $('#side_nav_mobile').css('display', 'none');
+                $('.hide_navbar').css('display', 'none');
+                $('.site_content').removeClass('with_sidebar');
             }
             else{
                 //alert('tel');
+                $('.hide_navbar').css('display', 'block');
                 if ($('.open').hasClass('change')){
                     $('.open').removeClass('change');
+                    $('.hide_navbar').removeClass('opened');
                 }
             }
         });
@@ -49,6 +52,15 @@ $(function(){
             $('#navbar').css('line-height', '25px');
             $('#navbar .navbar-brand').css('transform', 'translateX(0)');
             $('#navbar .navbar-nav').css('transform', 'translateX(0)');
+        }
+    });
+
+    $('.profil_infos a').on('click', function(){
+        if ($(this).find('.fas').hasClass('fa-sort-down')){
+            $(this).find('.fas').removeClass('fa-sort-down').addClass('fa-sort-up');
+        }
+        else{
+            $(this).find('.fas').removeClass('fa-sort-up').addClass('fa-sort-down');
         }
     });
 });

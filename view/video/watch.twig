@@ -7,7 +7,7 @@
     <meta property="og:image" content="https://avekki.000webhostapp.com/public/fichiers/{{ video_link }}" />
     <meta property="og:url" content="https://avekki.000webhostapp.com/public/video/watch/{{video_id}}" />
     <meta property="og:description" content="Rejoignez Dontatune pour regarder la vidéo {{ video_title }}">
-    <meta property="fb:admin"  />
+    <meta property="fb:admin" />
 
 {% endblock %}
 
@@ -15,23 +15,20 @@
 
 <div class="aff_video">
 
-  {% for v in video %}
-
   <div class="my_video">
       <div class="video"> 
-        <iframe src="{{ v.get_lien }}" data-id="{{ v.get_id }}" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        <iframe src="{{ video.get_lien }}" data-id="{{ video.get_id }}" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
       </div>
       <div class="v_infos">
-        <h2> {{ v.get_titre }} </h2>
+        <h2> {{ video.get_titre }} </h2>
         <button class="btn btn-success"><i class="fas fa-expand"></i></button>
+        <p class="description"> {{ video.get_description|nl2br }} </p>
       </div>
-      <button class="btn btn-success fb-share-button" data-url="https://avekki.000webhostapp.com/public/video/watch/{{v.get_id}}" data-title="{{ v.get_titre }}"> <i class="fab fa-facebook-f"></i> Partager</button>
+      <button class="btn btn-success fb-share-button" data-url="https://avekki.000webhostapp.com/public/video/watch/{{video.get_id}}" data-title="{{ video.get_titre }}"> <i class="fab fa-facebook-f"></i> Partager</button>
   </div>
 
-  {% endfor %}
-
   <div class="commentaires" id="commentaires">
-  {% include 'commentaires.twig' %}
+  {% include 'ajax/commentaires.twig' %}
   </div>
 
 </div>

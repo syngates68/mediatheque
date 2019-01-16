@@ -21,13 +21,13 @@ class Router{
     }
 
     public function parseUrl($url){
-        $url = explode('/', $url);
+        $url = explode('/', trim($url, '/'));
         //var_dump($url);
-        $this->controller = $this->loadController($url[3]);
-        $this->method = $this->loadMethod($url[4]);
-        if (isset($url[5])){
-            $this->param = $url[5];
-        }
+        $i = 0;
+        $this->controller = $this->loadController($url[$i+2]);
+        $this->method = $this->loadMethod($url[$i+3]);
+        $this->param = array_slice($url, $i+4);
+        //var_dump($this->param);
     }
 
     public function loadController($c){

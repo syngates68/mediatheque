@@ -66,21 +66,32 @@ abstract class Model{
         return $res;
     }
 
-    static function _getOne($table, $select, $inner, $where, $param = []){
+    static function _getOne($table, $select, $inner, $where, array $param = []){
         $db = Database::dbConnect();
         $sql = 'SELECT'.$select.'FROM '.$table.$inner.'WHERE '.$where;
         //print_r($sql);
         $req = $db->prepare($sql);
-        $req->execute($param);
 
-        $res = [];
+        //var_dump($param);
 
-        while ($line = $req->fetch()){
-            array_push($res, static::buildModel($line));
-            //var_dump($res);
+        foreach($param as $p) {
+            //var_dump($p['value']);
+            //print_r($p['value'])."<br/>";
+            if(isset($p['type']))
+                $req->bindValue($p['key'], $p['value'], $p['type']);
+            else
+                $req->bindValue($p['key'], $p['value']);
         }
 
-        return $res;
+        $r = $req->execute();
+
+        if($r != false && $req->rowCount() > 0) {
+            return static::buildModel($req->fetch());
+        } 
+        else {
+            return false;
+        }
+
     }
 
     static function _create($table, $table_v, $values, $param = []){

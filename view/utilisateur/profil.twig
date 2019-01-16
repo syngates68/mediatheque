@@ -3,23 +3,19 @@
 {% block content %}
 
 <div class="container profil">
-{% for p in profil %}
+
     <div class="row">
-        <div class="col-sm-12 col-lg-6 profil_pic">
-            <h1> {{ p.get_pseudo }} </h1>
-            <img src="{{BASEURL ~ p.get_pic }}">
-        </div>
-        <div class="col-sm-12 col-lg-6 profil_infos">   
-            <h2> Informations </h2>
-            <p> Nom : {{ p.get_nom }} </p>
-            <p> Prenom : {{ p.get_prenom }} </p>
-            <p> Date de création : {{ p.get_date_creation }} </p>
-            <p> Mail : {{ p.get_mail }} </p>
+        <div class="col-sm-12 col-lg-6 profil_infos">
+            <img src="{{BASEURL ~ profil.get_pic }}">
+            <h1> {{ profil.get_prenom }} {{ profil.get_nom }} </h1>
+            <p class="pseudo"> @{{ profil.get_pseudo }} </p>  
+            <p> Membre depuis le {{ profil.get_date_creation | date("d/m/Y") }} </p>
+            <p> Mail : {{ profil.get_mail }} </p>
             <button type="button" class="btn btn-success">Modifier</button>
             <button type="button" class="btn btn-danger">Supprimer</button>
 
             <a data-toggle="collapse" href="#abonnement" role="button" aria-expanded="false" aria-controls="collapseExample">
-                Votre abonnement
+                Votre abonnement <i class="fas fa-sort-down"></i>
             </a>
             <div class="collapse" id="abonnement">
             <div class="card card-body">
@@ -28,7 +24,7 @@
             </div>
 
             <a data-toggle="collapse" href="#paiements" role="button" aria-expanded="false" aria-controls="collapseExample">
-                Vos paiements ({{ nb_paiements }})
+                Vos paiements ({{ nb_paiements }}) <i class="fas fa-sort-down"></i>
             </a>
             <div class="collapse" id="paiements" class="paiements">
                 <div class="card card-body">
@@ -54,7 +50,7 @@
             </div>
         </div>
     </div>
-{% endfor %}
+
 </div>
 
 {% endblock %}

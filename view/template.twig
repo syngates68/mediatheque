@@ -6,19 +6,21 @@
     {% set BASEURL = constant('BASEURL') %}
 
 <nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top" id="navbar">
-    <a class="navbar-brand" href="{{BASEURL}}home/board"><i class="fas fa-video"></i><strong>D<span class="violet_navbar">o</span>ntatune</strong>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-    <span class="navbar-toggler-icon"></span>
-    </button>
+    <div class="open">
+        <div class="bar1"></div>
+        <div class="bar2"></div>
+        <div class="bar3"></div>
+    </div>
+    <a class="navbar-brand" href="{{BASEURL}}home/board"><i class="fas fa-video"></i><strong>D<span class="violet">o</span>ntatune</strong>
 
   <div class="collapse navbar-collapse" id="navbarSupportedContent">
     <ul class="navbar-nav mr-auto">
       <li class="nav-item active">
         <a class="nav-link" href="{{BASEURL}}home/board">Accueil <span class="sr-only">(current)</span></a>
       </li>
-      <li class="nav-item">
-        <a class="nav-link" href="{{BASEURL}}utilisateur/profil">Profil</a>
-      </li>
+      <!--<li class="nav-item">
+        <a class="nav-link" href="{{BASEURL}}utilisateur/profil">Mon compte</a>
+      </li>-->
       <li class="nav-item">
         <a class="nav-link" href="{{BASEURL}}utilisateur/achats">Mes achats</a>
       </li>
@@ -27,7 +29,8 @@
       </li>
     </ul>
     <form class="form-inline my-2 my-lg-0">
-      <a class="btn btn-success" role="button" href="{{BASEURL}}utilisateur/sign_out">Déconnexion</a>
+      <a href="{{BASEURL}}utilisateur/profil" class="account"><i class="fas fa-user"></i></a>
+      <a class="btn btn-success sign_out" role="button" href="{{BASEURL}}utilisateur/sign_out"><i class="fas fa-sign-out-alt"></i>Déconnexion</a>
     </form>
   </div>
 </nav>
@@ -40,7 +43,7 @@
         <i class="fas fa-sliders-h"></i><a href="{{BASEURL}}home/board">Filtrer</a>
       </div>
       <div class="nav_item">
-        <i class="fas fa-user"></i><a href="{{BASEURL}}utilisateur/profil">Profil</a>
+        <i class="fas fa-user"></i><a href="{{BASEURL}}utilisateur/profil">Mon compte</a>
       </div>  
       <div class="nav_item">
         <i class="fas fa-shopping-cart"></i><a href="{{BASEURL}}utilisateur/achats">Mes achats</a>
@@ -49,10 +52,10 @@
         <i class="fas fa-search"></i><a href="{{BASEURL}}utilisateur/profil">Rechercher</a>
       </div>
       <div class="nav_item">
-        <i class="fas fa-sign-out-alt"></i><a href="{{BASEURL}}utilisateur/sign_out">Deconnexion</a>
+        <i class="fas fa-video"></i><a href="{{BASEURL}}home/abonnement">S'abonner</a>
       </div>   
       <div class="separator"></div>
-      <a role="button" class="btn btn-success" href="{{BASEURL}}home/abonnement"><i class="fas fa-video"></i>S'abonner</a>
+      <a class="btn btn-success sign_out" role="button" href="{{BASEURL}}utilisateur/sign_out"><i class="fas fa-sign-out-alt"></i>Déconnexion</a>
     </nav>
 
     <div class="site_content">

@@ -35,8 +35,8 @@ class Route{
                 if (!is_callable($method, true, $callable_name)){
                     return false;
                 }
-                if ($this->param != NULL){
-                    return call_user_func_array($method, array($this->param)); 
+                if (!empty($this->param)){
+                    return call_user_func_array($method, $this->param); 
                 }
                 return call_user_func($method);           
             }

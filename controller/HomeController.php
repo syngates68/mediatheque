@@ -14,6 +14,8 @@ use Config\Factory;
 
 class HomeController extends Controller{
 
+    protected $current_controller = 'HomeController';
+
     public function getBoard(){
         if (isset($_SESSION['auth']['id'])){
             if (isset($_SESSION['success_connect'])){
@@ -23,9 +25,11 @@ class HomeController extends Controller{
             $videos = Video::getAllVideos($_SESSION['auth']['id']); 
             $last_video = Video::getLastVideo();
             $abos = TypeAbonnement::getAllTypeAbonnements();
+            $themes = Theme::getAllThemes();
             $this->set('videos', $videos);
             $this->set('last_video', $last_video);
             $this->set('abos', $abos);
+            $this->set('themes', $themes);
             $this->render('board');
         }
         else{
@@ -123,7 +127,7 @@ class HomeController extends Controller{
                 $email = $_POST['mail'];
                 $password = $_POST['pass'];
 
-                $user = Utilisateur::getUser($email, md5(md5($password)));
+                $user = Utilisateur::getUserByMail($email, md5(md5($password)));
                 if (!empty($user)){
                     foreach ($user as $u){
                         if (isset($_POST['cookie_init'])){
@@ -138,13 +142,28 @@ class HomeController extends Controller{
                     }
                 }
                 else{
-                    $_SESSION['error_connect'] = 'Aucun compte ne semble correspondre aux informations rentrées';
-                    
-                    $_SESSION['value_mail'] = $email;
-                    $_SESSION['value_pass'] = $password;
+                    $user = Utilisateur::getUserByPseudo($email, md5(md5($password)));
 
-                    header('location:'.BASEURL.'home/login');
-                    exit;
+                    if (!empty($user)){
+                        if (isset($_POST['cookie_init'])){
+                            setcookie('auth', $user->get_id() . '----' . sha1($user->get_pseudo() . $user->get_pass()), time() + 3600 * 24 * 3, '/', '', false, true);
+                        }
+                        $_SESSION['auth']['id'] = $user->get_id();
+
+                        $_SESSION['success_connect'] = 'Content de vous revoir '.$user->get_pseudo();
+
+                        header('location:'.BASEURL.'home/board');
+                        exit;
+                    }
+                    else{
+                        $_SESSION['error_connect'] = 'Aucun compte ne semble correspondre aux informations rentrées';
+                    
+                        $_SESSION['value_mail'] = $email;
+                        $_SESSION['value_pass'] = $password;
+    
+                        header('location:'.BASEURL.'home/login');
+                        exit;
+                    }
                 }
             }
             else{
@@ -171,10 +190,58 @@ class HomeController extends Controller{
             $pass2 = $_POST['pass2'];
 
             if ($pass == $pass2){
-                $user = Utilisateur::addUser($nom, $prenom, $pseudo, $mail, md5(md5($pass)));
-                $_SESSION['success_inscription'] = 'Vous êtes désormais inscrit sous le nom d\'utilisateur '.$pseudo;
-                header('location:'.BASEURL.'home/signUp');
-                exit;
+                $pseudo_count = Utilisateur::getUserExist($pseudo);
+                if (!$pseudo_count){
+                    $mail_count = Utilisateur::getMailExist($mail);
+                    if (!$mail_count){
+                        if (filter_var($mail, FILTER_VALIDATE_EMAIL)){
+                            $user = Utilisateur::addUser($nom, $prenom, $pseudo, $mail, md5(md5($pass)));
+                            $_SESSION['success_inscription'] = 'Vous êtes désormais inscrit sous le nom d\'utilisateur '.$pseudo;
+                            mkdir("profils/".$pseudo, 0700); //Création d'un dossier au nom de l'utilisateur
+                            header('location:'.BASEURL.'home/signUp');
+                            exit;
+                        }
+                        else{
+                            $_SESSION['error_inscription'] = 'L\'adresse mail rentrée n\'a pas un format correct';
+        
+                            $_SESSION['value_nom_insc'] = $nom;
+                            $_SESSION['value_prenom_insc'] = $prenom;
+                            $_SESSION['value_pseudo_insc'] = $pseudo;
+                            $_SESSION['value_mail_insc'] = $mail;
+                            $_SESSION['value_pass_insc'] = $pass;
+                            $_SESSION['value_pass2_insc'] = $pass2;
+    
+                            header('location:'.BASEURL.'home/signUp');
+                            exit;
+                        }
+                    }
+                    else{
+                        $_SESSION['error_inscription'] = 'Cette adresse mail est déjà associée à un autre compte';
+        
+                        $_SESSION['value_nom_insc'] = $nom;
+                        $_SESSION['value_prenom_insc'] = $prenom;
+                        $_SESSION['value_pseudo_insc'] = $pseudo;
+                        $_SESSION['value_mail_insc'] = $mail;
+                        $_SESSION['value_pass_insc'] = $pass;
+                        $_SESSION['value_pass2_insc'] = $pass2;
+
+                        header('location:'.BASEURL.'home/signUp');
+                        exit;
+                    }
+                }
+                else{
+                    $_SESSION['error_inscription'] = 'Ce nom d\'utilisateur n\'est pas disponible';
+        
+                    $_SESSION['value_nom_insc'] = $nom;
+                    $_SESSION['value_prenom_insc'] = $prenom;
+                    $_SESSION['value_pseudo_insc'] = $pseudo;
+                    $_SESSION['value_mail_insc'] = $mail;
+                    $_SESSION['value_pass_insc'] = $pass;
+                    $_SESSION['value_pass2_insc'] = $pass2;
+
+                    header('location:'.BASEURL.'home/signUp');
+                    exit;
+                }
             }
             else{
                 $_SESSION['error_inscription'] = 'Les mots de passe doivent être identiques';

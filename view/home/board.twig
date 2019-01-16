@@ -1,0 +1,73 @@
+{% extends 'template.twig' %}
+
+{% block title %} Accueil {% endblock %}
+{% block content %}
+
+  {# if success_connect is defined %}
+  <div class="alert alert-success alert-dismissible fade show success_connect" id="alert_connect" role="alert"> 
+  {{ success_connect }}
+  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+      <span aria-hidden="true">&times;</span>
+  </button>
+  </div>
+  {% endif #}
+
+  {% for lv in last_video %}
+
+  <div class="lv_container">
+    <div class="video"> 
+      <iframe src="{{ lv.get_lien }}?modestbranding=1&amp;rel=0&amp;autoplay=1&amp;autohide=1&amp;mute=1&amp;showinfo=0&amp;controls=0&amp;start=15" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+    </div>
+
+    <div class="lv_infos">
+      <div class="lv_infos_content">
+        <h2> A la Une </h2>
+        <p class="title"> {{ lv.get_titre }} </p>
+        <a role="button" class="btn btn-success" href="{{BASEURL}}video/watch/{{lv.get_id}}"><i class="fas fa-video"></i>Voir</a>
+      </div>
+    </div>
+  </div>
+
+  {% endfor %}
+
+  <div class="container_videos">
+    <div class="row">
+    <div class=" col-sm-12 col-lg-9 list_videos">
+
+    {% include 'ajax/list_videos.twig' %}
+
+    </div>
+    <div class="col-sm-12 col-lg-3 filtres">
+      <h1> Filtrer </h1>
+      <div class="elmt_filtres" id="filtre">
+        <div class="form-group">
+          <label class="title_form" for="type_video">Type de vidéo</label>
+          <select class="form-control" id="type_video">
+            <option value="1">Toutes</option>
+            <option value="2">Gratuites</option>
+            <option value="3">Payantes</option>
+          </select>
+        </div>
+        <div class="form-group tri_prix">
+          <label class="title_form" for="tri_video">Trier</label>
+          <select class="form-control" id="tri_video">
+            <option value="1"> Prix croissant </option>
+            <option value="2"> Prix décroissant </option>
+          </select>
+        </div>
+        {% for t in themes %}
+        <div class="form-check">
+          <input class="form-check-input themes" type="checkbox" value="{{ t.get_id }}" id="theme_{{ t.get_id }}" checked="checked">
+          <label class="form-check-label" for="theme{{ t.get_id }}">
+            {{ t.get_nom }}
+          </label>
+        </div>
+        {% endfor %}
+      <div>
+    </div>
+
+  </div>
+
+  <script src="{{BASEURL}}js/video.js"></script>
+  <script src="{{BASEURL}}js/board.js"></script>
+{% endblock %}

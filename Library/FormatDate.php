@@ -1,6 +1,6 @@
 <?php
  
-namespace Config;
+namespace Library;
 
 use \vendor\twig\twig\lib\Extension;
 use \vendor\twig\twig\lib\Filter;

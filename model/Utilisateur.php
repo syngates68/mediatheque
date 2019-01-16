@@ -4,6 +4,8 @@ namespace Model;
 
 //use Model;
 
+use PDO;
+
 class Utilisateur extends Model{
 
     private $_id;
@@ -81,17 +83,37 @@ class Utilisateur extends Model{
 
     // Requêtes BDD
     
-    public static function getUser($mail, $pass){
+    public static function getUserByMail($mail, $pass){
         return self::_getOne('utilisateur u ', ' * ', '', 'u.mail = :mail AND u.pass = :pass', [
-			'mail' => $mail,
-			'pass' => $pass
+			['key' => ':mail', 'value' => $mail, 'type' => PDO::PARAM_STR],
+			['key' => ':pass', 'value' => $pass, 'type' => PDO::PARAM_STR],
+		]);
+	}
+
+	    
+    public static function getUserByPseudo($pseudo, $pass){
+        return self::_getOne('utilisateur u ', ' * ', '', 'u.pseudo = :pseudo AND u.pass = :pass', [
+			['key' => ':pseudo', 'value' => $pseudo, 'type' => PDO::PARAM_STR],
+			['key' => ':pass',   'value' => $pass,   'type' => PDO::PARAM_STR],
 		]);
 	}
 
 	public static function getUserById($id){
 		return self::_getOne('utilisateur u ', ' u.id, u.nom, u.prenom, u.pseudo, u.date_creation, u.mail, u.pic, u.pass ', '', 'id = :id', [
-            'id' => $id
+			['key' => ':id', 'value' => $id, 'type' => PDO::PARAM_INT],
         ]);
+	}
+
+	public static function getUserExist($pseudo){
+		return self::_getOne('utilisateur u ', ' * ', '', 'u.pseudo = :pseudo', [
+			['key' => ':pseudo', 'value' => $pseudo, 'type' => PDO::PARAM_STR],
+		]);
+	}
+
+	public static function getMailExist($mail){
+		return self::_getOne('utilisateur u ', ' * ', '', 'u.mail = :mail', [
+			['key' => ':mail', 'value' => $mail, 'type' => PDO::PARAM_STR],
+		]);
 	}
 
 	public static function addUser($nom, $prenom, $pseudo, $mail, $pass){

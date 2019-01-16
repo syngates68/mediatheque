@@ -11,6 +11,8 @@ use Config\Factory;
 
 class UtilisateurController extends Controller{
 
+    protected $current_controller = 'UtilisateurController';
+
     public function getProfil(){
         if (isset($_SESSION['auth']['id'])){
             $profil = Utilisateur::getUserById($_SESSION['auth']['id']);
