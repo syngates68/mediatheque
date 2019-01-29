@@ -20,8 +20,11 @@ class Route{
         //echo $this->controller;
         $this->class_name = 'Controller\\'.$this->controller;
 
-        if (!file_exists($req))
-            return false;
+        if (!file_exists($req)){
+            http_response_code(404);
+            include(ROOT.DS.'404.htm'); // provide your own HTML for the error page
+            die();
+        }
         else{
             
             require_once $req;
@@ -33,12 +36,19 @@ class Route{
                 $method = array($c, $this->method);
 
                 if (!is_callable($method, true, $callable_name)){
-                    return false;
+                    http_response_code(404);
+                    include(ROOT.DS.'404.htm'); // provide your own HTML for the error page
+                    die();
                 }
                 if (!empty($this->param)){
                     return call_user_func_array($method, $this->param); 
                 }
                 return call_user_func($method);           
+            }
+            else{
+                http_response_code(404);
+                include(ROOT.DS.'404.htm'); // provide your own HTML for the error page
+                die();
             }
 
         }

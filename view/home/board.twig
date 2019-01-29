@@ -16,7 +16,7 @@
 
   <div class="lv_container">
     <div class="video"> 
-      <iframe src="{{ lv.get_lien }}?modestbranding=1&amp;rel=0&amp;autoplay=1&amp;autohide=1&amp;mute=1&amp;showinfo=0&amp;controls=0&amp;start=15" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+      <embed src="{{ lv.get_lien }}?modestbranding=1&amp;rel=0&amp;autoplay=1&amp;autohide=1&amp;mute=1&amp;showinfo=0&amp;controls=0&amp;start=15" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen>
     </div>
 
     <div class="lv_infos">
@@ -30,43 +30,63 @@
 
   {% endfor %}
 
-  <div class="container_videos">
+  <div class="container-fluid container_videos">
+  <h1> Nos vidéos </h1>
     <div class="row">
-    <div class=" col-sm-12 col-lg-9 list_videos">
-
-    {% include 'ajax/list_videos.twig' %}
-
-    </div>
-    <div class="col-sm-12 col-lg-3 filtres">
-      <h1> Filtrer </h1>
-      <div class="elmt_filtres" id="filtre">
-        <div class="form-group">
+      <div class="col-sm-12 col-lg-2 filtres" id="filtre">
+      <div class="form-group">
           <label class="title_form" for="type_video">Type de vidéo</label>
           <select class="form-control" id="type_video">
-            <option value="1">Toutes</option>
-            <option value="2">Gratuites</option>
-            <option value="3">Payantes</option>
+          <option value="1">Toutes</option>
+          <option value="2">Gratuites</option>
+          <option value="3">Payantes</option>
           </select>
-        </div>
-        <div class="form-group tri_prix">
+      </div>
+      <div class="form-group tri_prix">
           <label class="title_form" for="tri_video">Trier</label>
           <select class="form-control" id="tri_video">
-            <option value="1"> Prix croissant </option>
-            <option value="2"> Prix décroissant </option>
+          <option value="1"> Prix croissant </option>
+          <option value="2"> Prix décroissant </option>
           </select>
-        </div>
-        {% for t in themes %}
-        <div class="form-check">
+      </div>
+      <label class="title_form" for="type_video">Thèmes</label>
+      {% for t in themes %}
+      <div class="form-check">
           <input class="form-check-input themes" type="checkbox" value="{{ t.get_id }}" id="theme_{{ t.get_id }}" checked="checked">
           <label class="form-check-label" for="theme{{ t.get_id }}">
-            {{ t.get_nom }}
+          {{ t.get_nom }}
           </label>
+      </div>
+      {% endfor %}
+      </div>
+      <div class=" col-sm-12 col-lg-10 list_videos">
+      
+      <div class="input-group mb-3 search" id="search">
+        <div class="input-group-prepend">
+          <button class="btn btn-outline-secondary" type="button" id="button-addon1"><i class="fas fa-search"></i></button>
         </div>
-        {% endfor %}
-      <div>
-    </div>
+        <input type="text" class="form-control" placeholder="Rechercher une vidéo" name="search" aria-label="Example text with button addon" aria-describedby="button-addon1">
+      </div>
 
+      <div class="video-content">
+      {% include 'ajax/list_videos.twig' %}
+      </div>
+
+      </div>
+    </div>
   </div>
+
+  <footer class="container-fluid">
+    <div class="row">
+      <div class="col-sm-4 f_logo">
+        <i class="fas fa-video"></i><strong>D<span class="violet">o</span>ntatune</strong>
+      </div>
+      <div class="col-sm-4">
+        <a href="#"> En savoir plus </a>
+        <a href="{{ BASEURL }}home/cgu"> Conditions générales d'utilisation </a>
+      </div>
+    </div>
+  </footer>
 
   <script src="{{BASEURL}}js/video.js"></script>
   <script src="{{BASEURL}}js/board.js"></script>

@@ -4,6 +4,12 @@ namespace Model;
 
 //use Model\Model;
 
+/**
+ * Class model : Achat
+ * @author Quentin SCHIFFERLE
+ * @version 1
+ * Représente un achat de vidéo
+**/
 class Achat extends Model{
 
     private $_id;

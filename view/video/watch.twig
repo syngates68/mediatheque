@@ -15,16 +15,17 @@
 
 <div class="aff_video">
 
-  <div class="my_video">
+  <div class="my_video" style="background: url('{{BASEURL ~ video.get_miniature}}'); background-size: cover;">
       <div class="video"> 
-        <iframe src="{{ video.get_lien }}" data-id="{{ video.get_id }}" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        <embed src="{{ video.get_lien }}" data-id="{{ video.get_id }}" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen>
       </div>
-      <div class="v_infos">
-        <h2> {{ video.get_titre }} </h2>
-        <button class="btn btn-success"><i class="fas fa-expand"></i></button>
-        <p class="description"> {{ video.get_description|nl2br }} </p>
-      </div>
-      <button class="btn btn-success fb-share-button" data-url="https://avekki.000webhostapp.com/public/video/watch/{{video.get_id}}" data-title="{{ video.get_titre }}"> <i class="fab fa-facebook-f"></i> Partager</button>
+  </div>
+
+  <div class="v_infos">
+    <h2> {{ video.get_titre }} </h2>
+    <button class="btn btn-success"><i class="fas fa-expand"></i></button>
+    <p class="description"> {{ video.get_description|nl2br }} </p>
+    <button class="btn btn-success fb-share-button" data-url="https://avekki.000webhostapp.com/public/video/watch/{{video.get_id}}" data-title="{{ video.get_titre }}"> <i class="fab fa-facebook-f"></i> Partager</button>
   </div>
 
   <div class="commentaires" id="commentaires">

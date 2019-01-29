@@ -18,6 +18,11 @@ class VideoController extends Controller{
 
     protected $current_controller = 'VideoController';
 
+    /**
+     * Method: GET
+     * URL : /video/watch/
+     * Permet d'accéder à une vidéo donnée
+    **/
     public function getWatch($id){
         if (isset($_SESSION['auth']['id'])){
             $video = Video::getVideoById($id);
@@ -42,11 +47,17 @@ class VideoController extends Controller{
             }
         }
         else{
+            $_SESSION['error_access'] = 'Vous devez être connecté pour accéder à cette page';
             header('Location:'.BASEURL.'home/login');
             exit;
         }
     }
 
+    /**
+     * Method: GET
+     * URL : /video/pay/
+     * Permet d'accéder à la page de paiement d'une vidéo
+    **/
     public function getPay($id){
         if (isset($_SESSION['auth']['id'])){
             $video = Video::getVideoById($id);
@@ -55,6 +66,7 @@ class VideoController extends Controller{
             $this->render('pay');
         }
         else{
+            $_SESSION['error_access'] = 'Vous devez être connecté pour accéder à cette page';
             header('Location:'.BASEURL.'home/login');
             exit;
         }

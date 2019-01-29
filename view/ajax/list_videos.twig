@@ -1,5 +1,6 @@
 {% set BASEURL = constant('BASEURL') %}
-<h1> Nos vidéos </h1>
+{% if videos != null %}
+
 {% for v in videos %}
     <div class="elmt_video">
         <div class="video"> 
@@ -18,11 +19,23 @@
                 {% endif %}
             {% endif %}
           </div>
-          <span class="fa fa-star checked"></span>
-          <span class="fa fa-star checked"></span>
-          <span class="fa fa-star checked"></span>
-          <span class="fa fa-star"></span>
-          <span class="fa fa-star"></span>
+          {# Affichage des étoiles #}
+          {% if v.moyenne != 0 %}
+
+            {% for i in 1..v.moyenne|round %}
+              <span class="fa fa-star checked"></span>
+            {% endfor %}
+
+            {% if 5-v.moyenne|round != 0 %}
+              {% for i in 1..(5-v.moyenne|round) %}
+                <span class="fa fa-star"></span>
+              {% endfor %}
+            {% endif %}
+
+          {% else %}
+            <span class="no_star"> Aucune notation </span>
+          {% endif %}
+          {# Fin de l'affichage #}
           {% if (v.gratuite == 0) %}
             {% if (v.nbr_achats == 1) %}
               <a role="button" class="btn btn-success" href="{{BASEURL}}video/watch/{{v.id}}"> <i class="fas fa-video"></i> </a> 
@@ -36,3 +49,8 @@
     </div>
 
 {% endfor %}
+{% else %}
+<div class="alert alert-danger" role="alert">
+  Aucune vidéo à afficher!
+</div>
+{% endif %}

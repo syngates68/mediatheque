@@ -5,6 +5,12 @@ namespace Model;
 //use Model;
 use PDO;
 
+/**
+ * Class model : Actualités
+ * @author Quentin SCHIFFERLE
+ * @version 1
+ * Représente une vidéo présente sur la plateforme
+**/
 class Video extends Model{
 
     private $_id;
@@ -93,7 +99,7 @@ class Video extends Model{
 
 	//SELECT v.id, v.titre, v.id_theme, v.gratuite, v.lien, v.miniature, v.prix, v.date_ajout, t.nom as theme, t.couleur, COALESCE(a1.nombre, 0) as nbr_achats from video v left join theme t on v.id_theme = t.id left join (SELECT a.id_video as id_video , COUNT(*) as nombre FROM achat a LEFT JOIN video v ON a.id_video = v.id WHERE v.id IN (SELECT id_video FROM achat WHERE id_video = id_video AND id_utilisateur = 1) GROUP BY id_video)a1 on a1.id_video = v.id 
     public static function getAllVideos($id_user){
-        return self::_getInner('video v', ' v.id, v.titre, v.description, v.id_theme, v.gratuite, v.lien, v.miniature, v.prix, v.date_ajout, t.nom as theme, t.couleur, COALESCE(a1.nombre, 0) as nbr_achats ', ' left join theme t on v.id_theme = t.id left join (SELECT a.id_video as id_video , COUNT(*) as nombre FROM achat a LEFT JOIN video v ON a.id_video = v.id WHERE v.id IN (SELECT id_video FROM achat) AND id_utilisateur = :id GROUP BY id_video)a1 on a1.id_video = v.id ', '', '', ' ORDER BY v.gratuite DESC', [
+        return self::_getInner('video v', ' v.id, v.titre, v.description, v.id_theme, v.gratuite, v.lien, v.miniature, v.prix, v.date_ajout, t.nom as theme, t.couleur, COALESCE(a1.nombre, 0) as nbr_achats, COALESCE (AVG(n.note), 0) as moyenne ', ' left join theme t on v.id_theme = t.id left join (SELECT a.id_video as id_video , COUNT(*) as nombre FROM achat a LEFT JOIN video v ON a.id_video = v.id WHERE v.id IN (SELECT id_video FROM achat) AND id_utilisateur = :id GROUP BY id_video)a1 on a1.id_video = v.id left join notes n on n.id_video = v.id ', '', '', ' GROUP BY v.id ORDER BY v.gratuite DESC', [
 			'id' => $id_user
 		]);
 	}
@@ -109,12 +115,12 @@ class Video extends Model{
         ]);
 	}
 
-	public static function getVideosFiltre($type, $tri, $theme = array(), $id_user){
-		$order = ' ORDER BY v.gratuite DESC';
+	public static function getVideosFiltre($type, $tri, $theme = array(), $search, $id_user){
+		$order = ' GROUP BY v.id ORDER BY v.gratuite DESC';
 		if ($tri != ''){
 			$order = $tri;
 		}
-		return self::_getInner('video v', ' v.id, v.titre, v.description, v.id_theme, v.gratuite, v.lien, v.miniature, v.prix, v.date_ajout, t.nom as theme, t.couleur, COALESCE(a1.nombre, 0) as nbr_achats ', ' left join theme t on v.id_theme = t.id left join (SELECT a.id_video as id_video , COUNT(*) as nombre FROM achat a LEFT JOIN video v ON a.id_video = v.id WHERE v.id IN (SELECT id_video FROM achat) AND id_utilisateur = :id GROUP BY id_video)a1 on a1.id_video = v.id ', $type.$theme, '', $order, [
+		return self::_getInner('video v', ' v.id, v.titre, v.description, v.id_theme, v.gratuite, v.lien, v.miniature, v.prix, v.date_ajout, t.nom as theme, t.couleur, COALESCE(a1.nombre, 0) as nbr_achats, COALESCE (AVG(n.note), 0) as moyenne ', ' left join theme t on v.id_theme = t.id left join (SELECT a.id_video as id_video , COUNT(*) as nombre FROM achat a LEFT JOIN video v ON a.id_video = v.id WHERE v.id IN (SELECT id_video FROM achat) AND id_utilisateur = :id GROUP BY id_video)a1 on a1.id_video = v.id left join notes n on n.id_video = v.id ', $type.$theme.$search, '', $order, [
 			'id' => $id_user
 		]);
 	}
@@ -148,7 +154,8 @@ class Video extends Model{
 			"prix" => $line['prix'],
 			"theme" => $line['theme'],
 			"couleur" => $line['couleur'],
-			"nbr_achats" => $line['nbr_achats']
+			"nbr_achats" => $line['nbr_achats'],
+			"moyenne" => $line['moyenne']
 		);
 		return $tab;
 	}

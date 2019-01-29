@@ -4,6 +4,12 @@ namespace Model;
 
 //use Model;
 
+/**
+ * Class model : Theme
+ * @author Quentin SCHIFFERLE
+ * @version 1
+ * Représente un thème de vidéo
+**/
 class Theme extends Model{
 
     private $_id;

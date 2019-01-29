@@ -4,6 +4,12 @@ namespace Model;
 
 //use Model\Model;
 
+/**
+ * Class model : TypeAbonnement
+ * @author Quentin SCHIFFERLE
+ * @version 1
+ * Représente un type d'abonnement 
+**/
 class TypeAbonnement extends Model{
 
     private $_id;

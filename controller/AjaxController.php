@@ -13,24 +13,51 @@ class AjaxController extends Controller{
 
     protected $current_controller = 'AjaxController';
 
+    /**
+     * Method: POST
+     * URL : /ajax/commentaires/
+     * Permet de poster un commentaire
+    **/
     public function postComment(){
         $commentaire = Commentaire::addComment($_SESSION['auth']['id'], $_POST['id'], $_POST['content']);
         $commentaires = Commentaire::getAllCommentaireByVideo($_POST['id']);
         $nb_com = sizeof(Commentaire::getAllCommentaireByVideo($_POST['id']));
         $this->set('commentaire', $commentaire);
         $this->set('commentaires', $commentaires);
+        $this->set('current_user', $_SESSION['auth']['id']);
         $this->set('nb_com', $nb_com);
         $this->render('commentaires');
     }
 
+    /**
+     * Method: POST
+     * URL : /ajax/delete_comment/
+     * Permet de supprimer un commentaire
+    **/
+    public function postDelete_comment(){
+        $commentaire = Commentaire::deleteCommentaire($_POST['id_com']);
+        $commentaires = Commentaire::getAllCommentaireByVideo($_POST['id_video']);
+        $nb_com = sizeof(Commentaire::getAllCommentaireByVideo($_POST['id_video']));
+        //$this->set('commentaire', $commentaire);
+        $this->set('commentaires', $commentaires);
+        $this->set('nb_com', $nb_com);
+        $this->render('commentaires');
+    }
+
+    /**
+     * Method: POST
+     * URL : /ajax/list_videos/
+     * Permet de récupérer les vidéos selon les filtres
+    **/
     public function postList_videos(){
-        $f_type = ''; $f_themes = ''; $order = '';
+        $f_type = ''; $f_themes = ''; $order = ''; $f_search = '';
 
         //echo $_POST['type'];
 
         $type = $_POST['type'];
-        $themes = $_POST['themes'];
+        $themes = (isset($_POST['themes'])) ? $_POST['themes'] : NULL;
         $tri = $_POST['tri'];
+        $search = (isset($_POST['search'])) ? $_POST['search'] : NULL;
 
         if ($type != '' && $type != 1){
             if ($type == 2){
@@ -47,6 +74,15 @@ class AjaxController extends Controller{
             }
             elseif ($tri == 2){
                 $order = ' ORDER BY v.prix DESC';
+            }
+        }
+
+        if ($search != ''){
+            if (($type != '' || $type != 1) && !empty($themes)){
+                $f_search = ' AND v.titre like "%'.$search.'%"';
+            }
+            else{
+                $f_search = ' v.titre like "%'.$search.'%"';
             }
         }
 
@@ -74,7 +110,9 @@ class AjaxController extends Controller{
             }
         }
 
-        $videos = Video::getVideosFiltre($f_type, $order, $f_themes, $_SESSION['auth']['id']);
+        //echo $f_themes;
+
+        $videos = Video::getVideosFiltre($f_type, $order, $f_themes, $f_search, $_SESSION['auth']['id']);
         $this->set('videos', $videos);
         $this->render('list_videos');
     }

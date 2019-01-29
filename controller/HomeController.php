@@ -16,6 +16,11 @@ class HomeController extends Controller{
 
     protected $current_controller = 'HomeController';
 
+    /**
+     * Method: GET
+     * URL : /home/board/
+     * Permet d'afficher le tableau de bord
+    **/
     public function getBoard(){
         if (isset($_SESSION['auth']['id'])){
             if (isset($_SESSION['success_connect'])){
@@ -33,11 +38,17 @@ class HomeController extends Controller{
             $this->render('board');
         }
         else{
+            $_SESSION['error_access'] = 'Vous devez être connecté pour accéder à cette page';
             header('Location:'.BASEURL.'home/login');
             exit;
         }
     }
 
+    /**
+     * Method: GET
+     * URL : /home/abonnement/
+     * Permet d'accéder aux abonnements
+    **/
     public function getAbonnement(){
         if (isset($_SESSION['auth']['id'])){
             $abos = TypeAbonnement::getAllTypeAbonnements();
@@ -45,15 +56,25 @@ class HomeController extends Controller{
             $this->render('abonnement');
         }
         else{
+            $_SESSION['error_access'] = 'Vous devez être connecté pour accéder à cette page';
             header('Location:'.BASEURL.'home/login');
             exit;
         }
     }
 
+    /**
+     * Method: GET
+     * URL : /home/login/
+     * Permet d'accéder à la page de connexion
+    **/
     public function getLogin(){
         if (isset($_SESSION['error_connect'])){
             $this->set('error_message', $_SESSION['error_connect']);
             unset($_SESSION['error_connect']);
+        }
+        if (isset($_SESSION['error_access'])){
+            $this->set('error_message', $_SESSION['error_access']);
+            unset($_SESSION['error_access']);
         }
         if (isset($_SESSION['value_mail'])){
             $this->set('value_mail', $_SESSION['value_mail']);
@@ -63,9 +84,18 @@ class HomeController extends Controller{
             $this->set('value_pass', $_SESSION['value_pass']);
             unset($_SESSION['value_pass']);
         }
+        if (isset($_COOKIE['supprime_compte'])){
+            $this->set('success_message', $_COOKIE['supprime_compte']);
+            setcookie('supprime_compte', '', time() - 3600, '/', '', false, true);
+        }
         $this->render('login');
     }
 
+    /**
+     * Method: GET
+     * URL : /home/signUp/
+     * Permet d'accéder à la page d'inscription
+    **/
     public function getSignUp(){
         if (isset($_SESSION['error_inscription'])){
             $this->set('error_message', $_SESSION['error_inscription']);
@@ -102,8 +132,14 @@ class HomeController extends Controller{
         $this->render('signUp');
     }
 
+    /**
+     * Method: POST
+     * URL : /home/login/
+     * Permet de connecter un utilisateur
+    **/
     static function postLogin(){
         if (isset($_COOKIE['auth'])){
+            //echo 'ok';
             $auth = $_COOKIE['auth'];
             $auth = explode('----', $auth);
             $user = Utilisateur::getUserById($auth[0]);
@@ -127,22 +163,20 @@ class HomeController extends Controller{
                 $email = $_POST['mail'];
                 $password = $_POST['pass'];
 
-                $user = Utilisateur::getUserByMail($email, md5(md5($password)));
+                $user = Utilisateur::getUserByMail($email, md5(sha1($password)));
                 if (!empty($user)){
-                    foreach ($user as $u){
-                        if (isset($_POST['cookie_init'])){
-                            setcookie('auth', $u->get_id() . '----' . sha1($u->get_pseudo() . $u->get_pass()), time() + 3600 * 24 * 3, '/', '', false, true);
-                        }
-                        $_SESSION['auth']['id'] = $u->get_id();
-
-                        $_SESSION['success_connect'] = 'Content de vous revoir '.$u->get_pseudo();
-
-                        header('location:'.BASEURL.'home/board');
-                        exit;
+                    if (isset($_POST['cookie_init'])){
+                        setcookie('auth', $user->get_id() . '----' . sha1($user->get_pseudo() . $user->get_pass()), time() + 3600 * 24 * 3, '/', '', false, true);
                     }
+                    $_SESSION['auth']['id'] = $user->get_id();
+
+                    //$_SESSION['success_connect'] = 'Content de vous revoir '.$u->get_pseudo();
+
+                    header('location:'.BASEURL.'home/board');
+                    exit;
                 }
                 else{
-                    $user = Utilisateur::getUserByPseudo($email, md5(md5($password)));
+                    $user = Utilisateur::getUserByPseudo($email, md5(sha1($password)));
 
                     if (!empty($user)){
                         if (isset($_POST['cookie_init'])){
@@ -178,6 +212,11 @@ class HomeController extends Controller{
         }
     }
 
+    /**
+     * Method: POST
+     * URL : /home/inscription/
+     * Permet d'inscrire un utilisateur
+    **/
     static function postInscription(){
         $form = new Form();
         if ($form->check_post_raw_values_not_empty(['nom', 'prenom', 'pseudo', 'mail', 'pass', 'pass2'])){
@@ -195,7 +234,7 @@ class HomeController extends Controller{
                     $mail_count = Utilisateur::getMailExist($mail);
                     if (!$mail_count){
                         if (filter_var($mail, FILTER_VALIDATE_EMAIL)){
-                            $user = Utilisateur::addUser($nom, $prenom, $pseudo, $mail, md5(md5($pass)));
+                            $user = Utilisateur::addUser($nom, $prenom, $pseudo, $mail, md5(sha1($pass)));
                             $_SESSION['success_inscription'] = 'Vous êtes désormais inscrit sous le nom d\'utilisateur '.$pseudo;
                             mkdir("profils/".$pseudo, 0700); //Création d'un dossier au nom de l'utilisateur
                             header('location:'.BASEURL.'home/signUp');
@@ -271,6 +310,22 @@ class HomeController extends Controller{
             exit;
         }
         
+    }
+
+    /**
+     * Method: GET
+     * URL : /home/cgu/
+     * Permet d'accéder aux CGU du site
+    **/
+    public function getCgu(){
+        if (isset($_SESSION['auth']['id'])){
+            $this->render('cgu');
+        }
+        else{
+            $_SESSION['error_access'] = 'Vous devez être connecté pour accéder à cette page';
+            header('Location:'.BASEURL.'home/login');
+            exit;
+        }
     }
     
 }

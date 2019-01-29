@@ -6,6 +6,12 @@ namespace Model;
 
 use PDO;
 
+/**
+ * Class model : Utilisateur
+ * @author Quentin SCHIFFERLE
+ * @version 1
+ * Représente un utilisateur de la plateforme
+**/
 class Utilisateur extends Model{
 
     private $_id;
@@ -123,6 +129,19 @@ class Utilisateur extends Model{
 			'pseudo' => $pseudo,
 			'mail' => $mail,
 			'pass' => $pass
+		]);
+	}
+
+	public static function updateMail($mail, $id_user){
+		return self::_update('utilisateur', 'mail = :mail', 'id = :id_user', [
+			'mail' => $mail,
+			'id_user' => $id_user
+		]);
+	}
+
+	public static function deleteUser($id_user){
+		return self::_delete('utilisateur u', 'u, a, ac, c, p', ' LEFT JOIN abonnement a ON u.id = a.id_utilisateur LEFT JOIN achat ac ON u.id = ac.id_utilisateur LEFT JOIN commentaire c ON u.id = c.id_utilisateur LEFT JOIN paiements p ON u.id = p.payer_id', 'u.id = :id_user', [
+			['key' => 'id_user', 'value' => $id_user, 'type' => PDO::PARAM_INT]
 		]);
 	}
 	

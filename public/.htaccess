@@ -5,3 +5,5 @@ RewriteEngine on
 RewriteCond  %{REQUEST_FILENAME} !-f
 
 RewriteRule ^(.*)$ index.php?p=$1 [QSA,L]
+
+ErrorDocument 404 /erreur

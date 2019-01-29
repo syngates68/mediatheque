@@ -4,6 +4,12 @@ namespace Model;
 
 //use Model\Model;
 
+/**
+ * Class model : Paiements
+ * @author Quentin SCHIFFERLE
+ * @version 1
+ * Représente les paiements réalisés avec PayPal
+**/
 class Paiements extends Model{
 
     private $_id;

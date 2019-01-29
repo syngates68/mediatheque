@@ -2,19 +2,22 @@
 GENERAL
 ********************************************************/
 
-body{ position: relative; font-family: 'Roboto', 'sans-serif'; overflow-x: hidden !important; min-height: 100vh; margin-top: 40px; }
+body{ position: relative; font-family: 'Roboto', 'sans-serif'; overflow-x: hidden !important; min-height: 100vh; margin-top: 55px; }
 h1{ font-size: 30px; }
 .violet{ color: #4a0087; }
 .site_content{ transition-duration: 0.5s; }
+.no_js{ z-index: 500 !important; position: absolute; display: block; background: #e93c3c; color: #FFF; width: 100%; padding: 20px; text-align: center; top: 0; }
+.loader{ position: fixed; z-index: 10000; top: 20%; left: 37%; width: 25%; text-align: center; font-weight: bold; font-size: 16px; display: none; cursor: wait; background: #FFF; }
+.loader img{ width: 100%; }
 
 /*******************************************************
 NAVBAR
 ********************************************************/
 
-.navbar{ background: #000000 !important; z-index: 20000000000; transition-duration: 0.5s; }
+.navbar{ background: #000000 !important; z-index: 100; transition-duration: 0.5s; }
   .navbar a{ color: #FFF !important; text-transform: uppercase; letter-spacing: 1px; }
   .navbar-brand{ text-transform: none !important; transition-duration: 0.5s; }
-  .navbar .nav-link{ display: inline; }
+  .navbar .nav-link{ display: inline; font-size: 13px; }
   .navbar .navbar-nav{ transition-duration: 0.5s; }
 
   .open{ display: none; cursor: pointer; }
@@ -23,7 +26,7 @@ NAVBAR
   .change .bar2{ transform: translateX(-200%); }
   .change .bar3{ transform: rotate(45deg) translate(-7px, -7px); }
 
-.hide_navbar{ overflow-y: scroll; transform: translateX(-100%); transition-duration: 0.5s; width: 20%; position: absolute; left: 0; bottom: 0; top: 50px; background: #000; z-index: 200000; padding: 20px; }
+.hide_navbar{ overflow-y: scroll; transform: translateX(-100%); transition-duration: 0.5s; width: 20%; position: absolute; left: 0; bottom: 0; top: 50px; background: #000; z-index: 200; padding: 20px; }
   .hide_navbar .nav_item{ padding: 10px; }
   .hide_navbar .nav_item i{ display: inline-block; width: 20%; color: #FFF; }
   .hide_navbar .nav_item a{ display: inline-block; width: 79%; color: #FFF; }
@@ -35,12 +38,10 @@ NAVBAR
 .opened{ transform: translateX(0); transition-duration: 0.5s; }
 .with_sidebar{ transform: translateX(20%); transition-duration: 0.5s; }
 
-.search{ display: none; }
+.account{ margin-right: 15px; text-align: center; transition-duration: 0.3s; }
+.account img{ width: 100%; width: 60px; height: 60px; border-radius: 60px; border: 2px solid #FFF; object-fit: cover; }
 
-.account{ font-size: 12px; margin-right: 10px; width: 30px; height: 30px; border-radius: 30px; border: 2px solid #4a0087; line-height: 25px; text-align: center; transition-duration: 0.3s; }
-.account:hover{ background: #FFF; border-color: #FFF; color: #4a0087 !important; transition-duration: 0.3s; }
-
-.sign_out{ font-size: 12px; }
+.sign_out i{ margin-right: 5px; }
 
 /*******************************************************
 HOME
@@ -50,21 +51,21 @@ HOME
   .lv_infos{ position: absolute; color: #FFF; background-image: -moz-linear-gradient(left, rgba(0, 0, 0, 0.041) 0%, rgba(0, 0, 0, 0.212) 30%, rgba(0, 0, 0, 0.493) 60%, #000 100%); background-image: linear-gradient(left, rgba(0, 0, 0, 0.041) 0%, rgba(0, 0, 0, 0.212) 30%, rgba(0, 0, 0, 0.493) 60%, #000 100%); top: 10px; bottom: 10px; right: 0; width: 100%; padding: 20px; text-align: center; }
   .lv_infos h2{ font-size: 70px; font-weight: 900; text-transform: uppercase; border-bottom: 2px solid #4a0087; }
   .lv_infos p{ font-size: 50px; font-weight: 900; }
-  .lv_infos a{ width: 30%; margin-top: 20px; border-radius: 0; border: none; background: #4a0087; padding: 10px; }
+  .lv_infos a{ width: 25%; margin-top: 20px; border-radius: 20px; border: none; background: #4a0087; padding: 10px; }
   .lv_infos a:hover{ background: #3c016d; }
   .lv_infos a i{ margin-right: 10px; }
 
   .lv_infos_content{ padding: 10px; position: absolute; top: 25%; width: 70%; left: 15%; right: 15%; }
 
-.container_videos{ text-align: center; margin-top: 10px; }
-  .container_videos h1{ text-transform: uppercase; }
+.container_videos{ text-align: center; margin-top: 10px; margin-bottom: 20px; }
+  .container_videos h1{ text-transform: uppercase; text-align: left; }
 
 .list_videos{ padding: 0 100px; }
   .elmt_video{ display: inline-block; width: 49%; }
   .elmt_video .v_infos{ margin-bottom: 10px; text-align: left; padding-top: 10px; }
   .elmt_video .v_infos h2{ display: inline-block; width: 70%; background: #FFF; font-size: 13px; }
   .elmt_video span.text-muted{ display: inline-block; text-align: right; width: 25%; }
-  .elmt_video span.badge{ display: inline-block; text-align: center !important; width: 25%; }
+  .elmt_video span.badge{ display: inline-block; text-align: center !important; width: 25%; border-radius: 0 !important; padding: 5px; }
   .elmt_video .v_infos p{ margin-bottom: 5px; }
   .free{ color: #078823 !important; }
   .price{ font-weight: bold; color: #0caa90 !important; }
@@ -75,28 +76,33 @@ HOME
   .elmt_video .v_infos .btn-danger:hover{ background-image:linear-gradient(60deg, #bd2d49, #91021f); }
 
 .video{ width: 100%; position: relative; padding-bottom: 56.25%; padding-top: 25px; height: 0; }
-  .video img, .video iframe{ transition-duration: 0.5s; position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none; }
+  .video img, .video embed{ transition-duration: 0.5s; position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none; }
 
   .checked{ color: orange; }
 
 .filtres .elmt_filtres{ padding: 20px; }
-.filtres label.title_form{ float: left; }
-.filtres .form-check{ text-align: left; width: 100%; }
+.filtres select{ margin: 20px 0 !important; }
+.filtres label.title_form{ display: block; background: #4a0087; color: #FFF; text-transform: uppercase; font-weight: 800; font-size: 14px; padding: 5px; text-align: left; }
+.filtres .form-check{ text-align: left; width: 100%; margin-top: 10px; }
 .filtres .tri_prix{ display: none; }
+
+.search{ margin-bottom: 20px; }
+.search button:hover{ background: #4a0087; }
 
 /*******************************************************
 VIDEO
 ********************************************************/
-.aff_video{ padding: 20px; }
+.aff_video{ padding-bottom: 20px; }
 
-.my_video{ width: 70%; margin: 0 auto; }
-  .my_video iframe{ border: none; }
-  .my_video .v_infos{ margin-top: 20px; }
-  .my_video .v_infos h2{ font-size: 20px; display: inline-block; width: 90%; }
-  .my_video .v_infos button{ display: inline-block; width: 9%; }
-  .my_video .fb-share-button{ background: #3b5998; border: none; border-radius: 0; }
-  .my_video .fb-share-button i{ margin-right: 10px; }
-  .my_video .v_infos .description{ margin-top: 20px; font-size: 13px; }
+.my_video{ width: 100%; margin: 0 auto; padding: 40px 150px; }
+  .my_video embed{ border: none; }
+
+.v_infos{ padding: 10px; }
+.v_infos h2{ font-size: 20px; display: inline-block; width: 90%; }
+.v_infos button{ display: inline-block; width: 9%; }
+.v_infos .fb-share-button{ background: #3b5998; border: none; border-radius: 0; }
+.v_infos .fb-share-button i{ margin-right: 10px; }
+.v_infos .description{ margin-top: 20px; font-size: 13px; }
 
 .commentaires{ width: 70%; margin: 0 auto; }
   .commentaires h3{ padding-bottom: 10px; font-size: 17px; margin-top: 20px; }
@@ -125,7 +131,7 @@ ABONNEMENTS
   .abo_infos p{ width: 50%; }
   .abo_content .container{ padding: 20px; }
   .abo_content .container ul{ text-align: left; }
-  .abo_content .elmt_abo{ width: 50%; }
+  .abo_content .elmt_abo{ width: 32%; }
 
 /*******************************************************
 PROFIL
@@ -136,13 +142,19 @@ PROFIL
 .profil a{ display: block; margin-top: 10px; }
 .profil a i{ margin-left: 5px; }
 
-.profil .paiements{ padding: 20px; }
+.profil .paiements{ padding: 20px; text-align: left !important; line-height: 5px; }
 
 .profil_infos{ text-align: center; margin: 0 auto; border: 1px solid #8f8f8f8f; border-radius: 5px; padding: 20px; }
-  .profil_infos img{ object-fit: cover; width: 250px; height: 250px; border-radius: 250px; border: 1px solid #808080; }
+  .profil_infos img{ object-fit: cover; width: 250px; height: 250px; border-radius: 250px; }
   .profil_infos h1{ font-size: 25px; font-weight: 800; margin-top: 15px; margin-bottom: 0; }
   .profil_infos .pseudo{ font-size: 14px; margin-top: 0 !important; }
+  .profil_infos input{ display: none; margin: 20px 0; }
   .profil_infos button{ margin-bottom: 20px; }
+  .profil_infos .mail_valid{ display: none; margin: auto; }
+
+
+.delete_user_modal h5{ color: #000; }
+.delete_user_modal{ color: red; }
 
 /*******************************************************
 COMMANDE
@@ -161,10 +173,9 @@ COMMANDE
 ACHATS
 ********************************************************/
 
-.achats{ padding: 20px; width: 70%; margin: 0 auto; }
-.achats tr td{ width: 25%; vertical-align: middle; }
-.achats .total{ background: #000; color: #FFF; width: 25%; float: right; padding: 10px; }
-.achats img{ width: 100%; }
+.achats{ padding: 20px; width: 70%; margin: 0 auto; text-align: center; }
+.achats h1{ text-align: left; }
+.achats .total{ background: #4a0087; color: #FFF; width: 25%; display: block; margin: 30px auto 0 auto; text-transform: uppercase; }
 
 /*******************************************************
 CONNEXION/INSCRIPTION
@@ -176,7 +187,7 @@ CONNEXION/INSCRIPTION
 .login_body .alert{ width: 50%; margin: 0 auto; }
 .login_body .alert i{ margin-right: 10px; }
 
-.sign{ width: 70%; margin: 0 auto; background: #ffffffa9; min-height: 100vh; }
+.sign{ width: 70%; margin: 10px auto 0 auto; background: #ffffffa9; min-height: 100vh; }
 .sign .btn{ width: 100%; margin: 10px 0; display: block; border: 0; font-weight: 600; text-transform: uppercase; }  
 
 .sign_in, .sign_up{ padding: 20px; text-align: center; }
@@ -190,6 +201,30 @@ CONNEXION/INSCRIPTION
 .new{ margin: auto; }
 
 /*******************************************************
+CGU
+********************************************************/
+
+.cgu{ padding: 20px; width: 60%; margin: auto; }
+.cgu h2{ margin: 20px 0 15px 0; }
+.cgu h2:before{ content: "\B7 \ "; }
+
+.cgu .sommaire, .cgu_modal .sommaire{ padding: 20px 0; }
+.cgu .sommaire a, .cgu_modal .sommaire a{ display: block; }
+
+.cgu_modal{ text-align: justify !important; font-size: 13px; }
+.cgu_modal h1{ text-align: left; font-size: 16px; font-weight: bold; }
+.cgu_modal h2{ text-align: left; font-size: 14px; font-weight: bold; margin: 15px 0; }
+
+/*******************************************************
+FOOTER
+********************************************************/
+
+footer{ background: #000; text-align: center; padding: 20px; }
+footer .f_logo{ color: #FFF; font-size: 25px; }
+footer a{ color: #FFF; padding-left: 5px; display: block; }
+footer a:hover{ color: #03bd2c; text-decoration: none; transition-duration: 0.4s; }
+
+/*******************************************************
 MEDIA QUERIES
 ********************************************************/
 
@@ -199,25 +234,28 @@ MEDIA QUERIES
 
     h1{ font-size: 25px; }
 
+    .loader{ width: 50%; left: 27%; }
+
     .navbar{ position: static; }
     .navbar-brand{ text-align: center; }
     .open{ display: inline-block; }
 
     .main_navbar form{ display: none; }
     .hide_navbar{ width: 70%; }
-    .search{ display: block; }
 
     .with_sidebar{ transform: translateX(70%); }
 
     .lv_infos{ width: 100%; position: static !important; background: none; padding: 10px; }
     .lv_infos h2{ font-size: 25px; color: #000; }
     .lv_infos p{ font-size: 20px; color: #000; }
-    .lv_infos a{ margin-top: 0; }
+    .lv_infos a{ margin-top: 0; width: 60%; }
     .lv_infos_content{ position: static; width: 100%; }
 
     .list_videos{ padding: 0; }
     .elmt_video{ width: 100%; margin-bottom: 0; }
     .elmt_video .v_infos{ margin-bottom: 0; }
+
+    .filtres{ margin: 20px 0; }
 
     .video .blur a{ width: 30%; left: 35%; top: 30% !important; }
 
@@ -241,7 +279,8 @@ MEDIA QUERIES
     .profil_infos{ border: none; border-radius: 0; width: 100%; }
     .profil_infos h2{ border-top: 1px solid #585858; margin-top: 20px; }
 
-    .achats{ padding: 10px; width: 90%; }
+    .achats{ padding-top: 20px !important; padding: 0; width: 100%; }
+    .achats .total{ width: 70%; margin-bottom: 20px; }
 
     .commande{ padding: 10px 0; }
     .commande .card{ width: 100%; border: none; }

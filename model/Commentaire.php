@@ -4,6 +4,14 @@ namespace Model;
 
 //use Model;
 
+use PDO;
+
+/**
+ * Class model : Commentaire
+ * @author Quentin SCHIFFERLE
+ * @version 1
+ * Représente un commentaire pour une vidéo
+**/
 class Commentaire extends Model{
 
     private $_id;
@@ -66,7 +74,13 @@ class Commentaire extends Model{
 			'id_video' => $id_video,
 			'commentaire' => $commentaire
 		]);
-    }
+	}
+	
+	public static function deleteCommentaire($id){
+		return self::_delete('commentaire ', 'commentaire ', '', 'id = :id', [
+			['key' => 'id', 'value' => $id, 'type' => PDO::PARAM_INT]
+		]);
+	}
 	
 	/***************************************/
 	public static function buildModel(array $line){

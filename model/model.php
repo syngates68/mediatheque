@@ -17,7 +17,7 @@ abstract class Model{
         $this->hydrate($datas);
     }
     
-    static function _getAll($table, $select, $where, $limit, $order){
+    protected static function _getAll($table, $select, $where, $limit, $order){
         $db = Database::dbConnect();
         $sql = 'SELECT'.$select.'FROM '.$table;
         if ($where != ''){
@@ -38,7 +38,7 @@ abstract class Model{
         return $res;
     }
 
-    static function _getInner($table, $select, $inner, $where, $limit, $order, $param = []){
+    protected static function _getInner($table, $select, $inner, $where, $limit, $order, $param = []){
         $db = Database::dbConnect();
         $sql = 'SELECT'.$select.'FROM '.$table.$inner;
         if ($where != ''){
@@ -66,7 +66,7 @@ abstract class Model{
         return $res;
     }
 
-    static function _getOne($table, $select, $inner, $where, array $param = []){
+    protected static function _getOne($table, $select, $inner, $where, array $param = []){
         $db = Database::dbConnect();
         $sql = 'SELECT'.$select.'FROM '.$table.$inner.'WHERE '.$where;
         //print_r($sql);
@@ -94,7 +94,7 @@ abstract class Model{
 
     }
 
-    static function _create($table, $table_v, $values, $param = []){
+    protected static function _create($table, $table_v, $values, $param = []){
         $db = Database::dbConnect();
         $sql = 'INSERT INTO '.$table.$table_v.' VALUES '.$values;
         //print_r($sql);
@@ -104,7 +104,16 @@ abstract class Model{
         return true;
     }
 
-    static function _count($table, $count, $where){
+    protected static function _update($table, $set, $where, $param = []){
+        $db = Database::dbConnect();
+        $sql = 'UPDATE '.$table.' SET '.$set.' WHERE '.$where;
+        $req = $db->prepare($sql);
+        $req->execute($param);
+
+        return true;
+    }
+
+    protected static function _count($table, $count, $where){
         $db = Database::dbConnect();
         $sql = 'SELECT COUNT('.$count.') FROM '.$table;
         if ($where != ''){
@@ -113,6 +122,30 @@ abstract class Model{
         $req = $db->query($sql);
         var_dump($req);
         return $req;
+    }
+
+    protected static function _delete($table, $alias, $inner, $where = "", array $param = []) {
+        $db = Database::dbConnect();
+        $sql = "DELETE ".$alias." FROM ".$table;
+
+        if ($inner != NULL && $inner != ""){
+            $sql.= $inner;
+        }
+        
+        if($where != null && $where != "") {
+            $sql.= " where ". $where;
+        }
+        $s = $db->prepare($sql);
+
+        foreach($param as $p) {
+            if(isset($p['type']))
+                $s->bindValue($p['key'], $p['value'], $p['type']);
+            else
+                $s->bindValue($p['key'], $p['value']);
+        }
+
+        $s->execute();
+        return $s->rowCount();
     }
 
     public function hydrate(array $datas){

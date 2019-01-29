@@ -49,18 +49,10 @@ $(function(){
             $('#navbar .navbar-nav').css('transform', 'translateX(-20%)');
         }
         else{
-            $('#navbar').css('line-height', '25px');
+            $('#navbar').css('line-height', '28px');
             $('#navbar .navbar-brand').css('transform', 'translateX(0)');
             $('#navbar .navbar-nav').css('transform', 'translateX(0)');
         }
     });
 
-    $('.profil_infos a').on('click', function(){
-        if ($(this).find('.fas').hasClass('fa-sort-down')){
-            $(this).find('.fas').removeClass('fa-sort-down').addClass('fa-sort-up');
-        }
-        else{
-            $(this).find('.fas').removeClass('fa-sort-up').addClass('fa-sort-down');
-        }
-    });
 });

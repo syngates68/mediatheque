@@ -3,12 +3,13 @@
 namespace Config\Router;
 
 use Exception;
+use Config\Config;
 
 class Router{
 
     private $url;
-    private $controller = DEFAULT_MODULE;
-    private $method = DEFAULT_FUNCTION;
+    private $controller;
+    private $method;
     private $param = NULL;
     private $routes = [];
 
@@ -24,8 +25,8 @@ class Router{
         $url = explode('/', trim($url, '/'));
         //var_dump($url);
         $i = 0;
-        $this->controller = $this->loadController($url[$i+2]);
-        $this->method = $this->loadMethod($url[$i+3]);
+        $this->controller = (empty($url[$i+2]) || $url[$i+2] == '-') ? $this->loadController(Config::DEFAULT_CONTROLLER) : $this->loadController($url[$i+2]);
+        $this->method = (empty($url[$i+3]) || $url[$i+3] == '-') ? $this->loadMethod(Config::DEFAULT_METHOD) : $this->loadMethod($url[$i+3]);
         $this->param = array_slice($url, $i+4);
         //var_dump($this->param);
     }

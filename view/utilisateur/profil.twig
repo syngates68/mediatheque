@@ -1,18 +1,66 @@
 {% extends 'template.twig' %}
-{% block title %}  Profil {% endblock %}
+{% block title %} Profil {% endblock %}
 {% block content %}
 
 <div class="container profil">
 
+    <div class="modal fade delete_user_modal" id="delete_user_modal" tabindex="-1" role="dialog" aria-labelledby="confirm_delete" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title" id="confirm_delete"><i class="fas fa-video"></i><strong>D<span class="violet">o</span>ntatune</strong></h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="modal-body">
+            Cette action est irréversible, une fois votre compte supprimé, il vous sera impossible de 
+            récupérer les données stockées sur Dontatune. Vos commentaires, vos achats, ou
+            votre abonnement seront supprimés également.
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
+            <button type="button" class="btn btn-success" id="delete_user">Valider</button>
+        </div>
+        </div>
+    </div>
+    </div>
+
     <div class="row">
         <div class="col-sm-12 col-lg-6 profil_infos">
+        {% if error_message is defined %} 
+
+        <div class="alert alert-danger alert-dismissible fade show" role="alert"> 
+        <i class="fas fa-exclamation-circle"></i> {{ error_message }}
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+        </div>
+
+        {% endif %}
+
+        {% if success_message is defined %} 
+
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+        <i class="fas fa-check"></i>{{ success_message }}
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+        </div>
+
+        {% endif %}
+
             <img src="{{BASEURL ~ profil.get_pic }}">
             <h1> {{ profil.get_prenom }} {{ profil.get_nom }} </h1>
             <p class="pseudo"> @{{ profil.get_pseudo }} </p>  
             <p> Membre depuis le {{ profil.get_date_creation | date("d/m/Y") }} </p>
-            <p> Mail : {{ profil.get_mail }} </p>
-            <button type="button" class="btn btn-success">Modifier</button>
-            <button type="button" class="btn btn-danger">Supprimer</button>
+            <p id="mail_user"> Mail : {{ profil.get_mail }} </p>
+            <form method="post" action="updateMail">
+                <input type="email" class="form-control" name="mail" placeholder="Votre nouvelle adresse mail">
+                <button class="btn btn-success mail_valid" id="mail_valid" type="submit">Valider</button>
+            </form>
+            <button type="button" class="btn btn-success" id="modif_mail">Modifier</button>
+            <button type="button" class="btn btn-danger" id="supp_user" data-toggle="modal" data-target="#delete_user_modal">Supprimer</button>
 
             <a data-toggle="collapse" href="#abonnement" role="button" aria-expanded="false" aria-controls="collapseExample">
                 Votre abonnement <i class="fas fa-sort-down"></i>
@@ -26,19 +74,14 @@
             <a data-toggle="collapse" href="#paiements" role="button" aria-expanded="false" aria-controls="collapseExample">
                 Vos paiements ({{ nb_paiements }}) <i class="fas fa-sort-down"></i>
             </a>
-            <div class="collapse" id="paiements" class="paiements">
+            <div class="collapse paiements" id="paiements">
                 <div class="card card-body">
                 {% if nb_paiements != 0 %}
 
                 {% for p in paiements %}
-                    <p> 
-                    Paiement <B>{{ p.payment_id }}</B> du {{ p.payment_date | date("m/d/Y") }} - 
-                    {% if p.payment_status == "approved" %}
-                        <span style="color:green"> Validé </span>
-                    {% else %}
-                        <span style="color:red"> Non validé </span>
-                    {% endif %}
-                    </p>
+                    <p> Paiement du {{ p.payment_date | date("d/m/Y") }} </p>
+                    <p> Ref : <B>{{ p.payment_id }}</B> </p>
+                    <p> Statut : {% if p.payment_status == "approved" %} <span style="color:green"> Validé </span> {% else %} <span style="color:red"> Non validé </span> {% endif %} </p>
                     <p> Somme : <b>{{ p.payment_currency }} {{ p.payment_amount }}</b> </p>
                     <hr>
                 {% endfor %}
@@ -52,5 +95,5 @@
     </div>
 
 </div>
-
+<script src="{{BASEURL}}js/profil.js"></script>
 {% endblock %}
