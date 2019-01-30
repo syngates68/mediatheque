@@ -1,17 +1,28 @@
 {% set BASEURL = constant('BASEURL') %}
-<h3> {% if nb_com == 0 %} Aucun commentaire {% elseif nb_com == 1 %} 1 commentaire {% else %} {{ nb_com }} commentaires {% endif %}</h3>
+<h3> {% if nb_com == 0 %} Aucun avis {% else %} {{ nb_com }} avis {% endif %}</h3>
 
-<textarea id="com_contain" class="form-control expand" {% if nb_com != 0 %} placeholder="Commenter cette vidéo" {% else %}placeholder="Soyez le premier à commenter cette vidéo" {% endif %}></textarea>
+<textarea id="com_contain" class="form-control expand" {% if nb_com != 0 %} placeholder="Donner un avis sur cette vidéo" {% else %}placeholder="Soyez le premier à commenter cette vidéo" {% endif %}></textarea>
 <button class="btn btn-success" id="btn_com">Envoyer <i class="fas fa-paper-plane"></i></button>
+<div class="note" id="note">
+    <span class="text-note"> Noter cette vidéo (facultatif) </span>
+    <span class="fa fa-star" id="1"></span>
+    <span class="fa fa-star" id="2"></span>
+    <span class="fa fa-star" id="3"></span>
+    <span class="fa fa-star" id="4"></span>
+    <span class="fa fa-star" id="5"></span>
+</div>
 
 {% if nb_com != 0 %}
 
     {% for c in commentaires %}
 
-        <div class="commentaire" {% if current_user == c.id_user %} style="background-color: #ddd !important; border-color: #ccc;" {% endif %} >
-        <img src="{{BASEURL ~ c.avatar }}" alt="Photo de profil de {{ c.pseudo }}"  {% if current_user == c.id_user %} onclick = "window.location.href = '{{BASEURL}}utilisateur/profil';" style="cursor:pointer;" {% endif %} >
+        <div class="commentaire" {% if current_user == c.id_user %} style="background-color: #ebebeb !important;" {% endif %} >
+        <div class="c_user">
+            <img src="{{BASEURL ~ c.avatar }}" alt="Photo de profil de {{ c.pseudo }}"  {% if current_user == c.id_user %} onclick = "window.location.href = '{{BASEURL}}utilisateur/profil';" style="cursor:pointer;" {% endif %} >
+            <p><b> {{ c.pseudo }} </b></p>
+        </div>
         <div class="c_infos">
-            <p class="c_infos_user"> <b> {{ c.pseudo }} </b>  <span>{{ c.date_commentaire|formatDate }} </span> {% if current_user == c.id_user %} <span class="supprimer"> <a href="#" data-toggle="modal" data-target="#suppModal{{c.id}}"><i class="fas fa-times"></i></a> </span> {% endif %} </p>
+            <p class="c_infos_user"> {{ c.date_commentaire|formatDate }} {% if current_user == c.id_user %} <span class="supprimer"> <a href="#" data-toggle="modal" data-target="#suppModal{{c.id}}"><i class="fas fa-times"></i></a> </span> {% endif %} </p>
             <p class="com">{{ c.commentaire|nl2br }}</p>
         </div>
         </div>
@@ -20,7 +31,7 @@
         <div class="modal-dialog" role="document">
             <div class="modal-content">
             <div class="modal-body">
-                <p> Confirmer la suppression du commentaire </p>
+                <p> Confirmer la suppression de votre avis </p>
                 <button type="button" class="btn btn-secondary annuler" data-dismiss="modal">Annuler</button>
                 <button type="button" class="btn btn-primary" id="delete_comment" data-id="{{ c.id }}">Oui</button>
             </div>
@@ -32,6 +43,6 @@
 
 {% else %}
 
-    <div class="alert alert-danger"> Aucun commentaire pour cette vidéo </div>
+    <div class="alert alert-danger"> Aucun avis pour cette vidéo </div>
 
 {% endif %}

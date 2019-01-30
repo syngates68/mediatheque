@@ -27,13 +27,14 @@
       <li class="nav-item">
         <a class="nav-link" href="{{BASEURL}}home/abonnement">S'abonner</a>
       </li>
-      <li>
-        <a class="nav-link sign_out" href="{{BASEURL}}utilisateur/sign_out"><i class="fas fa-sign-out-alt"></i>Déconnexion</a>
-      </li>
     </ul>
-    <form class="form-inline my-2 my-lg-0">
-      <a href="{{BASEURL}}utilisateur/profil" class="account"><img src="{{ BASEURL ~ profil.get_pic }}"></a>
-    </form>
+    <div class="dropdown dropleft">
+      <a href="#" class="account dropdown-toggle" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><img src="{{ BASEURL ~ profil.get_pic }}"></a>
+        <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+          <a class="dropdown-item" href="{{BASEURL}}utilisateur/profil"><i class="fas fa-user"></i>Mon compte</a>
+          <a class="dropdown-item" href="{{BASEURL}}utilisateur/sign_out"><i class="fas fa-power-off"></i>Déconnexion</a>
+        </div>
+    </div>
   </div>
 </nav>
 

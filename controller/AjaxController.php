@@ -70,10 +70,10 @@ class AjaxController extends Controller{
 
         if ($tri != ''){
             if ($tri == 1){
-                $order = ' ORDER BY v.prix ASC';
+                $order = ' GROUP BY v.id ORDER BY v.prix ASC';
             }
             elseif ($tri == 2){
-                $order = ' ORDER BY v.prix DESC';
+                $order = ' GROUP BY v.id ORDER BY v.prix DESC';
             }
         }
 

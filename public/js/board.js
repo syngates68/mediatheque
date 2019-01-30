@@ -30,6 +30,35 @@ function charge_liste_videos(type, themes, tri, search){
 
 }
 
+$('#search input').on('focus', function(){
+    $(this).on('keyup', function(e){
+        if(e.keyCode == 13) { // KeyCode de la touche entrée
+            if ($(this).val() == 3){
+                $('#filtre .tri_prix').css('display', 'block');
+                var type = $('#filtre #type_video').val();
+                var tri = $('#filtre #tri_video').val();
+                var search = $('#search input').val();
+            }
+            else{
+                $('#filtre .tri_prix').css('display', 'none');
+                var type = $('#filtre #type_video').val();
+                var tri = '';
+                var search = $('#search input').val();
+            }
+
+            var themes = new Array();
+
+            $('.themes').each(function(){
+                if ($(this).attr('checked') == 'checked'){
+                    themes.push($(this).attr('value'));
+                }
+            });
+
+            charge_liste_videos(type, themes, tri, search);
+        }
+    });
+});
+
 $('#search button').on('click', function(){
 
     if ($(this).val() == 3){

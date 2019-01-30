@@ -33,8 +33,13 @@
             {% endif %}
 
           {% else %}
-            <span class="no_star"> Aucune notation </span>
+            <span class="fa fa-star"></span>
+            <span class="fa fa-star"></span>
+            <span class="fa fa-star"></span>
+            <span class="fa fa-star"></span>
+            <span class="fa fa-star"></span>
           {% endif %}
+            <span class="nbr_notes"> ({{ v.nbr_notes }}{% if v.nbr_notes > 1 %} notes{% else %} note{% endif %}) </span>
           {# Fin de l'affichage #}
           {% if (v.gratuite == 0) %}
             {% if (v.nbr_achats == 1) %}

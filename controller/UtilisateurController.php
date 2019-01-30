@@ -6,6 +6,7 @@ use Model\Abonnement;
 use Model\Utilisateur;
 use Model\Achat;
 use Model\Paiements;
+use Model\Commentaire;
 
 use Library\Form;
 
@@ -33,9 +34,11 @@ class UtilisateurController extends Controller{
             $profil = Utilisateur::getUserById($_SESSION['auth']['id']);
             $paiements = Paiements::getAllByUser($_SESSION['auth']['id']);
             $nb_paiements = sizeof(Paiements::getAllByUser($_SESSION['auth']['id']));
+            $commentaires = Commentaire::getCommentsByUser($_SESSION['auth']['id']);
             $this->set('profil', $profil);
             $this->set('paiements', $paiements);
             $this->set('nb_paiements', $nb_paiements);
+            $this->set('commentaires', $commentaires);
             $this->render('profil');
         }
         else{

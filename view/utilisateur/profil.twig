@@ -61,36 +61,46 @@
             </form>
             <button type="button" class="btn btn-success" id="modif_mail">Modifier</button>
             <button type="button" class="btn btn-danger" id="supp_user" data-toggle="modal" data-target="#delete_user_modal">Supprimer</button>
-
-            <a data-toggle="collapse" href="#abonnement" role="button" aria-expanded="false" aria-controls="collapseExample">
-                Votre abonnement <i class="fas fa-sort-down"></i>
-            </a>
-            <div class="collapse" id="abonnement">
-            <div class="card card-body">
-                <div class="alert alert-danger"> Vous n'avez encore souscrit à aucun abonnement </div>
             </div>
-            </div>
+        <div class="col-sm-12 col-lg-6 user_infos">
 
             <a data-toggle="collapse" href="#paiements" role="button" aria-expanded="false" aria-controls="collapseExample">
-                Vos paiements ({{ nb_paiements }}) <i class="fas fa-sort-down"></i>
             </a>
-            <div class="collapse paiements" id="paiements">
-                <div class="card card-body">
-                {% if nb_paiements != 0 %}
-
-                {% for p in paiements %}
-                    <p> Paiement du {{ p.payment_date | date("d/m/Y") }} </p>
-                    <p> Ref : <B>{{ p.payment_id }}</B> </p>
-                    <p> Statut : {% if p.payment_status == "approved" %} <span style="color:green"> Validé </span> {% else %} <span style="color:red"> Non validé </span> {% endif %} </p>
-                    <p> Somme : <b>{{ p.payment_currency }} {{ p.payment_amount }}</b> </p>
-                    <hr>
-                {% endfor %}
-
-                {% else %}
-                    <div class="alert alert-danger"> Vous n'avez aucun paiement à afficher </div>
-                {% endif %}
+            <ul class="nav nav-tabs" id="myTab" role="tablist">
+                <li class="nav-item">
+                    <a class="nav-link active" id="abo-tab" data-toggle="tab" href="#abo" role="tab" aria-controls="abo" aria-selected="true">Votre abonnement</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" id="paie-tab" data-toggle="tab" href="#paie" role="tab" aria-controls="paie" aria-selected="false"> Vos paiements ({{ nb_paiements }})</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" id="com-tab" data-toggle="tab" href="#com" role="tab" aria-controls="com" aria-selected="false"> Vos derniers commentaires </a>
+                </li>
+            </ul>
+                <div class="tab-content" id="myTabContent">
+                    <div class="tab-pane fade show active" id="abo" role="tabpanel" aria-labelledby="abo-tab">
+                        <div class="alert alert-danger"> Vous n'avez encore souscrit à aucun abonnement </div>
+                    </div>
+                    <div class="tab-pane fade paiements" id="paie" role="tabpanel" aria-labelledby="paie-tab">
+                    {% for p in paiements %}
+                        <p> Paiement du {{ p.payment_date | date("d/m/Y") }} </p>
+                        <p> Ref : <B>{{ p.payment_id }}</B> </p>
+                        <p> Statut : {% if p.payment_status == "approved" %} <span style="color:green"> Validé </span> {% else %} <span style="color:red"> Non validé </span> {% endif %} </p>
+                        <p> Somme : <b>{{ p.payment_currency }} {{ p.payment_amount }}</b> </p>
+                        <hr>
+                    {% endfor %}
+                    </div>
+                    <div class="tab-pane fade show p_com" id="com" role="tabpanel" aria-labelledby="com-tab">
+                        {% for c in commentaires %}
+                        <div class="commentaire">
+                            <div class="c_infos">
+                                <p class="c_infos_user"> <span>{{ c.date_commentaire|formatDate }} </span> pour la vidéo <B> {{ c.titre }} </B> </p>
+                                <p class="com">{{ c.commentaire|nl2br }}</p>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
                 </div>
-            </div>
         </div>
     </div>
 

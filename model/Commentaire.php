@@ -63,7 +63,7 @@ class Commentaire extends Model{
 	// Requêtes BDD
 
     public static function getAllCommentaireByVideo($id_video){
-        return self::_getInner('commentaire c ', ' c.id, c.id_utilisateur, c.id_video, c.commentaire, c.date_commentaire, u.pseudo as pseudo, u.pic as avatar, u.id as id_user ', ' inner join utilisateur u on c.id_utilisateur = u.id ', ' id_video = :id_video ', '', 'ORDER BY c.date_commentaire DESC', [
+        return self::_getInner('commentaire c ', ' c.id, c.id_utilisateur, c.id_video, c.commentaire, c.date_commentaire, v.titre as titre, u.pseudo as pseudo, u.pic as avatar, u.id as id_user ', ' inner join utilisateur u on c.id_utilisateur = u.id inner join video v on c.id_video = v.id ', ' id_video = :id_video ', '', 'ORDER BY c.date_commentaire DESC', [
             'id_video' => $id_video
         ]);
 	}
@@ -74,6 +74,12 @@ class Commentaire extends Model{
 			'id_video' => $id_video,
 			'commentaire' => $commentaire
 		]);
+	}
+
+	public static function getCommentsByUser($id_user){
+		return self::_getInner('commentaire c ', ' c.id, c.id_utilisateur, c.id_video, c.commentaire, c.date_commentaire, v.titre as titre, u.pseudo as pseudo, u.pic as avatar, u.id as id_user ', ' inner join utilisateur u on c.id_utilisateur = u.id inner join video v on c.id_video = v.id ', ' id_utilisateur = :id_utilisateur ', '', 'ORDER BY c.date_commentaire DESC LIMIT 10', [
+            'id_utilisateur' => $id_user
+        ]);
 	}
 	
 	public static function deleteCommentaire($id){
@@ -103,7 +109,8 @@ class Commentaire extends Model{
             "date_commentaire" => $line['date_commentaire'],
             "pseudo" => $line['pseudo'],
 			"avatar" => $line['avatar'],
-			"id_user" => $line['id_user']
+			"id_user" => $line['id_user'],
+			"titre" => $line['titre']
 		);
 		return $tab;
 	}

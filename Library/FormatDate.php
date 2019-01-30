@@ -29,25 +29,25 @@ class FormatDate extends \Twig_Extension
         $j = ($diff)/(60*60*24); // jours
         $s = ($diff)/(60*60*24*7); // et semaines
         if ($diff < 60) { // "à l'instant"
-            return 'à l\'instant';
+            return 'A l\'instant';
         }
         elseif ($m < 60) { // "il y a x minutes"
             $minute = (floor($m) == 1) ? 'minute' : 'minutes';
-            return 'il y a '.floor($m).' '.$minute;
+            return 'Il y a '.floor($m).' '.$minute;
         }
         elseif ($h < 24) { // " il y a x heures"
             $heure = (floor($h) <= 1) ? 'heure' : 'heures';
-            $dateFormated = 'il y a '.floor($h).' '.$heure;
+            $dateFormated = 'Il y a '.floor($h).' '.$heure;
             return $dateFormated;
         }
         elseif ($j < 7) { // " il y a x jours"
             $jour = (floor($j) <= 1) ? 'jour' : 'jours';
-            $dateFormated = 'il y a '.floor($j).' '.$jour;
+            $dateFormated = 'Il y a '.floor($j).' '.$jour;
             return $dateFormated;
         }
         elseif ($s < 5) { // " il y a x semaines"
             $semaine = (floor($s) <= 1) ? 'semaine' : 'semaines';
-            $dateFormated = 'il y a '.floor($s).' '.$semaine;
+            $dateFormated = 'Il y a '.floor($s).' '.$semaine;
             return $dateFormated;
         }
         else { // on affiche la date normalement

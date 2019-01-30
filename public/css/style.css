@@ -14,10 +14,10 @@ h1{ font-size: 30px; }
 NAVBAR
 ********************************************************/
 
-.navbar{ background: #000000 !important; z-index: 100; transition-duration: 0.5s; }
+.navbar{ background: #280346 !important; z-index: 100; transition-duration: 0.5s; }
   .navbar a{ color: #FFF !important; text-transform: uppercase; letter-spacing: 1px; }
   .navbar-brand{ text-transform: none !important; transition-duration: 0.5s; }
-  .navbar .nav-link{ display: inline; font-size: 13px; }
+  .navbar .nav-link{ display: inline; font-size: 13px; font-weight: bold; }
   .navbar .navbar-nav{ transition-duration: 0.5s; }
 
   .open{ display: none; cursor: pointer; }
@@ -26,7 +26,7 @@ NAVBAR
   .change .bar2{ transform: translateX(-200%); }
   .change .bar3{ transform: rotate(45deg) translate(-7px, -7px); }
 
-.hide_navbar{ overflow-y: scroll; transform: translateX(-100%); transition-duration: 0.5s; width: 20%; position: absolute; left: 0; bottom: 0; top: 50px; background: #000; z-index: 200; padding: 20px; }
+.hide_navbar{ overflow-y: scroll; transform: translateX(-100%); transition-duration: 0.5s; width: 20%; position: absolute; left: 0; bottom: 0; top: 50px; background: #280346; z-index: 200; padding: 20px; }
   .hide_navbar .nav_item{ padding: 10px; }
   .hide_navbar .nav_item i{ display: inline-block; width: 20%; color: #FFF; }
   .hide_navbar .nav_item a{ display: inline-block; width: 79%; color: #FFF; }
@@ -39,15 +39,19 @@ NAVBAR
 .with_sidebar{ transform: translateX(20%); transition-duration: 0.5s; }
 
 .account{ margin-right: 15px; text-align: center; transition-duration: 0.3s; }
-.account img{ width: 100%; width: 60px; height: 60px; border-radius: 60px; border: 2px solid #FFF; object-fit: cover; }
+.account img{ cursor: pointer; width: 100%; width: 60px; height: 60px; border-radius: 60px; border: 2px solid #FFF; object-fit: cover; }
 
-.sign_out i{ margin-right: 5px; }
+.dropdown a{ text-transform: none; color: #000 !important; font-size: 12px; line-height: 5px !important; }
+.dropdown-item:hover{ background: none !important; color: rgb(68, 68, 214) !important; transition-duration: 0.3s; }
+.dropdown i{ margin-right: 5px; }
+
+.dropdown-menu{ background: #ffffff93; }
 
 /*******************************************************
 HOME
 ********************************************************/
 
-.lv_container{ position: relative; }
+.lv_container{ position: relative;}
   .lv_infos{ position: absolute; color: #FFF; background-image: -moz-linear-gradient(left, rgba(0, 0, 0, 0.041) 0%, rgba(0, 0, 0, 0.212) 30%, rgba(0, 0, 0, 0.493) 60%, #000 100%); background-image: linear-gradient(left, rgba(0, 0, 0, 0.041) 0%, rgba(0, 0, 0, 0.212) 30%, rgba(0, 0, 0, 0.493) 60%, #000 100%); top: 10px; bottom: 10px; right: 0; width: 100%; padding: 20px; text-align: center; }
   .lv_infos h2{ font-size: 70px; font-weight: 900; text-transform: uppercase; border-bottom: 2px solid #4a0087; }
   .lv_infos p{ font-size: 50px; font-weight: 900; }
@@ -79,6 +83,7 @@ HOME
   .video img, .video embed{ transition-duration: 0.5s; position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none; }
 
   .checked{ color: orange; }
+  .nbr_notes{ font-size: 12px; }
 
 .filtres .elmt_filtres{ padding: 20px; }
 .filtres select{ margin: 20px 0 !important; }
@@ -97,25 +102,28 @@ VIDEO
 .my_video{ width: 100%; margin: 0 auto; padding: 40px 150px; }
   .my_video embed{ border: none; }
 
-.v_infos{ padding: 10px; }
-.v_infos h2{ font-size: 20px; display: inline-block; width: 90%; }
-.v_infos button{ display: inline-block; width: 9%; }
+.aff_video .v_infos{ padding: 10px; width: 70%; margin: 0 auto; }
+.v_infos h2{ font-size: 20px; display: inline-block; width: 87%; }
+.v_infos button{ display: inline-block; width: 12%; }
 .v_infos .fb-share-button{ background: #3b5998; border: none; border-radius: 0; }
 .v_infos .fb-share-button i{ margin-right: 10px; }
 .v_infos .description{ margin-top: 20px; font-size: 13px; }
 
-.commentaires{ width: 70%; margin: 0 auto; }
+.commentaires{ padding: 10px; width: 70%; margin: 0 auto; }
   .commentaires h3{ padding-bottom: 10px; font-size: 17px; margin-top: 20px; }
   .commentaires .form-control{ font-size: 15px; background: none !important; border-radius: 0; margin: 20px 0; min-height: 100px; }
   .commentaires button{ margin-bottom: 10px; float: right; border-radius: 0; background: #4a0087; border: none; visibility: hidden; }
+  .commentaires .note{ visibility: hidden; }
+  .commentaires .note .text-note{ font-size: 12px; margin-right: 5px; color: orange; font-weight: bold; }
   .commentaires button:hover{ background: #360063; border: none; }
   .commentaires button i{ margin-left: 5px; }
   .commentaires .alert{ clear: both; margin: 0 !important; }
-  .commentaire{ clear: both; width: 70%; margin-top: 5px; padding: 10px; border: 2px solid #dedede; background-color: #f1f1f1; border-radius: 5px; }
-  .commentaire img{ display: inline-block; object-fit: cover; vertical-align: top; width: 70px; height: 70px; border-radius: 70px; }
-  .commentaire .c_infos{ padding-left: 20px; width: 85%; display: inline-block; vertical-align: middle; text-align: left; }
+  .commentaire{ clear: both; margin-top: 5px; padding: 10px; }
+  .commentaire .c_user{ display: inline-block; width: 30%; vertical-align: top; text-align: center; }
+  .commentaire .c_user img{ object-fit: cover; width: 70px; height: 70px; border-radius: 70px; }
+  .commentaire .c_infos{ text-align: justify; padding-left: 20px; width: 69%; display: inline-block; vertical-align: middle; }
+  .commentaire .c_infos_user{ font-style: italic; }
   .commentaire p{ font-size: 12px; }
-  .commentaire span{ margin-left: 10px; }
   .commentaire .supprimer{ float: right; }
 
   .commentaires .modal{ transform: translateY(20%) !important; }
@@ -142,9 +150,9 @@ PROFIL
 .profil a{ display: block; margin-top: 10px; }
 .profil a i{ margin-left: 5px; }
 
-.profil .paiements{ padding: 20px; text-align: left !important; line-height: 5px; }
+.profil .paiements{ padding: 20px; text-align: left !important; line-height: 5px; font-size: 12px; }
 
-.profil_infos{ text-align: center; margin: 0 auto; border: 1px solid #8f8f8f8f; border-radius: 5px; padding: 20px; }
+.profil_infos{ text-align: center; padding: 20px; }
   .profil_infos img{ object-fit: cover; width: 250px; height: 250px; border-radius: 250px; }
   .profil_infos h1{ font-size: 25px; font-weight: 800; margin-top: 15px; margin-bottom: 0; }
   .profil_infos .pseudo{ font-size: 14px; margin-top: 0 !important; }
@@ -152,6 +160,11 @@ PROFIL
   .profil_infos button{ margin-bottom: 20px; }
   .profil_infos .mail_valid{ display: none; margin: auto; }
 
+.user_infos a{ font-size: 12px; color: #000; }
+.user_infos .alert{ margin-top: 15px; }
+.user_infos .commentaire{ width: 100%; padding: 5px; margin: 5px auto; }
+.user_infos span{ margin-left: 0; }
+.user_infos .c_infos{ width: 100%; }
 
 .delete_user_modal h5{ color: #000; }
 .delete_user_modal{ color: red; }
