@@ -1,0 +1,39 @@
+{% extends 'template.twig' %}
+{% block title %} {{ video_title }} {% endblock %}
+
+{% block meta %}
+
+    <meta property="og:title" content="{{ video_title }}" />
+    <meta property="og:image" content="https://avekki.000webhostapp.com/public/fichiers/{{ video_link }}" />
+    <meta property="og:url" content="https://avekki.000webhostapp.com/public/video/watch/{{video_id}}" />
+    <meta property="og:description" content="Rejoignez Dontatune pour regarder la vidéo {{ video_title }}">
+    <meta property="fb:admin" />
+
+{% endblock %}
+
+{% block content %}
+
+<div class="aff_video">
+
+  <div class="my_video" style="background: url('{{BASEURL ~ video.get_miniature}}'); background-size: cover;">
+      <div class="video"> 
+        <embed src="{{ video.get_lien }}" data-id="{{ video.get_id }}" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen>
+      </div>
+  </div>
+
+  <div class="v_infos">
+    <h2> {{ video.get_titre }} </h2>
+    <button class="btn btn-success"><i class="fas fa-expand"></i></button>
+    <p class="description"> {{ video.get_description|nl2br }} </p>
+    <button class="btn btn-success fb-share-button" data-url="https://avekki.000webhostapp.com/public/video/watch/{{video.get_id}}" data-title="{{ video.get_titre }}"> <i class="fab fa-facebook-f"></i> Partager</button>
+  </div>
+
+  <div class="commentaires" id="commentaires">
+  {% include 'ajax/commentaires.twig' %}
+  </div>
+
+</div>
+
+  <script src="{{BASEURL}}js/video.js"></script>
+  <script src="{{BASEURL}}js/textarea-expander.js"></script>
+{% endblock %}

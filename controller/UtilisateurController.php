@@ -31,6 +31,10 @@ class UtilisateurController extends Controller{
                 $this->set('error_message', $_SESSION['error_modification']);
                 unset($_SESSION['error_modification']);
             }
+            if (isset($_SESSION['error_upload'])){
+                $this->set('error_message', $_SESSION['error_upload']);
+                unset($_SESSION['error_upload']);
+            }
             $profil = Utilisateur::getUserById($_SESSION['auth']['id']);
             $paiements = Paiements::getAllByUser($_SESSION['auth']['id']);
             $nb_paiements = sizeof(Paiements::getAllByUser($_SESSION['auth']['id']));
@@ -131,6 +135,71 @@ class UtilisateurController extends Controller{
         setcookie('auth', '', time() - 3600, '/', '', false, true);
         header('Location:'.BASEURL.'home/login');
         exit;
+    }
+    
+    /**
+     * Method: POST
+     * URL : /utilisateur/update_photo/
+     * Permet de modifier la photo de profil d'un membre
+    **/
+    static function postUpdate_photo(){
+        $max_size = 1000000;
+        $types = array('image/jpg', 'image/png', 'image/jpeg');
+        $fichier_temp = $_FILES['file']['tmp_name'];
+
+        $name = $_FILES['file']['name'];
+        //$size = $_FILES['file']['size'];
+        $type = $_FILES['file']['type'];
+        $dossier = 'profils/';
+
+        if(in_array($type, $types)){
+            if ($type == 'image/jpg'){ $type = '.jpg'; }
+            if ($type == 'image/png'){ $type = '.png'; }
+            if ($type == 'image/jpeg'){ $type = '.jpeg'; }
+
+            if($size < $max_size){
+                $char = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+                $string = '';
+                for($j = 0; $j < 9; $j++){
+                    $string .= $char[rand(0, strlen($char)-1)];
+                }
+
+                $u = Utilisateur::getUserById($_SESSION['auth']['id']);
+                $nom_fichier = $u->get_pseudo().'_'.date('d_m_Y').'_'.$string.$type;
+
+                $new_url = $dossier.$u->get_pseudo().'/'.$nom_fichier;
+
+                if(move_uploaded_file($fichier_temp, $new_url)){
+                    Utilisateur::updateAvatar($dossier.$u->get_pseudo().'/'.$nom_fichier, $_SESSION['auth']['id']);
+                }
+                else{
+                    $_SESSION['error_upload'] = 'Une erreur s\'est produite durant le transfert du fichier';
+                }
+            }
+            else{
+                $_SESSION['error_upload'] = 'Le fichier est trop lourd';
+            }
+        }
+        else{
+            $_SESSION['error_upload'] = 'Le fichier doit être au format JPG, PNG ou JPEG';
+        }
+    }
+
+    public function getPaiements(){
+        if (isset($_SESSION['auth']['id'])){
+            $paiements = Paiements::getAllByUser($_SESSION['auth']['id']);
+            $user = Utilisateur::getUserById($_SESSION['auth']['id']);
+            $nb_paiements = sizeof(Paiements::getAllByUser($_SESSION['auth']['id']));
+            $this->set('paiements', $paiements);
+            $this->set('nb_paiements', $nb_paiements);
+            $this->set('user', $user);
+            $this->render('paiements');
+        }
+        else{
+            $_SESSION['error_access'] = 'Vous devez être connecté pour accéder à cette page';
+            header('Location:'.BASEURL.'home/login');
+            exit;
+        }
     }
     
 }

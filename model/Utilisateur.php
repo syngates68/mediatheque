@@ -139,6 +139,13 @@ class Utilisateur extends Model{
 		]);
 	}
 
+	public static function updateAvatar($photo, $id_user){
+		return self::_update('utilisateur', 'pic = :photo', 'id = :id_user', [
+			'photo' => $photo,
+			'id_user' => $id_user
+		]);
+	}
+
 	public static function deleteUser($id_user){
 		return self::_delete('utilisateur u', 'u, a, ac, c, p', ' LEFT JOIN abonnement a ON u.id = a.id_utilisateur LEFT JOIN achat ac ON u.id = ac.id_utilisateur LEFT JOIN commentaire c ON u.id = c.id_utilisateur LEFT JOIN paiements p ON u.id = p.payer_id', 'u.id = :id_user', [
 			['key' => 'id_user', 'value' => $id_user, 'type' => PDO::PARAM_INT]

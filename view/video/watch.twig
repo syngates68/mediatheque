@@ -13,26 +13,86 @@
 
 {% block content %}
 
-<div class="aff_video">
+<div class="container-fluid aff_video">
+    <div class="row">
 
-  <div class="my_video" style="background: url('{{BASEURL ~ video.get_miniature}}'); background-size: cover;">
-      <div class="video"> 
-        <embed src="{{ video.get_lien }}" data-id="{{ video.get_id }}" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen>
-      </div>
-  </div>
+        <div class="col-sm-12 col-lg-8">
+            <div class="my_video">
+                <div class="video"> 
+                {% if 'videos' in video.get_lien %}
+                <video id="video-control" controls src="{{ video.get_lien }}" data-id="{{ video.get_id }}"></video>
+                {% else %}
+                <div id="player" data-id="{{ video.get_id }}"></div>
+                {% endif %}
+                </div>
+            </div>
+        </div>
 
-  <div class="v_infos">
-    <h2> {{ video.get_titre }} </h2>
-    <button class="btn btn-success"><i class="fas fa-expand"></i></button>
-    <p class="description"> {{ video.get_description|nl2br }} </p>
-    <button class="btn btn-success fb-share-button" data-url="https://avekki.000webhostapp.com/public/video/watch/{{video.get_id}}" data-title="{{ video.get_titre }}"> <i class="fab fa-facebook-f"></i> Partager</button>
-  </div>
+        <div class="col-sm-12 col-lg-4">
+            <div class="v_infos">
+                <h2> {{ video.get_titre }} </h2>
+                <!--<button class="btn btn-success"><i class="fas fa-expand"></i></button>-->
+                <p class="description"> {{ video.get_description|nl2br }} </p>
+                <button class="btn btn-success fb-share-button" data-url="https://avekki.000webhostapp.com/public/video/watch/{{video.get_id}}" data-title="{{ video.get_titre }}"> <i class="fab fa-facebook-f"></i> Partager</button>
+            </div>
 
-  <div class="commentaires" id="commentaires">
-  {% include 'ajax/commentaires.twig' %}
-  </div>
+            <div class="commentaires" id="commentaires">
+            {% include 'ajax/commentaires.twig' %}
+            </div>
+        </div>
 
+    </div>
 </div>
+
+<script>
+// 2. This code loads the IFrame Player API code asynchronously.
+var tag = document.createElement('script');
+
+tag.src = "https://www.youtube.com/iframe_api";
+var firstScriptTag = document.getElementsByTagName('script')[0];
+firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+
+// 3. This function creates an <iframe> (and YouTube player)
+//    after the API code downloads.
+var player;
+function onYouTubeIframeAPIReady() {
+player = new YT.Player('player', {
+        playerVars: {
+        autoplay: 0,
+        showinfo: 0,
+        autohide: 1,
+        modestbranding: 1,
+        vq: 'hd1080',
+        rel: 0
+    },
+    videoId: '{{ video.get_lien }}',
+    events: {
+    'onReady': onPlayerReady,
+    'onStateChange': onPlayerStateChange
+    }
+});
+}
+
+// 4. The API will call this function when the video player is ready.
+function onPlayerReady(event) {
+//event.target.playVideo();
+}
+
+// 5. The API calls this function when the player's state changes.
+//    The function indicates that when playing a video (state=1),
+//    the player should play for six seconds and then stop.
+var done = false;
+function onPlayerStateChange(event) {
+if (event.data == YT.PlayerState.PLAYING && !done) {
+    //setTimeout(stopVideo, 6000);
+    done = true;
+}
+}
+function stopVideo() {
+player.stopVideo();
+}
+</script>
+
 
   <script src="{{BASEURL}}js/video.js"></script>
   <script src="{{BASEURL}}js/textarea-expander.js"></script>

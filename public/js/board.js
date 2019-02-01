@@ -14,6 +14,7 @@ function loading(bool, msg)
 function charge_liste_videos(type, themes, tri, search){
 
     loading(true, 'Chargement des vidéos en cours...');
+    $('.lv_container').css('display', 'none');
 
     $.post('http://localhost/mediatheque/public/ajax/list_videos', {
         type : type,

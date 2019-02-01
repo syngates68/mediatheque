@@ -2,7 +2,7 @@
 GENERAL
 ********************************************************/
 
-body{ position: relative; font-family: 'Roboto', 'sans-serif'; overflow-x: hidden !important; min-height: 100vh; margin-top: 55px; }
+body{ position: relative; font-family: 'Roboto', 'sans-serif'; overflow-x: hidden !important; min-height: 100vh; margin-top: 65px; }
 h1{ font-size: 30px; }
 .violet{ color: #4a0087; }
 .site_content{ transition-duration: 0.5s; }
@@ -51,23 +51,23 @@ NAVBAR
 HOME
 ********************************************************/
 
-.lv_container{ position: relative;}
+.lv_container{ position: relative; }
   .lv_infos{ position: absolute; color: #FFF; background-image: -moz-linear-gradient(left, rgba(0, 0, 0, 0.041) 0%, rgba(0, 0, 0, 0.212) 30%, rgba(0, 0, 0, 0.493) 60%, #000 100%); background-image: linear-gradient(left, rgba(0, 0, 0, 0.041) 0%, rgba(0, 0, 0, 0.212) 30%, rgba(0, 0, 0, 0.493) 60%, #000 100%); top: 10px; bottom: 10px; right: 0; width: 100%; padding: 20px; text-align: center; }
-  .lv_infos h2{ font-size: 70px; font-weight: 900; text-transform: uppercase; border-bottom: 2px solid #4a0087; }
-  .lv_infos p{ font-size: 50px; font-weight: 900; }
-  .lv_infos a{ width: 25%; margin-top: 20px; border-radius: 20px; border: none; background: #4a0087; padding: 10px; }
-  .lv_infos a:hover{ background: #3c016d; }
-  .lv_infos a i{ margin-right: 10px; }
+  .lv_infos h2{ font-size: 40px; font-weight: 900; text-transform: uppercase; border-bottom: 2px solid #4a0087; }
+  .lv_infos p{ font-size: 30px; font-weight: 900; }
+  .lv_infos a{ display: block; color: #FFF; margin: 25px auto; background: #4a0087; width: 15%; border: 2px solid #4a0087; border-radius: 0; }
+  .lv_infos a:hover{ background: #3c016d; border: 2px solid #4a0087; }
 
   .lv_infos_content{ padding: 10px; position: absolute; top: 25%; width: 70%; left: 15%; right: 15%; }
 
-.container_videos{ text-align: center; margin-top: 10px; margin-bottom: 20px; }
+.container_videos{ text-align: center; margin-top: 80px !important; margin-bottom: 20px; }
   .container_videos h1{ text-transform: uppercase; text-align: left; }
+  .container_videos .alert{ width: 50%; margin: auto; }
 
 .list_videos{ padding: 0 100px; }
   .elmt_video{ display: inline-block; width: 49%; }
   .elmt_video .v_infos{ margin-bottom: 10px; text-align: left; padding-top: 10px; }
-  .elmt_video .v_infos h2{ display: inline-block; width: 70%; background: #FFF; font-size: 13px; }
+  .elmt_video .v_infos h2{ display: inline-block; width: 70%; background: #FFF; font-size: 13px; color: #4a0087; }
   .elmt_video span.text-muted{ display: inline-block; text-align: right; width: 25%; }
   .elmt_video span.badge{ display: inline-block; text-align: center !important; width: 25%; border-radius: 0 !important; padding: 5px; }
   .elmt_video .v_infos p{ margin-bottom: 5px; }
@@ -79,17 +79,21 @@ HOME
   .elmt_video .v_infos .btn-danger{ border: 2px solid #ad0628; }
   .elmt_video .v_infos .btn-danger:hover{ background-image:linear-gradient(60deg, #bd2d49, #91021f); }
 
+  .video-content{ margin-top: 60px; }
+
 .video{ width: 100%; position: relative; padding-bottom: 56.25%; padding-top: 25px; height: 0; }
-  .video img, .video embed{ transition-duration: 0.5s; position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none; }
+  .video img, .video iframe, .video video{ transition-duration: 0.5s; position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none; }
 
   .checked{ color: orange; }
   .nbr_notes{ font-size: 12px; }
 
 .filtres .elmt_filtres{ padding: 20px; }
 .filtres select{ margin: 20px 0 !important; }
-.filtres label.title_form{ display: block; background: #4a0087; color: #FFF; text-transform: uppercase; font-weight: 800; font-size: 14px; padding: 5px; text-align: left; }
+.filtres label.title_form{ display: block; background: #4a0087; letter-spacing: 2px; color: #FFF; text-transform: uppercase; font-weight: bold; font-size: 12px; padding: 5px; text-align: left; }
 .filtres .form-check{ text-align: left; width: 100%; margin-top: 10px; }
 .filtres .tri_prix{ display: none; }
+
+.filtres i{ margin-right: 5px; }
 
 .search{ margin-bottom: 20px; }
 .search button:hover{ background: #4a0087; }
@@ -97,32 +101,32 @@ HOME
 /*******************************************************
 VIDEO
 ********************************************************/
-.aff_video{ padding-bottom: 20px; }
+.aff_video{ padding-right: 0; padding-left: 0; margin-top: 15px; }
 
-.my_video{ width: 100%; margin: 0 auto; padding: 40px 150px; }
-  .my_video embed{ border: none; }
+.my_video{ top: 75px; bottom: 0; left: 0; right: 32%; position: fixed; background: #000; }
+  .my_video iframe{ border: none; }
 
-.aff_video .v_infos{ padding: 10px; width: 70%; margin: 0 auto; }
-.v_infos h2{ font-size: 20px; display: inline-block; width: 87%; }
-.v_infos button{ display: inline-block; width: 12%; }
+.aff_video .v_infos{ padding: 20px 10px; }
+.v_infos h2{ font-size: 20px; }
 .v_infos .fb-share-button{ background: #3b5998; border: none; border-radius: 0; }
 .v_infos .fb-share-button i{ margin-right: 10px; }
-.v_infos .description{ margin-top: 20px; font-size: 13px; }
+.v_infos .description{ margin-top: 10px; font-size: 13px; }
 
-.commentaires{ padding: 10px; width: 70%; margin: 0 auto; }
+.commentaires{ padding: 10px; }
   .commentaires h3{ padding-bottom: 10px; font-size: 17px; margin-top: 20px; }
   .commentaires .form-control{ font-size: 15px; background: none !important; border-radius: 0; margin: 20px 0; min-height: 100px; }
   .commentaires button{ margin-bottom: 10px; float: right; border-radius: 0; background: #4a0087; border: none; visibility: hidden; }
-  .commentaires .note{ visibility: hidden; }
+  .commentaires .note{ clear: right; visibility: hidden; }
   .commentaires .note .text-note{ font-size: 12px; margin-right: 5px; color: orange; font-weight: bold; }
   .commentaires button:hover{ background: #360063; border: none; }
   .commentaires button i{ margin-left: 5px; }
   .commentaires .alert{ clear: both; margin: 0 !important; }
   .commentaire{ clear: both; margin-top: 5px; padding: 10px; }
-  .commentaire .c_user{ display: inline-block; width: 30%; vertical-align: top; text-align: center; }
+  .commentaire .c_user{ text-align: center; }
   .commentaire .c_user img{ object-fit: cover; width: 70px; height: 70px; border-radius: 70px; }
-  .commentaire .c_infos{ text-align: justify; padding-left: 20px; width: 69%; display: inline-block; vertical-align: middle; }
+  .commentaire .c_infos{ text-align: justify; }
   .commentaire .c_infos_user{ font-style: italic; }
+  .commentaire .c_note{ font-size: 10px; margin-bottom: 15px; }
   .commentaire p{ font-size: 12px; }
   .commentaire .supprimer{ float: right; }
 
@@ -145,20 +149,25 @@ ABONNEMENTS
 PROFIL
 ********************************************************/
 
-.profil{ padding: 50px; }
+.profil{ padding: 20px; }
 
 .profil a{ display: block; margin-top: 10px; }
-.profil a i{ margin-left: 5px; }
+.profil i{ margin-right: 5px; }
+.profil button{ font-size: 13px; }
 
 .profil .paiements{ padding: 20px; text-align: left !important; line-height: 5px; font-size: 12px; }
 
 .profil_infos{ text-align: center; padding: 20px; }
+  .profil_infos .modif_img{ position: relative; width: 250px; height: 250px; border-radius: 250px; margin: 0 auto; }
   .profil_infos img{ object-fit: cover; width: 250px; height: 250px; border-radius: 250px; }
+  .profil_infos .open_form{ cursor: pointer; position: absolute; line-height: 250px; transition-duration: 0.3s; font-size: 50px; background: none; color: transparent; top: 0; bottom: 0; width: 250px; height: 250px; border-radius: 250px; }
+  .profil_infos .open_form:hover{ color: #4a0087; background: #d4d4d48f; transition-duration: 0.3s; }
   .profil_infos h1{ font-size: 25px; font-weight: 800; margin-top: 15px; margin-bottom: 0; }
   .profil_infos .pseudo{ font-size: 14px; margin-top: 0 !important; }
   .profil_infos input{ display: none; margin: 20px 0; }
   .profil_infos button{ margin-bottom: 20px; }
   .profil_infos .mail_valid{ display: none; margin: auto; }
+  .profil_infos .member_since{ font-size: 14px; font-style: italic; }
 
 .user_infos a{ font-size: 12px; color: #000; }
 .user_infos .alert{ margin-top: 15px; }
@@ -169,17 +178,22 @@ PROFIL
 .delete_user_modal h5{ color: #000; }
 .delete_user_modal{ color: red; }
 
+.print{ display: block; font-size: 25px !important; text-align: right; cursor: pointer; }
+.print:hover{ color: #4a0087 !important; }
+
 /*******************************************************
 COMMANDE
 ********************************************************/
 
-.commande{ padding: 40px; }
-.commande h1{ text-align: center; text-transform: uppercase; font-size: 18px; }
-.commande .card{ margin: 0 auto; width: 50%; }
+.commande{ padding: 30px 20px; }
+.commande h1{ text-transform: uppercase; font-size: 18px; }
+.commande h2{ text-transform: uppercase; font-size: 17px; text-align: center; }
+.commande .cgv_p{ width: 50%; margin: 20px auto; font-size: 14px; }
+/*.commande .card{  }*/
 .commande .card-body .titre{ display: inline-block; width: 70%; font-weight: bold; }
 .commande .card-body .prix{ display: inline-block; width: 29%; text-align: right; color: #3b5998; font-weight: bold; }
 /*.commande .total{ background: #000; color: #FFF; width: 25%; float: right; padding: 10px; }*/
-.commande .btn_paypal{ width: 50%; padding: 20px; margin: 0 auto; }
+.commande .btn_paypal{ width: 50%; padding: 20px; margin: 0 auto; z-index: 1 !important; }
 #success_payment, #error_payment{ display: none; }
 
 /*******************************************************
@@ -214,11 +228,25 @@ CONNEXION/INSCRIPTION
 .new{ margin: auto; }
 
 /*******************************************************
+PAIEMENTS
+********************************************************/
+
+.p_body{ margin-top: 0; }
+
+.print_paiements{ font-size: 13px; width: 90%; margin: 15px auto; padding: 20px; }
+.print_paiements h1{ font-size: 18px; font-weight: bold; }
+
+.infos_plateforme{ padding: 10px; width: 25%; float: right; line-height: 4px; font-size: 12px; border: 1px solid rgb(255, 172, 117); }
+
+.infos_paiements{ clear: right; padding: 20px; text-align: justify; }
+.infos_paiements .p_block{ border: 1px solid #c0c0c0; padding: 15px; margin: 10px 0; }
+
+/*******************************************************
 CGU
 ********************************************************/
 
 .cgu{ padding: 20px; width: 60%; margin: auto; }
-.cgu h2{ margin: 20px 0 15px 0; }
+.cgu h2{ margin: 20px 0 15px 0; font-size: 17px; font-weight: bold; }
 .cgu h2:before{ content: "\B7 \ "; }
 
 .cgu .sommaire, .cgu_modal .sommaire{ padding: 20px 0; }
@@ -275,7 +303,7 @@ MEDIA QUERIES
     .success_connect{ width: 80%; left: 10%; }
 
     .aff_video{  padding: 0; }
-    .my_video{ width: 100%; }
+    .my_video{ width: 100%; position: static; }
     .my_video .v_infos h2{  width: 100%; padding: 10px; }
     .my_video .v_infos button{ display: none; }
     .my_video .fb-share-button{ display: block; margin: 0 auto; }
@@ -308,6 +336,7 @@ MEDIA QUERIES
     .sign{ width: 100%; }
     .sign_in .input-group input, .sign_up .input-group input{ color: #000; }
     .sign_in form, .sign_up form{ width: 90%; }
-    .filter_black{ background: none; }
+    
+    .cgu{ padding: 10px; width: 100%; }
 
 }

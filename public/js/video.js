@@ -34,8 +34,13 @@ $(function(){
     });
 
     $(document).on('click', '#btn_com', function(){
-        
-        var id = $('.video embed').attr('data-id');
+
+        if ($('.video #player').attr('data-id') != undefined){
+            var id = $('.video #player').attr('data-id');
+        }
+        else{
+            var id = $('.video #video-control').attr('data-id');
+        }
         var content = $('#com_contain').val();
 
         $.post('http://localhost/mediatheque/public/ajax/comment', {
@@ -77,7 +82,13 @@ $(function(){
     $(document).on('click', '#delete_comment', function(){
 
         var id_com = $(this).attr('data-id');
-        var id_video = $('.video embed').attr('data-id');
+
+        if ($('.video iframe').attr('data-id') != undefined){
+            var id_video = $('.video iframe').attr('data-id');
+        }
+        else{
+            var id_video = $('.video video').attr('data-id');
+        }
         
         $.post('http://localhost/mediatheque/public/ajax/delete_comment', {
             id_com : id_com,

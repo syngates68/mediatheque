@@ -5,6 +5,9 @@
 
 <div class="container commande" id="commande">
   <h1> Récapitulatif de la commande </h1>
+  <div class="row">
+
+  <div class="col-sm-12 col-lg-6">
 
     <div class="card">
       <img class="card-img-top" src="{{ BASEURL ~ video.get_miniature }}" alt="Miniature de {{ video.get_titre }}" data-id="{{ video.get_id }}" data-user="{{ id_utilisateur }}">
@@ -15,6 +18,11 @@
       </div>
 
     </div>
+  </div>
+  <div class="col-sm-12 col-lg-6">
+    <h2> Choisir un moyen de paiement </h2>
+    <p class="cgv_p"> En cliquant sur ce bouton, vous vous engagez à avoir lu et compris les <a data-toggle="modal" data-target="#cgv" href="#"> Conditions 
+        Générales de Vente </a></p>
     <div id="paypal-button" class="btn_paypal"></div>
 
 
@@ -76,7 +84,114 @@
   </script>
   <div id="error_payment" class="alert alert-danger"></div>
   <div id="success_payment" class="alert alert-success"></div>
+
+  </div>
+  </div>
 </div>
+
+<div class="modal fade" id="cgv" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1><i class="fas fa-video"></i>D<span class="violet">o</span>ntatune</h1>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body cgu_modal">
+        <h2>Conditions générales de vente du site</h2>
+
+        <div class="sommaire">
+            <a href="#1"> ARTICLE 1 : Objet </a>
+            <a href="#2"> ARTICLE 2 : Présentation des produits </a>
+            <a href="#3"> ARTICLE 3 : Durée de validité des offres de vente </a>
+            <a href="#4"> ARTICLE 4 : Commande </a>
+            <a href="#5"> ARTICLE 5 : Modalités de paiement </a>
+            <a href="#6"> ARTICLE 6 : Délai de rétractation </a>
+            <a href="#7"> ARTICLE 7 : Relations clients - Service après-vente </a>
+        </div>
+
+        <h2 id="1">Article 1 : Objet</h2>
+
+        <p>
+        Les conditions générales de ventes décrites ci-après détaillent les droits et 
+        obligations de l'entreprise Dontatune et de ses clients dans le cadre de la vente des 
+        vidéo présente sur le site internet de ladite entreprise
+        </p>
+        <p>
+        Toute prestation accomplie par la société Dontatune implique l'adhésion sans 
+        réserve de l'acheteur aux présentes conditions générales de vente.
+        </p>
+
+        <h2 id="2">Article 2 : Présentation des produits</h2>
+
+        <p>
+        Les caractéristiques des produits proposés à la vente sont présentées sur la page
+        d'accueil de notre site. Les photographies n'entrent pas dans le champ contractuel. 
+        La responsabilité de la société Dontatune ne peut être engagée si des erreurs 
+        s'y sont introduites. Tous les textes et images présentés sur le site de la société Dontatune 
+        sont réservés, pour le monde entier, au titre des droits d'auteur et de propriété intellectuelle; 
+        leur reproduction, même partielle, est strictement interdite.
+        </p>
+
+        <h2 id="3">Article 3 : Durée de validité des offres de vente</h2>
+
+        <p>La page d'accueil de notre site indique les prix en euros toutes taxes comprises. </p>
+
+        <p>
+        La société Dontatune se réserve le droit de modifier ses prix à tout moment mais les 
+        produits commandés sont facturés au prix en vigueur lors de l'enregistrement de la commande.
+        </p>
+
+        <p>
+        Les tarifs proposés comprennent les rabais et ristournes que l'entreprise Dontatune
+        serait amenée à octroyer compte tenu de ses résultats ou de la prise en charge par l'acheteur 
+        de certaines prestations.
+        </p>
+
+        <p>Aucun escompte ne sera accordé en cas de paiement anticipé.</p>
+
+        <h2 id="4">Article 4 : Commande</h2>
+
+        <p>
+        Le client valide sa commande lorsqu'il active le lien 
+        "Confirmez votre commande " en bas de la page " Récapitulatif de votre commande " 
+        après avoir accepté les présentes conditions de vente. 
+        Avant cette validation, il est systématiquement proposé au client de vérifier 
+        chacun des éléments de sa commande; il peut ainsi corriger ses erreurs éventuelles.
+        </p>
+
+        <h2 id="5">Article 5 : Modalités de paiement</h2>
+
+        <p>Le règlement des commandes s'effectue par carte bancaire ou via PayPal.</p>
+
+        <h2 id="6">Article 6 : Délai de rétractation</h2>
+
+        <p>L'Acheteur dispose d'un délai de quatorze jours francs, à compter de la réception des produits, 
+        pour exercer son droit de rétractation sans avoir à justifier de motifs ni à payer de pénalités, 
+        à l'exception, le cas échéant, des frais de retour. Si le délai de quatorze jours vient à expirer un 
+        samedi, un dimanche ou un jour férié ou chômé, il est prorogé jusqu'au premier jour ouvrable suivant.</p>
+
+        <p>En cas d'exercice du droit de rétractation, la société rembourse l'Acheteur de la totalité des 
+        sommes versées, dans les meilleurs délais et au plus tard dans les quatorze jours suivant la 
+        date à laquelle ce droit a été exercé.</p>
+
+        <h2 id="7">Article 7 : Relations clients - Service après-vente</h2>
+
+        <p>Pour toute information, question ou réclamation, le client 
+        peut s'adresser du lundi au vendredi, de 9 h à 18 h au service Relations Clients de la société </p>
+
+        <ul>
+            <li>Adresse:. . . . .</li>
+            <li>Tél: 01 . . . . .</li>
+            <li>Fax: 01 . . . . .</li>
+            <li>e-mail: . . . . .</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
 
   <script src="{{BASEURL}}js/video.js"></script>
 {% endblock %}

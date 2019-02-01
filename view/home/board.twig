@@ -12,30 +12,12 @@
   </div>
   {% endif #}
 
-  {% for lv in last_video %}
-
-  <div class="lv_container">
-    <div class="video"> 
-      <embed src="{{ lv.get_lien }}?modestbranding=1&amp;rel=0&amp;autoplay=1&amp;autohide=1&amp;mute=1&amp;showinfo=0&amp;controls=0&amp;start=15" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen>
-    </div>
-
-    <div class="lv_infos">
-      <div class="lv_infos_content">
-        <h2> A la Une </h2>
-        <p class="title"> {{ lv.get_titre }} </p>
-        <a role="button" class="btn btn-success" href="{{BASEURL}}video/watch/{{lv.get_id}}"><i class="fas fa-video"></i>Voir</a>
-      </div>
-    </div>
-  </div>
-
-  {% endfor %}
-
   <div class="container-fluid container_videos">
   <h1> Nos vidéos </h1>
     <div class="row">
       <div class="col-sm-12 col-lg-2 filtres" id="filtre">
       <div class="form-group">
-          <label class="title_form" for="type_video">Type de vidéo</label>
+          <label class="title_form" for="type_video"><i class="fas fa-video"></i>Type de vidéo</label>
           <select class="form-control" id="type_video">
           <option value="1">Toutes</option>
           <option value="2">Gratuites</option>
@@ -43,13 +25,13 @@
           </select>
       </div>
       <div class="form-group tri_prix">
-          <label class="title_form" for="tri_video">Trier</label>
+          <label class="title_form" for="tri_video"><i class="fas fa-sliders-h"></i>Trier</label>
           <select class="form-control" id="tri_video">
           <option value="1"> Prix croissant </option>
           <option value="2"> Prix décroissant </option>
           </select>
       </div>
-      <label class="title_form" for="type_video">Thèmes</label>
+      <label class="title_form" for="type_video"><i class="fas fa-search-plus"></i>Thèmes</label>
       {% for t in themes %}
       <div class="form-check">
           <input class="form-check-input themes" type="checkbox" value="{{ t.get_id }}" id="theme_{{ t.get_id }}" checked="checked">
@@ -58,6 +40,9 @@
           </label>
       </div>
       {% endfor %}
+      <div class="pub" style="margin-top: 25px;">
+        <img src="{{BASEURL}}images/pub.gif" style="width: 100%">
+      </div>
       </div>
       <div class=" col-sm-12 col-lg-10 list_videos">
       
@@ -67,6 +52,78 @@
         </div>
         <input type="text" class="form-control" placeholder="Rechercher une vidéo" name="search" aria-label="Example text with button addon" aria-describedby="button-addon1">
       </div>
+
+  {% for lv in last_video %}
+
+  <div class="lv_container">
+    <div class="video"> 
+      <div id="player" data-id="{{ video.get_id }}"></div>
+    </div>
+
+    <div class="lv_infos">
+      <div class="lv_infos_content">
+        <h2> A la Une </h2>
+        <p class="title"> {{ lv.get_titre }} </p>
+        <a role="button" class="btn btn-success" href="{{BASEURL}}video/watch/{{lv.get_id}}"><i class="fas fa-video"></i></a>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // 2. This code loads the IFrame Player API code asynchronously.
+    var tag = document.createElement('script');
+
+    tag.src = "https://www.youtube.com/iframe_api";
+    var firstScriptTag = document.getElementsByTagName('script')[0];
+    firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+
+    // 3. This function creates an <iframe> (and YouTube player)
+    //    after the API code downloads.
+    var player;
+    function onYouTubeIframeAPIReady() {
+    player = new YT.Player('player', {
+        playerVars: {
+            autoplay: 1,
+            loop: 1,
+            controls: 0,
+            showinfo: 0,
+            autohide: 1,
+            modestbranding: 1,
+            vq: 'hd1080',
+            start: 15,
+            rel: 0,
+            playlist: '{{ lv.get_lien }}'
+        },
+        videoId: '{{ lv.get_lien }}',
+        events: {
+        'onReady': onPlayerReady,
+        'onStateChange': onPlayerStateChange
+        }
+    });
+    }
+
+    // 4. The API will call this function when the video player is ready.
+    function onPlayerReady(event) {
+    event.target.playVideo();
+    player.mute();
+    }
+
+    // 5. The API calls this function when the player's state changes.
+    //    The function indicates that when playing a video (state=1),
+    //    the player should play for six seconds and then stop.
+    var done = false;
+    function onPlayerStateChange(event) {
+    if (event.data == YT.PlayerState.PLAYING && !done) {
+        //setTimeout(stopVideo, 6000);
+        done = true;
+    }
+    }
+    function stopVideo() {
+    player.stopVideo();
+    }
+    </script>
+
+  {% endfor %}
 
       <div class="video-content">
       {% include 'ajax/list_videos.twig' %}
@@ -84,6 +141,7 @@
       <div class="col-sm-4">
         <a href="#"> En savoir plus </a>
         <a href="{{ BASEURL }}home/cgu"> Conditions générales d'utilisation </a>
+        <a href="{{ BASEURL }}home/cgv"> Conditions générales de vente </a>
       </div>
     </div>
   </footer>

@@ -327,5 +327,21 @@ class HomeController extends Controller{
             exit;
         }
     }
+
+    /**
+     * Method: GET
+     * URL : /home/cgv/
+     * Permet d'accéder aux CGV du site
+    **/
+    public function getCgv(){
+        if (isset($_SESSION['auth']['id'])){
+            $this->render('cgv');
+        }
+        else{
+            $_SESSION['error_access'] = 'Vous devez être connecté pour accéder à cette page';
+            header('Location:'.BASEURL.'home/login');
+            exit;
+        }
+    }
     
 }

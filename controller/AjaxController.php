@@ -19,6 +19,10 @@ class AjaxController extends Controller{
      * Permet de poster un commentaire
     **/
     public function postComment(){
+        if (isset($_SESSION['success_comment'])){
+            $this->set('success_message', $_SESSION['success_comment']);
+            unset($_SESSION['success_comment']);
+        }
         $commentaire = Commentaire::addComment($_SESSION['auth']['id'], $_POST['id'], $_POST['content']);
         $commentaires = Commentaire::getAllCommentaireByVideo($_POST['id']);
         $nb_com = sizeof(Commentaire::getAllCommentaireByVideo($_POST['id']));
@@ -26,6 +30,7 @@ class AjaxController extends Controller{
         $this->set('commentaires', $commentaires);
         $this->set('current_user', $_SESSION['auth']['id']);
         $this->set('nb_com', $nb_com);
+        $_SESSION['success_comment'] = 'Votre avis a bien été ajouté! Merci de votre apport à la plateforme!';
         $this->render('commentaires');
     }
 
@@ -41,6 +46,7 @@ class AjaxController extends Controller{
         //$this->set('commentaire', $commentaire);
         $this->set('commentaires', $commentaires);
         $this->set('nb_com', $nb_com);
+        $this->set('current_user', $_SESSION['auth']['id']);
         $this->render('commentaires');
     }
 

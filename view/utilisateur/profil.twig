@@ -50,38 +50,43 @@
 
         {% endif %}
 
-            <img src="{{BASEURL ~ profil.get_pic }}">
+            <div class="modif_img" id="modif_img">
+                <img src="{{BASEURL ~ profil.get_pic }}">
+                <div class="open_form" onclick="$('#choix-photo').click();"><i class="fas fa-camera"></i></div>
+                <form id='form-photo' method='POST' enctype='multipart/form-data' target='myFrame'>
+                    <input type='file' name='file' id="choix-photo" style='display:none'/>
+                </form>
+            </div>
             <h1> {{ profil.get_prenom }} {{ profil.get_nom }} </h1>
             <p class="pseudo"> @{{ profil.get_pseudo }} </p>  
-            <p> Membre depuis le {{ profil.get_date_creation | date("d/m/Y") }} </p>
+            <p class="member_since"> Membre depuis le {{ profil.get_date_creation | date("d/m/Y") }} </p>
             <p id="mail_user"> Mail : {{ profil.get_mail }} </p>
-            <form method="post" action="updateMail">
-                <input type="email" class="form-control" name="mail" placeholder="Votre nouvelle adresse mail">
-                <button class="btn btn-success mail_valid" id="mail_valid" type="submit">Valider</button>
+            <form method="post" action="updateMail" name="test" enctype="multipart/form-data">
+                <input type="email" id="input_mail" class="form-control" name="mail" placeholder="Votre nouvelle adresse mail">
+                <button class="btn btn-success mail_valid" id="mail_valid" type="submit"><i class="fas fa-check"></i>Valider</button>
             </form>
-            <button type="button" class="btn btn-success" id="modif_mail">Modifier</button>
-            <button type="button" class="btn btn-danger" id="supp_user" data-toggle="modal" data-target="#delete_user_modal">Supprimer</button>
+            <button type="button" class="btn btn-success" id="modif_mail"><i class="fas fa-edit"></i>Modifier</button>
+            <button type="button" class="btn btn-danger" id="supp_user" data-toggle="modal" data-target="#delete_user_modal"><i class="fas fa-trash-alt"></i>Supprimer</button>
             </div>
         <div class="col-sm-12 col-lg-6 user_infos">
 
-            <a data-toggle="collapse" href="#paiements" role="button" aria-expanded="false" aria-controls="collapseExample">
-            </a>
             <ul class="nav nav-tabs" id="myTab" role="tablist">
                 <li class="nav-item">
-                    <a class="nav-link active" id="abo-tab" data-toggle="tab" href="#abo" role="tab" aria-controls="abo" aria-selected="true">Votre abonnement</a>
+                    <a class="nav-link active" id="abo-tab" data-toggle="tab" href="#abo" role="tab" aria-controls="abo" aria-selected="true"> <i class="fas fa-signature"></i> Votre abonnement</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" id="paie-tab" data-toggle="tab" href="#paie" role="tab" aria-controls="paie" aria-selected="false"> Vos paiements ({{ nb_paiements }})</a>
+                    <a class="nav-link" id="paie-tab" data-toggle="tab" href="#paie" role="tab" aria-controls="paie" aria-selected="false"> <i class="fas fa-euro-sign"></i> Vos paiements ({{ nb_paiements }})</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" id="com-tab" data-toggle="tab" href="#com" role="tab" aria-controls="com" aria-selected="false"> Vos derniers commentaires </a>
+                    <a class="nav-link" id="com-tab" data-toggle="tab" href="#com" role="tab" aria-controls="com" aria-selected="false"> <i class="fas fa-comments"></i> Vos derniers commentaires </a>
                 </li>
             </ul>
                 <div class="tab-content" id="myTabContent">
                     <div class="tab-pane fade show active" id="abo" role="tabpanel" aria-labelledby="abo-tab">
-                        <div class="alert alert-danger"> Vous n'avez encore souscrit à aucun abonnement </div>
+                        <div class="alert alert-warning"> Vous n'avez encore souscrit à aucun abonnement </div>
                     </div>
                     <div class="tab-pane fade paiements" id="paie" role="tabpanel" aria-labelledby="paie-tab">
+                    <a target="_blank" href="{{BASEURL}}utilisateur/paiements" class="print"><i class="fas fa-print"></i></a>
                     {% for p in paiements %}
                         <p> Paiement du {{ p.payment_date | date("d/m/Y") }} </p>
                         <p> Ref : <B>{{ p.payment_id }}</B> </p>
@@ -105,5 +110,6 @@
     </div>
 
 </div>
+
 <script src="{{BASEURL}}js/profil.js"></script>
 {% endblock %}
