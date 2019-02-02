@@ -124,6 +124,12 @@ class Video extends Model{
 			'id' => $id_user
 		]);
 	}
+
+	public static function getNbrVideoById($id){
+		return self::_count('video', 'id = :id', [
+			['key' => ':id', 'value' => $id, 'type' => PDO::PARAM_INT]
+		]);
+	}
 	
 	/***************************************/
 	public static function buildModel(array $line){

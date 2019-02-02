@@ -21,7 +21,9 @@ class Utilisateur extends Model{
     private $_date_creation;
 	private $_mail;
 	private $_pic;
-    private $_pass;
+	private $_pass;
+	private $_confirm_key;
+	private $_confirm;
     
     public function get_id(){
 		return $this->_id;
@@ -86,6 +88,22 @@ class Utilisateur extends Model{
 	public function set_pass($_pass){
 		$this->_pass = $_pass;
 	}
+	
+	public function get_confirm_key(){
+		return $this->_confirm_key;
+	}
+
+	public function set_confirm_key($_confirm_key){
+		$this->_confirm_key = $_confirm_key;
+	}
+	
+	public function get_confirm(){
+		return $this->_confirm;
+	}
+
+	public function set_confirm($_confirm){
+		$this->_confirm = $_confirm;
+	}
 
     // Requêtes BDD
     
@@ -105,7 +123,7 @@ class Utilisateur extends Model{
 	}
 
 	public static function getUserById($id){
-		return self::_getOne('utilisateur u ', ' u.id, u.nom, u.prenom, u.pseudo, u.date_creation, u.mail, u.pic, u.pass ', '', 'id = :id', [
+		return self::_getOne('utilisateur u ', ' u.id, u.nom, u.prenom, u.pseudo, u.date_creation, u.mail, u.pic, u.pass, u.confirm_key ', '', 'id = :id', [
 			['key' => ':id', 'value' => $id, 'type' => PDO::PARAM_INT],
         ]);
 	}
@@ -122,13 +140,20 @@ class Utilisateur extends Model{
 		]);
 	}
 
-	public static function addUser($nom, $prenom, $pseudo, $mail, $pass){
-		return self::_create('utilisateur ', ' (nom, prenom, pseudo, mail, pass)', '(:nom, :prenom, :pseudo, :mail, :pass)', [
+	public static function getUserConfirm($id_user){
+		return self::_getOne('utilisateur u ', ' * ', '', 'u.id = :id AND u.confirm = 1', [
+			['key' => ':id', 'value' => $id_user, 'type' => PDO::PARAM_INT],
+		]);
+	}
+
+	public static function addUser($nom, $prenom, $pseudo, $mail, $pass, $confirm_key){
+		return self::_create('utilisateur ', ' (nom, prenom, pseudo, mail, pass, confirm_key)', '(:nom, :prenom, :pseudo, :mail, :pass, :confirm_key)', [
 			'nom' => $nom,
 			'prenom' => $prenom,
 			'pseudo' => $pseudo,
 			'mail' => $mail,
-			'pass' => $pass
+			'pass' => $pass,
+			'confirm_key' => $confirm_key
 		]);
 	}
 
@@ -136,6 +161,19 @@ class Utilisateur extends Model{
 		return self::_update('utilisateur', 'mail = :mail', 'id = :id_user', [
 			'mail' => $mail,
 			'id_user' => $id_user
+		]);
+	}
+
+	public static function updatePassword($password, $id_user){
+		return self::_update('utilisateur', 'pass = :password', 'id = :id_user', [
+			'password' => $password,
+			'id_user' => $id_user
+		]);
+	}
+
+	public static function updateConfirm($id_user){
+		return self::_update('utilisateur', 'confirm = 1', 'id = :id', [
+			'id' => $id_user
 		]);
 	}
 
@@ -162,7 +200,8 @@ class Utilisateur extends Model{
 			"date_creation" => $line['date_creation'],
 			"mail" => $line['mail'],
 			"pic" => $line['pic'],
-			"pass" => $line['pass']
+			"pass" => $line['pass'],
+			"confirm_key" => $line['confirm_key']
 		]);
 		return $u;
 	}

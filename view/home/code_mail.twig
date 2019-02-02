@@ -1,0 +1,29 @@
+{% extends 'inc/head.twig' %}
+{% block title %} Mot de passe oublié {% endblock %}
+{% block main %}
+
+<div class="confirm">
+
+    <h1><i class="fas fa-video"></i>D<span class="violet">o</span>ntatune</h1>
+    <h2> Plateforme de vidéos en ligne </h2>
+
+    <h3> Mot de passe oublié </h3>
+
+    {% if error_message is defined %} 
+
+        <div class="alert alert-danger" role="alert">
+        <i class="fas fa-info-circle"></i>{{ error_message }}
+        </div>
+
+    {% endif %}
+
+    <p> Un mail vient de vous être envoyé afin de vous permettre de réinitialiser votre mot de passe </p>
+    <p> Veuillez entrer ce code ci-dessous </p>
+    <form method="post" action="code_mail">
+        <input type="text" class="form-control" name="code_mdp" maxlength="8">
+        <button type="submit" class="btn btn-success">Valider</button>
+    </form>
+
+</div>
+
+{% endblock %}

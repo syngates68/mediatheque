@@ -96,13 +96,11 @@ $(function(){
         },
         function(data){
             $('.commentaires').html(data);
-            $('body').removeClass('modal-open');
+            $('body').removeClass('modal-open').css('padding-right', '0');
             $('.modal-backdrop').css('display', 'none');
         });
 
         return false;
     });
-
-    //$( "#commentaires" ).load("{{BASEURL}}view/commentaires.twig" );
 
 });

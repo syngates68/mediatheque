@@ -7,6 +7,8 @@ use Model\Theme;
 use Model\Abonnement;
 use Model\Utilisateur;
 
+use Config\Router\Response;
+
 use Library\FormatDate;
 use Library\ShortText;
 
@@ -14,11 +16,18 @@ require (ROOT.DS.'vendor/autoload.php');
 
 class Controller{
 
-    protected $current_controller;
+    public static $current_controller;
+    public $controller_name;
 
     private $content = array();
     private $rendered = false;
     private static $twig = NULL;
+
+    public function __construct(){
+        $this->set('BASEURL', BASEURL);
+        self::$current_controller = $this;
+        $this->response = new Response();
+    }
 
     static function loadTwig(){    
         \ComposerAutoloaderInitb80da45cb6974f22f3f089979c4acd7e::getLoader();
@@ -56,9 +65,10 @@ class Controller{
             return false;
         }
 
-        $file = strtolower(str_replace('Controller', '', $this->current_controller)).'/'.$viewName.'.twig';
+        $file = strtolower($this->controller_name).'/'.$viewName.'.twig';
         $this->rendered = true;
-        echo self::loadTwig()->render($file, $this->content);     
+        $this->response->setBody($this->loadTwig()->render($file, $this->content));
+        $this->response->send();
     }
 
     protected static function rrmdir($dir) {
@@ -72,6 +82,10 @@ class Controller{
         reset($objects); // on remet à 0 les objets
         rmdir($dir); // on supprime le dossier
         }
+    }
+
+    public function getResponse(){
+        return $this->response;
     }
     
 }

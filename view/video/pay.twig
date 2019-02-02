@@ -14,19 +14,122 @@
       <div class="card-body">
         <p class="card-text titre">{{ video.get_titre }}</p>
         <p class="card-text prix">EUR {{ video.get_prix }}</p>
-        <p class="card-text">{{ video.get_description|nl2br }}</p>
+        <p class="card-text description">{{ video.get_description|nl2br }}</p>
       </div>
 
     </div>
   </div>
-  <div class="col-sm-12 col-lg-6">
+  <div class="col-sm-12 col-lg-6 choix_paie">
     <h2> Choisir un moyen de paiement </h2>
-    <p class="cgv_p"> En cliquant sur ce bouton, vous vous engagez à avoir lu et compris les <a data-toggle="modal" data-target="#cgv" href="#"> Conditions 
-        Générales de Vente </a></p>
-    <div id="paypal-button" class="btn_paypal"></div>
 
+    <ul class="nav nav-tabs" id="myTab" role="tablist">
+        <li class="nav-item">
+            <a class="nav-link active" id="cb-tab" data-toggle="tab" href="#cb" role="tab" aria-controls="cb" aria-selected="true"> <i class="fas fa-money-check"></i> Carte bancaire </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" id="paypal-tab" data-toggle="tab" href="#paypal" role="tab" aria-controls="paypal" aria-selected="false"> <i class="fab fa-paypal"></i> PayPal </a>
+        </li>
+    </ul>
+
+    <div class="tab-content" id="myTabContent">
+      <div class="tab-pane fade show active cb" id="cb" role="tabpanel" aria-labelledby="cb-tab">
+      {% if carte_exist == 1 %}
+  
+          {% if success_message is defined %} 
+
+          <div class="alert alert-success" role="alert">
+            <i class="fas fa-info-check"></i>{{ success_message }}
+          </div>
+
+          {% endif %}
+
+      {% else %}
+        <form class="form_cb" id="form-cb">
+
+          <div class="form-row">
+
+            <div class="col-sm-12">
+              <label> Numéro de carte </label>
+              <div class="form-group input-group">
+                <div class="input-group-prepend">
+                  <span class="input-group-text" id="basic-addon1"><i class="fas fa-money-check"></i></span>
+                </div>
+                <input type="text" class="form-control" id="numero" name="numero" maxlength="16" value="{{ value_numero }}">
+              </div>
+            </div>
+
+          </div>
+
+          <div class="form-row">
+
+            <div class="col-sm-6">
+              <label> Date d'expiration </label>
+              <div class="form-group input-group">
+                <div class="input-group-prepend">
+                  <span class="input-group-text" id="basic-addon1"><i class="far fa-calendar-alt"></i></span>
+                </div>
+                <input type="text" class="form-control" id="date_expir" name="date_expir" placeholder="MM/VV" maxlength="5" value="{{ value_date_expir }}">
+              </div>
+            </div>
+
+            <div class="col-sm-6">
+              <label> Cryptogramme </label>
+              <div class="form-group input-group">
+                <div class="input-group-prepend">
+                  <span class="input-group-text" id="basic-addon1"><i class="fas fa-edit"></i></span>
+                </div>
+                <input type="text" class="form-control" id="crypto" name="crypto" placeholder="CVC" maxlength="3" value="{{ value_crypto }}">
+              </div>
+            </div>
+          </div>
+          <button type="button" class="btn btn-primary" id="save-info" onclick="saveInfo()"><i class="fas fa-save"></i>Enregistrer ma carte</button>
+          <button type="button" class="btn btn-success" id="valid-cb"><i class="fas fa-check"></i>Valider le paiement</button>
+
+          {% if error_message is defined %} 
+
+          <div class="alert alert-danger" role="alert">
+            <i class="fas fa-info-circle"></i>{{ error_message }}
+          </div>
+
+          {% endif %}
+
+          {% if success_message is defined %} 
+
+          <div class="alert alert-success" role="alert">
+            <i class="fas fa-info-check"></i>{{ success_message }}
+          </div>
+
+          {% endif %}
+
+        {% endif %}
+        </form>
+      </div>
+      <div class="tab-pane fade paypal" id="paypal" role="tabpanel" aria-labelledby="paypal-tab">
+          <p class="cgv_p"> <i class="fas fa-info-circle"></i>En cliquant sur ce bouton, vous vous engagez à avoir lu et compris les <a data-toggle="modal" data-target="#cgv" href="#"> Conditions 
+            Générales de Vente </a></p>
+          <div id="paypal-button" class="btn_paypal"></div>
+      </div>
+    </div>
+
+    <script src="{{BASEURL}}js/video.js"></script>
 
     <script>
+
+    function saveInfo(){
+      var numero = $('#numero').val();
+      var date_expir = $('#date_expir').val();
+      var crypto = $('#crypto').val();
+
+      $.post('http://localhost/mediatheque/public/video/addCarte', {
+          numero : numero,
+          date_expir : date_expir,
+          crypto : crypto
+      },
+      function(){
+          location.reload();
+      });
+    }
+
     paypal.Button.render({
       env: 'sandbox',
       client: {
@@ -192,6 +295,4 @@
   </div>
 </div>
 
-
-  <script src="{{BASEURL}}js/video.js"></script>
 {% endblock %}

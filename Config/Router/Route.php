@@ -22,8 +22,8 @@ class Route{
 
         if (!file_exists($req)){
             http_response_code(404);
-            include(ROOT.DS.'404.htm'); // provide your own HTML for the error page
-            die();
+            header('Location:'.BASEURL.'home/404'); // provide your own HTML for the error page
+            exit;
         }
         else{
             
@@ -35,20 +35,25 @@ class Route{
 
                 $method = array($c, $this->method);
 
-                if (!is_callable($method, true, $callable_name)){
+                if (is_callable($method, false, $callable_name)){
+                    if (!empty($this->param)){
+                        return call_user_func_array($method, $this->param); 
+                    }
+                    else{
+                        return call_user_func($method);
+                    }
+                }
+                else{
                     http_response_code(404);
-                    include(ROOT.DS.'404.htm'); // provide your own HTML for the error page
-                    die();
+                    header('Location:'.BASEURL.'home/404'); // provide your own HTML for the error page
+                    exit; 
                 }
-                if (!empty($this->param)){
-                    return call_user_func_array($method, $this->param); 
-                }
-                return call_user_func($method);           
+         
             }
             else{
                 http_response_code(404);
-                include(ROOT.DS.'404.htm'); // provide your own HTML for the error page
-                die();
+                header('Location:'.BASEURL.'home/404'); // provide your own HTML for the error page
+                exit;
             }
 
         }

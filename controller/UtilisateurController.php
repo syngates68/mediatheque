@@ -14,7 +14,7 @@ use Config\Factory;
 
 class UtilisateurController extends Controller{
 
-    protected $current_controller = 'UtilisateurController';
+    public $controller_name = 'utilisateur';
 
     /**
      * Method: GET
@@ -39,10 +39,12 @@ class UtilisateurController extends Controller{
             $paiements = Paiements::getAllByUser($_SESSION['auth']['id']);
             $nb_paiements = sizeof(Paiements::getAllByUser($_SESSION['auth']['id']));
             $commentaires = Commentaire::getCommentsByUser($_SESSION['auth']['id']);
+            $nb_coms = sizeof(Commentaire::getCommentsByUser($_SESSION['auth']['id']));
             $this->set('profil', $profil);
             $this->set('paiements', $paiements);
             $this->set('nb_paiements', $nb_paiements);
             $this->set('commentaires', $commentaires);
+            $this->set('nb_coms', $nb_coms);
             $this->render('profil');
         }
         else{

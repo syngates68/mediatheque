@@ -1,0 +1,30 @@
+{% extends 'inc/head.twig' %}
+{% block title %} Confirmation {% endblock %}
+{% block main %}
+
+<div class="confirm">
+
+    <h1><i class="fas fa-video"></i>D<span class="violet">o</span>ntatune</h1>
+    <h2> Plateforme de vidéos en ligne </h2>
+
+    <h3> Confirmation de votre inscription </h3>
+
+    {% if error_message is defined %} 
+
+        <div class="alert alert-danger" role="alert">
+        <i class="fas fa-info-circle"></i>{{ error_message }}
+        </div>
+
+    {% endif %}
+
+    <p> Un mail vient de vous être envoyé afin de finaliser votre inscription sur Dontatune </p>
+    <p> Ce mail contient un code à 4 chiffres permettant la confirmation de votre inscription </p>
+    <p> Veuillez entrer ce code ci-dessous </p>
+    <form method="post" action="confirm">
+        <input type="text" class="form-control" name="confirm_key" maxlength="4">
+        <button type="submit" class="btn btn-success">Valider</button>
+    </form>
+
+</div>
+
+{% endblock %}

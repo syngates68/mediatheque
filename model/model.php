@@ -113,15 +113,32 @@ abstract class Model{
         return true;
     }
 
-    protected static function _count($table, $count, $where){
+    protected static function _count($table, $where, $param = []){
         $db = Database::dbConnect();
-        $sql = 'SELECT COUNT('.$count.') FROM '.$table;
+        $sql = 'SELECT COUNT(*) as nb FROM '.$table;
         if ($where != ''){
             $sql .= ' WHERE '.$where;
         }
-        $req = $db->query($sql);
-        var_dump($req);
-        return $req;
+        $req = $db->prepare($sql);
+
+        foreach($param as $p) {
+            //var_dump($p['value']);
+            //print_r($p['value']);
+            if(isset($p['type']))
+            {
+                $req->bindValue($p['key'], $p['value'], $p['type']);
+            } 
+            else
+            {
+                $req->bindValue($p['key'], $p['value']);
+            }
+                
+        }
+
+        //print_r($sql);
+        $req->execute();
+        $line = $req->fetch();
+        return $line['nb'];
     }
 
     protected static function _delete($table, $alias, $inner, $where = "", array $param = []) {

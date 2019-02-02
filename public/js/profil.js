@@ -28,28 +28,6 @@ $(function(){
             },
         });
 
-        /*var file = this.files[0];
-        //var form = new FormData($("#modif-photo-form"));
-
-        //alert(form[0]);
-
-        var name = file.name;  
-        var size = file.size;  
-        var type = file.type;       
-        var path = URL.createObjectURL(e.target.files[0]);
-
-        $.post('http://localhost/mediatheque/public/utilisateur/update_photo', {
-            name : name,
-            size : size,
-            type : type,
-            path : path
-        },
-
-        function(data){
-            //$('#delete_user').html(data);
-            location.reload();
-        });*/
-
     });
 
 });

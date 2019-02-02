@@ -1,0 +1,28 @@
+{% extends 'inc/head.twig' %}
+{% block title %} Mot de passe oublié {% endblock %}
+{% block main %}
+
+<div class="confirm">
+
+    <h1><i class="fas fa-video"></i>D<span class="violet">o</span>ntatune</h1>
+    <h2> Plateforme de vidéos en ligne </h2>
+
+    <h3> Mot de passe oublié </h3>
+
+    {% if error_message is defined %} 
+
+        <div class="alert alert-danger" role="alert">
+        <i class="fas fa-info-circle"></i>{{ error_message }}
+        </div>
+
+    {% endif %}
+
+    <p> Veuillez entrer votre adresse mail </p>
+    <form method="post" action="enter_mail">
+        <input type="email" class="form-control" name="mail">
+        <button type="submit" class="btn btn-success">Valider</button>
+    </form>
+
+</div>
+
+{% endblock %}

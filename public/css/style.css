@@ -9,12 +9,13 @@ h1{ font-size: 30px; }
 .no_js{ z-index: 500 !important; position: absolute; display: block; background: #e93c3c; color: #FFF; width: 100%; padding: 20px; text-align: center; top: 0; }
 .loader{ position: fixed; z-index: 10000; top: 20%; left: 37%; width: 25%; text-align: center; font-weight: bold; font-size: 16px; display: none; cursor: wait; background: #FFF; }
 .loader img{ width: 100%; }
+.modal{ z-index: 99999999999; }
 
 /*******************************************************
 NAVBAR
 ********************************************************/
 
-.navbar{ background: #280346 !important; z-index: 100; transition-duration: 0.5s; }
+.navbar{ background: #280346 !important; z-index: 99999999998; transition-duration: 0.5s; }
   .navbar a{ color: #FFF !important; text-transform: uppercase; letter-spacing: 1px; }
   .navbar-brand{ text-transform: none !important; transition-duration: 0.5s; }
   .navbar .nav-link{ display: inline; font-size: 13px; font-weight: bold; }
@@ -55,10 +56,10 @@ HOME
   .lv_infos{ position: absolute; color: #FFF; background-image: -moz-linear-gradient(left, rgba(0, 0, 0, 0.041) 0%, rgba(0, 0, 0, 0.212) 30%, rgba(0, 0, 0, 0.493) 60%, #000 100%); background-image: linear-gradient(left, rgba(0, 0, 0, 0.041) 0%, rgba(0, 0, 0, 0.212) 30%, rgba(0, 0, 0, 0.493) 60%, #000 100%); top: 10px; bottom: 10px; right: 0; width: 100%; padding: 20px; text-align: center; }
   .lv_infos h2{ font-size: 40px; font-weight: 900; text-transform: uppercase; border-bottom: 2px solid #4a0087; }
   .lv_infos p{ font-size: 30px; font-weight: 900; }
-  .lv_infos a{ display: block; color: #FFF; margin: 25px auto; background: #4a0087; width: 15%; border: 2px solid #4a0087; border-radius: 0; }
+  .lv_infos a{ display: block; color: #FFF; margin: 25px auto; background: #4a0087; width: 20%; border: 2px solid #4a0087; border-radius: 0; }
   .lv_infos a:hover{ background: #3c016d; border: 2px solid #4a0087; }
 
-  .lv_infos_content{ padding: 10px; position: absolute; top: 25%; width: 70%; left: 15%; right: 15%; }
+  .lv_infos_content{ padding: 10px; position: absolute; top: 25%; width: 50%; left: 25%; right: 25%; }
 
 .container_videos{ text-align: center; margin-top: 80px !important; margin-bottom: 20px; }
   .container_videos h1{ text-transform: uppercase; text-align: left; }
@@ -101,16 +102,18 @@ HOME
 /*******************************************************
 VIDEO
 ********************************************************/
-.aff_video{ padding-right: 0; padding-left: 0; margin-top: 15px; }
+.aff_video{ padding-right: 0; padding-left: 0; padding-top: 20px; margin-top: 15px; }
 
 .my_video{ top: 75px; bottom: 0; left: 0; right: 32%; position: fixed; background: #000; }
   .my_video iframe{ border: none; }
 
-.aff_video .v_infos{ padding: 20px 10px; }
+.aff_video .v_infos{ padding: 10px 10px; }
 .v_infos h2{ font-size: 20px; }
 .v_infos .fb-share-button{ background: #3b5998; border: none; border-radius: 0; }
 .v_infos .fb-share-button i{ margin-right: 10px; }
-.v_infos .description{ margin-top: 10px; font-size: 13px; }
+.v_infos .description{ margin-top: 10px; font-size: 12px; }
+.v_infos .description span{ color: #5e5e5e; }
+.v_infos .description p{ padding: 10px 0; }
 
 .commentaires{ padding: 10px; }
   .commentaires h3{ padding-bottom: 10px; font-size: 17px; margin-top: 20px; }
@@ -155,7 +158,10 @@ PROFIL
 .profil i{ margin-right: 5px; }
 .profil button{ font-size: 13px; }
 
-.profil .paiements{ padding: 20px; text-align: left !important; line-height: 5px; font-size: 12px; }
+.profil .paiements, .profil .p_abos, .profil .p_com{ padding: 20px; text-align: left !important; }
+.profil .paiements{ line-height: 5px; font-size: 12px; }
+.profil .alert{ font-size: 15px; line-height: 20px; }
+.profil .alert a{ display: inline; font-size: 15px; color: #3b5998; }
 
 .profil_infos{ text-align: center; padding: 20px; }
   .profil_infos .modif_img{ position: relative; width: 250px; height: 250px; border-radius: 250px; margin: 0 auto; }
@@ -189,12 +195,26 @@ COMMANDE
 .commande h1{ text-transform: uppercase; font-size: 18px; }
 .commande h2{ text-transform: uppercase; font-size: 17px; text-align: center; }
 .commande .cgv_p{ width: 50%; margin: 20px auto; font-size: 14px; }
+
 /*.commande .card{  }*/
 .commande .card-body .titre{ display: inline-block; width: 70%; font-weight: bold; }
 .commande .card-body .prix{ display: inline-block; width: 29%; text-align: right; color: #3b5998; font-weight: bold; }
-/*.commande .total{ background: #000; color: #FFF; width: 25%; float: right; padding: 10px; }*/
+.commande .card-body .description{ font-size: 14px; line-height: 16px; }
 .commande .btn_paypal{ width: 50%; padding: 20px; margin: 0 auto; z-index: 1 !important; }
+
 #success_payment, #error_payment{ display: none; }
+
+.choix_paie{ text-align: center; }
+.choix_paie a{ font-size: 13px; color: #000; }
+.choix_paie .nav{ margin: auto; margin-top: 20px; }
+.choix_paie label{ float: left; font-size: 13px; }
+.cb{ padding: 20px; }
+.paypal i{ margin-right: 5px; }
+
+.form_cb button{ border-radius: 0; margin-top: 20px; }
+.form_cb button i{ margin-right: 5px; }
+.form_cb .alert{ margin-top: 15px; }
+.form_cb .alert i{ margin-right: 5px; }
 
 /*******************************************************
 ACHATS
@@ -226,6 +246,17 @@ CONNEXION/INSCRIPTION
   .sign_up{ padding: 20px; }
 
 .new{ margin: auto; }
+
+/*******************************************************
+CONFIRMATION D'INSCRIPTION
+********************************************************/
+
+.confirm{ text-align: center; }
+.confirm h3{ margin: 25px 0; }
+.confirm input, .confirm .input-group{ margin: auto; width: 30%; border-color: rgb(83, 83, 83); }
+.confirm .btn{ margin-top: 15px; border: 3px solid #4a0087 !important; border-radius: 15px; background: none; color: #4a0087; width: 20% !important; }
+.confirm .btn:hover{ background: #360063; color: #FFF; }
+.confirm .alert{ width: 50%; margin: 15px auto; }
 
 /*******************************************************
 PAIEMENTS

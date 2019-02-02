@@ -11,7 +11,7 @@ use Config\Factory;
 
 class AjaxController extends Controller{
 
-    protected $current_controller = 'AjaxController';
+    public $controller_name = 'ajax';
 
     /**
      * Method: POST
