@@ -2,6 +2,8 @@
 
 namespace Model;
 
+use PDO;
+
 //use Model\Model;
 
 /**
@@ -60,9 +62,17 @@ class TypeAbonnement extends Model{
   
 	// Requêtes BDD
 
-	public static function getAllTypeAbonnements(){
+	public static function getAllTypeAbonnements($id_user){
 
-        return self::_getAll('type_abonnement', ' id, nom, description, prix, essai ', '', '', '');
+        return self::_getInner('type_abonnement t ', ' t.id, t.nom, t.description, t.prix, t.essai, COALESCE(a1.nombre, 0) as periode_essai, COALESCE(a2.nombre, 0) as nbr_achats ', 'LEFT JOIN (SELECT a.id_type, COUNT(*) as nombre FROM abonnement a WHERE a.id_type = 3 AND a.id_utilisateur = :id_utilisateur)a1 ON a1.id_type = t.id LEFT JOIN (SELECT COUNT(*) as nombre, id_type FROM abonnement GROUP BY id_type ORDER BY nombre DESC LIMIT 1)a2 ON a2.id_type = t.id ', '', '', 'ORDER BY t.id', [
+			['key' => ':id_utilisateur', 'value' => $id_user, 'type' => PDO::PARAM_INT],
+		]);
+	}
+
+	public static function getById($id){
+		return self::_getOne('type_abonnement ', ' * ', '', 'id = :id', [
+			['key' => ':id', 'value' => $id, 'type' => PDO::PARAM_INT],
+        ]);
 	}
 	
 	/***************************************/
@@ -75,6 +85,19 @@ class TypeAbonnement extends Model{
 			"essai" => $line['essai']
 		]);
         return $t;
+	}
+
+	public static function buildInner(array $line){
+		$tab = array(
+			"id" => $line['id'],
+			"nom" => $line['nom'],
+			"description" => $line['description'],
+			"prix" => $line['prix'],
+			"essai" => $line['essai'],
+			"periode_essai" => $line['periode_essai'],
+			"nbr_achats" => $line['nbr_achats']
+		);
+		return $tab;
 	}
 
 }

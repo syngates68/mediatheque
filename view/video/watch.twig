@@ -16,7 +16,7 @@
 <div class="container-fluid aff_video">
     <div class="row">
 
-        <div class="col-sm-12 col-lg-8">
+        <div class="col-sm-12 col-md-12 col-lg-8">
             <div class="my_video">
                 <div class="video"> 
                 {% if 'videos' in video.get_lien %}
@@ -28,11 +28,16 @@
             </div>
         </div>
 
-        <div class="col-sm-12 col-lg-4">
+        <div class="col-sm-12 col-md-12 col-lg-4">
             <div class="v_infos">
                 <h2> {{ video.get_titre }} </h2>
+                <p class="date_add"> {{ video.get_date_ajout|formatDate }} </p> 
                 <!--<button class="btn btn-success"><i class="fas fa-expand"></i></button>-->
-                <p class="description"> {{ video.get_description|nl2br }} </p>
+                <div class="description">
+                <span> Description </span>
+                <a class="see_description" id="see_description"> Voir la description </a>
+                <p> {{ video.get_description|nl2br }} </p>
+                </div>
                 <button class="btn btn-success fb-share-button" data-url="https://avekki.000webhostapp.com/public/video/watch/{{video.get_id}}" data-title="{{ video.get_titre }}"> <i class="fab fa-facebook-f"></i> Partager</button>
             </div>
 
@@ -91,6 +96,31 @@ if (event.data == YT.PlayerState.PLAYING && !done) {
 function stopVideo() {
 player.stopVideo();
 }
+
+//BOUTON FACEBOOK
+
+var popupCenter = function(url, title, width, height){
+    var popupWidth = width || 640;
+    var popupHeight = height || 320;
+    var windowLeft = window.screenLeft || window.screenX;
+    var windowTop = window.screenTop || window.screenY;
+    var windowWidth = window.innerWidth || document.documentElement.clientWidth;
+    var windowHeight = window.innerHeight || document.documentElement.clientHeight;
+    var popupLeft = windowLeft + windowWidth / 2 - popupWidth / 2;
+    var popupTop = windowTop + windowHeight / 2 - popupHeight / 2;
+    var popup = window.open(url, title, 'scrollbars=yes, width = ' + popupWidth + ', height = ' + popupHeight + ', top=' + popupTop + ', left = ' + popupLeft);
+    popup.focus();
+    return true;
+}
+
+document.querySelector('.fb-share-button').addEventListener('click', function(e){
+    e.preventDefault();
+    var url = this.getAttribute('data-url');
+    var title = this.getAttribute('date-title');
+    var shareUrl = "https://www.facebook.com/sharer/sharer.php?u=" + encodeURIComponent(url) + "&t=" + encodeURIComponent(title);
+    popupCenter(shareUrl, "Partager sur Facebook");
+});
+
 </script>
 
 

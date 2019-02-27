@@ -6,6 +6,7 @@ use Model\Abonnement;
 use Model\Utilisateur;
 use Model\Commentaire;
 use Model\Video;
+use Model\Notes;
 
 use Config\Factory;
 
@@ -23,13 +24,44 @@ class AjaxController extends Controller{
             $this->set('success_message', $_SESSION['success_comment']);
             unset($_SESSION['success_comment']);
         }
-        $commentaire = Commentaire::addComment($_SESSION['auth']['id'], $_POST['id'], $_POST['content']);
+        if (isset($_SESSION['success_add'])){
+            $this->set('success_message', $_SESSION['success_add']);
+            unset($_SESSION['success_add']);
+        }
+        if ($_POST['note'] != 'NaN'){
+            $n = new Notes([
+                'id_video' => $_POST['id'],
+                'id_utilisateur' => $_SESSION['auth']['id'],
+                'note' => $_POST['note']
+            ]);
+            $n->note_create();
+            $this->set('note');
+        }
+
+        $commentaire = new Commentaire([
+            'id_utilisateur' => $_SESSION['auth']['id'],
+            'id_video' => $_POST['id'],
+            'commentaire' => $_POST['content']
+        ]);
+
+        $commentaire->commentaire_create();
+
         $commentaires = Commentaire::getAllCommentaireByVideo($_POST['id']);
+        $com = Commentaire::getByUserAndVideo($_SESSION['auth']['id'], $_POST['id']);
         $nb_com = sizeof(Commentaire::getAllCommentaireByVideo($_POST['id']));
+        $note = Notes::getNoteByUser($_POST['id'], $_SESSION['auth']['id']);
+        $moyenne = Notes::getMoyenneByVideo($_POST['id']);
         $this->set('commentaire', $commentaire);
         $this->set('commentaires', $commentaires);
         $this->set('current_user', $_SESSION['auth']['id']);
         $this->set('nb_com', $nb_com);
+        if ($note){
+            $this->set('note', $note);
+        }
+        if ($com){
+            $this->set('com', $com);
+        }
+        $this->set('moyenne', $moyenne);
         $_SESSION['success_comment'] = 'Votre avis a bien été ajouté! Merci de votre apport à la plateforme!';
         $this->render('commentaires');
     }
@@ -41,11 +73,22 @@ class AjaxController extends Controller{
     **/
     public function postDelete_comment(){
         $commentaire = Commentaire::deleteCommentaire($_POST['id_com']);
+        $n = Notes::deleteNote($_POST['id_user'], $_POST['id_video']);
         $commentaires = Commentaire::getAllCommentaireByVideo($_POST['id_video']);
+        $com = Commentaire::getByUserAndVideo($_SESSION['auth']['id'], $_POST['id_video']);
         $nb_com = sizeof(Commentaire::getAllCommentaireByVideo($_POST['id_video']));
+        $note = Notes::getNoteByUser($_POST['id_video'], $_SESSION['auth']['id']);
+        $moyenne = Notes::getMoyenneByVideo($_POST['id_video']);
         //$this->set('commentaire', $commentaire);
         $this->set('commentaires', $commentaires);
         $this->set('nb_com', $nb_com);
+        if ($note){
+            $this->set('note', $note);
+        }
+        if (!empty($com)){
+            $this->set('com', $com);
+        }
+        $this->set('moyenne', $moyenne);
         $this->set('current_user', $_SESSION['auth']['id']);
         $this->render('commentaires');
     }
@@ -72,23 +115,29 @@ class AjaxController extends Controller{
             elseif ($type == 3){
                 $f_type = ' v.gratuite = 0';
             }
+            elseif ($type == 4){
+                $f_type = ' a1.nombre is not null';
+            }
         }
 
-        if ($tri != ''){
+        if ($tri != '' && $tri != 0){
             if ($tri == 1){
                 $order = ' GROUP BY v.id ORDER BY v.prix ASC';
             }
             elseif ($tri == 2){
                 $order = ' GROUP BY v.id ORDER BY v.prix DESC';
             }
+            elseif ($tri == 3){
+                $order = ' GROUP BY v.id ORDER BY moyenne DESC, nbr_notes DESC';
+            }
         }
 
-        if ($search != ''){
+        if ($search != '' && preg_match("/[a-zA-Z0-9]{1,20}/", $search)){
             if (($type != '' || $type != 1) && !empty($themes)){
-                $f_search = ' AND v.titre like "%'.$search.'%"';
+                $f_search = ' AND CONCAT(v.titre, v.description) like "%'.$search.'%"';
             }
             else{
-                $f_search = ' v.titre like "%'.$search.'%"';
+                $f_search = ' CONCAT(v.titre, v.description) like "%'.$search.'%"';
             }
         }
 
@@ -119,8 +168,15 @@ class AjaxController extends Controller{
         //echo $f_themes;
 
         $videos = Video::getVideosFiltre($f_type, $order, $f_themes, $f_search, $_SESSION['auth']['id']);
+        $nb_videos = sizeof(Video::getVideosFiltre($f_type, $order, $f_themes, $f_search, $_SESSION['auth']['id']));
         $this->set('videos', $videos);
+        $this->set('nb_videos', $nb_videos);
+        $this->set('recherche', $search);
         $this->render('list_videos');
+    }
+
+    public function postFin_abo(){
+        $abo = Abonnement::stopAbo($_SESSION['auth']['id'], $_POST['id']);
     }
     
 }

@@ -4,6 +4,8 @@ namespace Model;
 
 //use Model\Model;
 
+use PDO;
+
 /**
  * Class model : Achat
  * @author Quentin SCHIFFERLE
@@ -53,12 +55,23 @@ class Achat extends Model{
 
     public static function getAllByUser($id_user){
         return self::_getInner('achat a', ' a.id, a.id_utilisateur, a.id_video, a.date_achat, v.titre, v.miniature, v.prix ', ' left join video v on a.id_video = v.id ', 'a.id_utilisateur = :id', '', ' ORDER BY a.date_achat DESC', [
-            'id' => $id_user 
+            ['key' => ':id', 'value' => $id_user, 'type' => PDO::PARAM_INT],
         ]);
 	}
 
 	public static function getByVideo($id_video, $id_user){
         return self::_getAll('achat a', ' a.id, a.id_utilisateur, a.id_video, a.date_achat ', 'a.id_video = '.$id_video.' AND a.id_utilisateur = '.$id_user, '', '');
+	}
+
+	public function achat_create(){
+		return self::_create('achat', [
+			['key' => 'id_utilisateur', 'value' => $this->get_id_utilisateur(), 'type' => PDO::PARAM_INT],
+			['key' => 'id_video', 'value' => $this->get_id_video(), 'type' => PDO::PARAM_INT]
+		]);
+
+		$this->set_id($a['id']);
+
+        return ($a['count'] > 0) ? $this : false;
 	}
 
 	/***************************************/

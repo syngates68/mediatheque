@@ -40,6 +40,10 @@ class UtilisateurController extends Controller{
             $nb_paiements = sizeof(Paiements::getAllByUser($_SESSION['auth']['id']));
             $commentaires = Commentaire::getCommentsByUser($_SESSION['auth']['id']);
             $nb_coms = sizeof(Commentaire::getCommentsByUser($_SESSION['auth']['id']));
+            $abonnement = Abonnement::getByUser($_SESSION['auth']['id']);
+            if (!empty($abonnement)){
+                $this->set('abonnement', $abonnement);
+            }
             $this->set('profil', $profil);
             $this->set('paiements', $paiements);
             $this->set('nb_paiements', $nb_paiements);
@@ -62,9 +66,14 @@ class UtilisateurController extends Controller{
     public function getAchats(){
         if (isset($_SESSION['auth']['id'])){
             $achats = Achat::getAllByUser($_SESSION['auth']['id']);
+            $total = 0;
+            foreach ($achats as $achat){
+                $total += $achat['prix'];
+            }
             $nb_achats = sizeof(Achat::getAllByUser($_SESSION['auth']['id']));
             $this->set('achats', $achats);
             $this->set('nb_achats', $nb_achats);
+            $this->set('total', $total);
             $this->render('achats');
         }
         else{
@@ -146,7 +155,7 @@ class UtilisateurController extends Controller{
     **/
     static function postUpdate_photo(){
         $max_size = 1000000;
-        $types = array('image/jpg', 'image/png', 'image/jpeg');
+        $types = array('image/jpg', 'image/png', 'image/jpeg', 'image/gif');
         $fichier_temp = $_FILES['file']['tmp_name'];
 
         $name = $_FILES['file']['name'];
@@ -158,6 +167,7 @@ class UtilisateurController extends Controller{
             if ($type == 'image/jpg'){ $type = '.jpg'; }
             if ($type == 'image/png'){ $type = '.png'; }
             if ($type == 'image/jpeg'){ $type = '.jpeg'; }
+            if ($type == 'image/gif'){ $type = '.gif'; }
 
             if($size < $max_size){
                 $char = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
@@ -183,7 +193,7 @@ class UtilisateurController extends Controller{
             }
         }
         else{
-            $_SESSION['error_upload'] = 'Le fichier doit être au format JPG, PNG ou JPEG';
+            $_SESSION['error_upload'] = 'Le fichier doit être au format JPG, PNG, JPEG ou GIF';
         }
     }
 

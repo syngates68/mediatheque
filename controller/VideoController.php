@@ -10,6 +10,8 @@ use Model\Commentaire;
 use Model\Paiements;
 use Model\Achat;
 use Model\Carte;
+use Model\Notes;
+use Model\Abonnement;
 
 use Library\Form;
 
@@ -39,12 +41,23 @@ class VideoController extends Controller{
                     $this->set('video_prix', $video->get_prix());
         
                     $user_achat = Achat::getByVideo($video->get_id(), $_SESSION['auth']['id']);
-                    if ($video->get_prix() == NULL || !empty($user_achat) ){
+                    $abonnement = Abonnement::getByUser($_SESSION['auth']['id']);
+                    if ($video->get_prix() == NULL || !empty($user_achat) || !empty($abonnement)){
                         $commentaires = Commentaire::getAllCommentaireByVideo($id);
+                        $com = Commentaire::getByUserAndVideo($_SESSION['auth']['id'], $id);
                         $nb_com = sizeof(Commentaire::getAllCommentaireByVideo($id));
+                        $note = Notes::getNoteByUser($video->get_id(), $_SESSION['auth']['id']);
+                        $moyenne = Notes::getMoyenneByVideo($video->get_id());
+                        if ($note){
+                            $this->set('note', $note);
+                        }
+                        if (!empty($com)){
+                            $this->set('com', $com);
+                        }
                         $this->set('commentaires', $commentaires);
                         $this->set('nb_com', $nb_com);
                         $this->set('current_user', $_SESSION['auth']['id']);
+                        $this->set('moyenne', $moyenne);
                         $this->render('watch');
                     }
                     else{ 
@@ -130,7 +143,15 @@ class VideoController extends Controller{
                         $mois_valid = ['01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12'];
 
                         if (in_array($date_expir_tab[0], $mois_valid)){
-                            $c = Carte::addCarte($numero, $date_expir, $crypto, $_SESSION['auth']['id']);
+                            $carte = new Carte([
+                                'numero_carte' => md5(sha1($numero)),
+                                'date_expiration' => md5(sha1($date_expir)),
+                                'cryptogramme' => md5(sha1($crypto)),
+                                'id_user' => $_SESSION['auth']['id']
+                            ]);
+                            
+                            $carte->carte_create();
+
                             $_SESSION['success_add'] = 'Votre carte a bien été enregistrée';
 
                             $_SESSION['value_numero'] = $numero;
@@ -177,6 +198,126 @@ class VideoController extends Controller{
             $_SESSION['value_date_expir'] = $_POST['date_expir'];
             $_SESSION['value_crypto'] = $_POST['crypto'];
         }
+    }
+
+    public function postPay_video_cb(){
+        $achat = new Achat([
+            'id_utilisateur' => $_SESSION['auth']['id'],
+            'id_video' => $_POST['id_video']
+        ]);
+        $achat->achat_create();
+
+        $user = Utilisateur::getUserById($_SESSION['auth']['id']);
+
+        $paiement = new Paiements([
+            'payment_id' => 'CB0000'.$_SESSION['auth']['id'].$_POST['id_video'],
+            'payment_status' => 'approved',
+            'payment_amount' => $_POST['prix'],
+            'payment_currency' => 'EUR',
+            'payer_email' => $user->get_mail(),
+            'payer_id' => $_SESSION['auth']['id']
+        ]);
+        $paiement->paiement_create();
+
+    }
+
+    public function postPay(){
+
+        $form = new Form();
+        if ($form->check_post_raw_values_not_empty(['numero', 'date_expir', 'crypto'])){
+
+            $numero = $_POST['numero'];
+            $date_expir = $_POST['date_expir'];
+            $crypto = $_POST['crypto'];
+
+            if (ctype_digit($numero) && strlen($numero) == 16){
+                if (ctype_digit($crypto) && strlen($crypto) == 3){
+                    $regex = "^\\d{2}/\\d{2}^";
+                    if (preg_match($regex, $date_expir)) {
+                        $date_expir_tab = explode('/', $date_expir);
+                        $mois_valid = ['01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12'];
+
+                        if (in_array($date_expir_tab[0], $mois_valid)){
+                            $achat = new Achat([
+                                'id_utilisateur' => $_SESSION['auth']['id'],
+                                'id_video' => $_POST['id_video']
+                            ]);
+                            $achat->achat_create();
+                    
+                            $user = Utilisateur::getUserById($_SESSION['auth']['id']);
+                    
+                    
+                            $paiement = new Paiements([
+                                'payment_id' => 'CB0000'.$_SESSION['auth']['id'].$_POST['id_video'],
+                                'payment_status' => 'approved',
+                                'payment_amount' => $_POST['prix'],
+                                'payment_currency' => 'EUR',
+                                'payer_email' => $user->get_mail(),
+                                'payer_id' => $_SESSION['auth']['id']
+                            ]);
+                            $paiement->paiement_create();
+
+                            $_SESSION['success_add'] = 'Votre paiement a bien été pris en compte!';
+
+                            header('Location:'.BASEURL.'video/watch/'.$_POST['id_video']);
+                            exit;
+                        }
+                        else{
+                            $_SESSION['error_add'] = 'Le mois de la date d\'expiration n\'est pas valide';
+
+                            $_SESSION['value_numero'] = $numero;
+                            $_SESSION['value_date_expir'] = $date_expir;
+                            $_SESSION['value_crypto'] = $crypto;
+
+                            header('location:'.BASEURL.'video/pay/'.$_POST['id_video']);
+                            exit;
+                        }
+
+                    } 
+                    else {
+                        $_SESSION['error_add'] = 'La date d\'expiration n\'est pas au format valide';
+
+                        $_SESSION['value_numero'] = $numero;
+                        $_SESSION['value_date_expir'] = $date_expir;
+                        $_SESSION['value_crypto'] = $crypto;
+
+                        header('location:'.BASEURL.'video/pay/'.$_POST['id_video']);
+                        exit;
+                    }
+                }
+                else{
+                    $_SESSION['error_add'] = 'Le cryptogramme n\'est pas au format valide';
+
+                    $_SESSION['value_numero'] = $numero;
+                    $_SESSION['value_date_expir'] = $date_expir;
+                    $_SESSION['value_crypto'] = $crypto;
+
+                    header('location:'.BASEURL.'video/pay/'.$_POST['id_video']);
+                    exit;
+                }
+            } 
+            else{
+                $_SESSION['error_add'] = 'Le numéro de carte n\'est pas au format valide';
+
+                $_SESSION['value_numero'] = $numero;
+                $_SESSION['value_date_expir'] = $date_expir;
+                $_SESSION['value_crypto'] = $crypto;
+
+                header('location:'.BASEURL.'video/pay/'.$_POST['id_video']);
+                exit;
+            }
+        }   
+        else{
+            $_SESSION['error_add'] = 'Tous les champs doivent être remplis';
+
+            $_SESSION['value_numero'] = $_POST['numero'];
+            $_SESSION['value_date_expir'] = $_POST['date_expir'];
+            $_SESSION['value_crypto'] = $_POST['crypto'];
+
+            header('location:'.BASEURL.'video/pay/'.$_POST['id_video']);
+            exit;
+        }
+
     }
 
 }

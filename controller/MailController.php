@@ -57,7 +57,7 @@ class MailController extends Controller
             $msg = 'Mailer Error: ' . $mail->ErrorInfo;
         }
     }
- 
+    
     public static function forgotten_password($user, $code){
         $msg = '';
         $mail = self::getMail();

@@ -3,54 +3,65 @@
 {% block title %} Accueil {% endblock %}
 {% block content %}
 
-  {# if success_connect is defined %}
-  <div class="alert alert-success alert-dismissible fade show success_connect" id="alert_connect" role="alert"> 
-  {{ success_connect }}
+  {% if success_message is defined %}
+  <div class="alert alert-success alert-dismissible fade show success_message" role="alert">
+  {{ success_message }}
   <button type="button" class="close" data-dismiss="alert" aria-label="Close">
       <span aria-hidden="true">&times;</span>
   </button>
   </div>
-  {% endif #}
+  {% endif %}
 
   <div class="container-fluid container_videos">
   <h1> Nos vidéos </h1>
     <div class="row">
       <div class="col-sm-12 col-lg-2 filtres" id="filtre">
       <div class="form-group">
-          <label class="title_form" for="type_video"><i class="fas fa-video"></i>Type de vidéo</label>
+          <label class="title_form" for="type_video">Type de vidéo</label>
           <select class="form-control" id="type_video">
-          <option value="1">Toutes</option>
+          <option value="1" selected>Toutes</option>
           <option value="2">Gratuites</option>
           <option value="3">Payantes</option>
+          {% if abonne is not defined %}
+            <option value="4">Achetées</option>
+          {% endif %}
+          </select>
+      </div>
+      <div class="form-group tri">
+          <label class="title_form" for="tri">Trier</label>
+          <select class="form-control" id="tri">
+          <option value="0" selected> Aucun </option>
+          <option value="3"> Les mieux notées </option>
           </select>
       </div>
       <div class="form-group tri_prix">
-          <label class="title_form" for="tri_video"><i class="fas fa-sliders-h"></i>Trier</label>
+          <label class="title_form" for="tri_video">Trier</label>
           <select class="form-control" id="tri_video">
+          <option value="0" selected> Aucun </option>
           <option value="1"> Prix croissant </option>
           <option value="2"> Prix décroissant </option>
+          <option value="3"> Les mieux notées </option>
           </select>
       </div>
-      <label class="title_form" for="type_video"><i class="fas fa-search-plus"></i>Thèmes</label>
+      <label class="title_form" for="type_video">Thèmes</label>
       {% for t in themes %}
       <div class="form-check">
           <input class="form-check-input themes" type="checkbox" value="{{ t.get_id }}" id="theme_{{ t.get_id }}" checked="checked">
-          <label class="form-check-label" for="theme{{ t.get_id }}">
+          <label class="form-check-label" for="theme_{{ t.get_id }}">
           {{ t.get_nom }}
           </label>
       </div>
       {% endfor %}
-      <div class="pub" style="margin-top: 25px;">
-        <img src="{{BASEURL}}images/pub.gif" style="width: 100%">
+
       </div>
-      </div>
+
       <div class=" col-sm-12 col-lg-10 list_videos">
       
-      <div class="input-group mb-3 search" id="search">
+      <div class="input-group mb-4 search_bar" id="search">
+        <input type="text" class="form-control" placeholder="Rechercher une vidéo" name="search" aria-label="Example text with button addon" aria-describedby="button-addon1">
         <div class="input-group-prepend">
           <button class="btn btn-outline-secondary" type="button" id="button-addon1"><i class="fas fa-search"></i></button>
         </div>
-        <input type="text" class="form-control" placeholder="Rechercher une vidéo" name="search" aria-label="Example text with button addon" aria-describedby="button-addon1">
       </div>
 
   {% for lv in last_video %}

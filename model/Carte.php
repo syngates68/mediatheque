@@ -15,7 +15,7 @@ use PDO;
 class Carte extends Model{
 
     private $_id;
-    private $_numero;
+    private $_numero_carte;
     private $_date_expiration;
     private $_cryptogramme;
     private $_id_user;
@@ -28,12 +28,12 @@ class Carte extends Model{
 		$this->_id = $_id;
 	}
 
-	public function get_numero(){
-		return $this->_numero;
+	public function get_numero_carte(){
+		return $this->_numero_carte;
 	}
 
-	public function set_numero($_numero){
-		$this->_numero = $_numero;
+	public function set_numero_carte($_numero_carte){
+		$this->_numero_carte = $_numero_carte;
 	}
 
 	public function get_date_expiration(){
@@ -64,24 +64,28 @@ class Carte extends Model{
 
     public static function getByUser($id_user){
         return self::_getInner('carte c ', '  c.id, c.numero_carte, c.date_expiration, c.cryptogramme, c.id_user ', '', 'c.id_user = :id', '', '', [
-			'id' => $id_user
+			['key' => ':id', 'value' => $id_user, 'type' => PDO::PARAM_INT],
         ]);
-    }
-    
-    public static function addCarte($numero, $date_expiration, $crypto, $id_user){
-		return self::_create('carte ', ' (numero_carte, date_expiration, cryptogramme, id_user)', '(:numero, :date_expiration, :crypto, :id_user)', [
-			'numero' => sha1(md5(sha1($numero))),
-			'date_expiration' => sha1(md5(sha1($date_expiration))),
-			'crypto' => sha1(md5(sha1($crypto))),
-			'id_user' => $id_user
+	}
+	
+	public function carte_create(){
+		return self::_create('carte', [
+			['key' => 'numero_carte', 'value' => $this->get_numero_carte(), 'type' => PDO::PARAM_STR],
+			['key' => 'date_expiration', 'value' => $this->get_date_expiration(), 'type' => PDO::PARAM_STR],
+			['key' => 'cryptogramme', 'value' => $this->get_cryptogramme(), 'type' => PDO::PARAM_STR],
+			['key' => 'id_user', 'value' => $this->get_id_user(), 'type' => PDO::PARAM_INT]
 		]);
+
+		$this->set_id($c['id']);
+
+        return ($c['count'] > 0) ? $this : false;
 	}
 
 	/***************************************/
 	public static function buildModel(array $line){
 		$c = new Carte([
             "id" => $line['id'],
-            "numero" => $line['numero'],
+            "numero_carte" => $line['numero_carte'],
             "date_expiration" => $line['date_expiration'],
             "cryptogramme" => $line['cryptogramme'],
 			"id_user" => $line['id_user']

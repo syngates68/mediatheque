@@ -1,16 +1,6 @@
 {% set BASEURL = constant('BASEURL') %}
 <h3> <i class="fas fa-comments"></i> {% if nb_com == 0 %} Aucun avis {% else %} {{ nb_com }} avis {% endif %}</h3>
 
-<textarea id="com_contain" class="form-control expand" {% if nb_com != 0 %} placeholder="Donner un avis sur cette vidéo" {% else %}placeholder="Soyez le premier à commenter cette vidéo" {% endif %}></textarea>
-<button class="btn btn-success" id="btn_com">Envoyer <i class="fas fa-paper-plane"></i></button>
-<div class="note" id="note">
-    <span class="text-note"> Noter cette vidéo (facultatif) </span>
-    <span class="fa fa-star" id="1"></span>
-    <span class="fa fa-star" id="2"></span>
-    <span class="fa fa-star" id="3"></span>
-    <span class="fa fa-star" id="4"></span>
-    <span class="fa fa-star" id="5"></span>
-</div>
 
 {% if success_message is defined %} 
 
@@ -23,39 +13,80 @@
 
 {% endif %}
 
+<span> Note globale : </span>
+{% for m in moyenne %}
+    {% if m.moyenne != 0 %}
+
+        {% for i in 1.. m.moyenne|round %}
+            <span class="fa fa-star checked"></span>
+        {% endfor %}
+
+        {% if 5- m.moyenne|round != 0 %}
+            {% for i in 1..(5- m.moyenne|round) %}
+            <span class="fa fa-star"></span>
+            {% endfor %}
+        {% endif %}
+
+        {% else %}
+
+        <span class="fa fa-star"></span>
+        <span class="fa fa-star"></span>
+        <span class="fa fa-star"></span>
+        <span class="fa fa-star"></span>
+        <span class="fa fa-star"></span>
+
+    {% endif %}
+    {% if m.moyenne != 0 %}
+    <p class="info_avg"> {{ m.moyenne|round(1, 'ceil') }}/5 </p> 
+    <p class="info_avg"> Basée sur {{ m.nbr_notes }} {% if m.nbr_notes > 1 %} notes {% else %} note {% endif %} </p>
+    {% else %} 
+    <p class="info_avg"> Aucune note </p>
+    {% endif %}
+{% endfor %}
+
+{% if com is not defined %}
+<textarea id="com_contain" name="com_contain" class="form-control expand" {% if nb_com != 0 %} placeholder="Donner un avis sur cette vidéo" {% else %}placeholder="Soyez le premier à commenter cette vidéo" {% endif %}></textarea>
+<div class="note" id="note">
+    <span class="text-note"> Noter cette vidéo (facultatif) </span>
+    <ul class="star_note">
+        <li class="fa fa-star" id="1"></li>
+        <li class="fa fa-star" id="2"></li>
+        <li class="fa fa-star" id="3"></li>
+        <li class="fa fa-star" id="4"></li>
+        <li class="fa fa-star" id="5"></li>
+    </ul>
+</div>
+<button class="btn btn-success btn_com" id="btn_com">Envoyer <i class="fas fa-paper-plane"></i></button>
+{% endif %}
+
 {% if nb_com != 0 %}
 
     {% for c in commentaires %}
-
         <div class="commentaire" {% if current_user == c.id_user %} style="background-color: #ebebeb !important;" {% endif %} >
-        <div class="c_user">
-            {% if current_user == c.id_user %} <span class="supprimer"> <a href="#" data-toggle="modal" data-target="#suppModal{{c.id}}"><i class="fas fa-times"></i></a> </span> {% endif %}
             <img src="{{BASEURL ~ c.avatar }}" alt="Photo de profil de {{ c.pseudo }}"  {% if current_user == c.id_user %} onclick = "window.location.href = '{{BASEURL}}utilisateur/profil';" style="cursor:pointer;" {% endif %} >
-            <p><b> {{ c.pseudo }} </b></p>
-        </div>
-        <div class="c_infos">
-            <p class="c_infos_user"> {{ c.date_commentaire|formatDate }} </p>
-            <div class="c_note">
-                <span class="fa fa-star checked"></span>
-                <span class="fa fa-star checked"></span>
-                <span class="fa fa-star"></span>
-                <span class="fa fa-star"></span>
-                <span class="fa fa-star"></span>
-            </div>
-            <p class="com">{{ c.commentaire|nl2br }}</p>
-        </div>
-        </div>
+            <div class="c_infos">
+                {% if c.note != 0 %}
+                <div class="c_note">
+                    {% for i in 1.. c.note %}
+                    <span class="fa fa-star checked"></span>
+                    {% endfor %}
 
-        <div class="modal fade" id="suppModal{{c.id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-            <div class="modal-body">
+                    {% if 5- c.note != 0 %}
+                    {% for i in 1..(5- c.note) %}
+                        <span class="fa fa-star"></span>
+                    {% endfor %}
+                    {% endif %}
+                </div>
+                {% endif %}
+                <p class="com">{{ c.commentaire|nl2br }}</p>
+                <p class="c_infos_user"> {{ c.date_commentaire|formatDate }} par <B>{{ c.pseudo }}</B> </p>
+            </div>
+            {% if current_user == c.id_user %} <span class="supprimer"> <a id="showSupprimer" data-commentaire="{{ c.id }}"><i class="fas fa-times"></i></a> </span> {% endif %}
+            <div class="supprimer-commentaire" id="supprimer-commentaire_{{ c.id }}">
                 <p> Confirmer la suppression de votre avis </p>
-                <button type="button" class="btn btn-secondary annuler" data-dismiss="modal">Annuler</button>
-                <button type="button" class="btn btn-primary" id="delete_comment" data-id="{{ c.id }}">Oui</button>
+                <button type="button" class="btn btn-danger annuler">Annuler</button>
+                <button type="button" class="btn btn-success" id="delete_comment" data-id="{{ c.id }}" data-user="{{ current_user }}">Oui</button>
             </div>
-            </div>
-        </div>
         </div>
 
     {% endfor %}

@@ -1,5 +1,6 @@
 {% set BASEURL = constant('BASEURL') %}
-{% if videos != null %}
+<p class="nb_elmts"> {{ nb_videos }} {% if nb_videos > 1 %} vidéos {% else %} vidéo {% endif %} {% if recherche != NULL %} <span class="ma_recherche">pour la recherche {{ recherche }}</span> {% endif %}</p>
+{% if nb_videos != 0 %}
 
 {% for v in videos %}
     <div class="elmt_video">
@@ -9,7 +10,7 @@
         <div class="v_infos">
           <div class="v_text">
             <h2> {{ v.titre }} </h2> 
-            {% if v.gratuite == 1 %} 
+            {% if v.gratuite == 1 or abonne is defined %} 
               <span class="text-muted free"><i class="fas fa-check"></i></span> 
             {% else %} 
                 {% if (v.nbr_achats == 1) %} 
@@ -42,7 +43,7 @@
             <span class="nbr_notes"> ({{ v.nbr_notes }}{% if v.nbr_notes > 1 %} notes{% else %} note{% endif %}) </span>
           {# Fin de l'affichage #}
           {% if (v.gratuite == 0) %}
-            {% if (v.nbr_achats == 1) %}
+            {% if (v.nbr_achats == 1) or (abonne is defined) %}
               <a role="button" class="btn btn-success" href="{{BASEURL}}video/watch/{{v.id}}"> <i class="fas fa-video"></i> </a> 
             {% else %}
               <a role="button" class="btn btn-danger" href="{{BASEURL}}video/pay/{{v.id}}"> <i class="fas fa-shopping-cart"></i> </a> 

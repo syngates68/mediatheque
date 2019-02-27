@@ -2,11 +2,11 @@
 {% block title %} Mes achats {% endblock %}
 {% block content %}
 
-{% set total = 0 %}
-
 <div class="achats">
 
 <h1> Vos achats </h1>
+
+<p class="total"><B>Total : </B>EUR {{ total }}</p>
  
 {% if nb_achats != 0 %}
 
@@ -20,22 +20,13 @@
             <div class="v_text">
                 <h2> {{ a.titre }} </h2> 
             </div>
-            <p class="text-muted price">Prix d'achat : EUR {{ a.prix }}</p> 
-            <p> <B>Achetée le</B> {{ a.date_achat | date("d/m/Y") }} </p>
-            <span class="fa fa-star checked"></span>
-            <span class="fa fa-star checked"></span>
-            <span class="fa fa-star checked"></span>
-            <span class="fa fa-star"></span>
-            <span class="fa fa-star"></span>
+            <p class="text-muted price infos_achat">Prix d'achat : EUR {{ a.prix }}</p> 
+            <p class="infos_achat"> <B>Achetée le</B> {{ a.date_achat | date("d/m/Y") }} </p>
             <a role="button" class="btn btn-success" href="{{BASEURL}}video/watch/{{a.id_video}}"> <i class="fas fa-video"></i> </a>
         </div>
     </div>
 
-    {% set total = total + a.prix %}
-
 {% endfor %}
-
-<p class="total"><B>Total : </B>EUR {{ total }}</p>
 
 {% else %}
 

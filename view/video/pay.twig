@@ -13,7 +13,7 @@
       <img class="card-img-top" src="{{ BASEURL ~ video.get_miniature }}" alt="Miniature de {{ video.get_titre }}" data-id="{{ video.get_id }}" data-user="{{ id_utilisateur }}">
       <div class="card-body">
         <p class="card-text titre">{{ video.get_titre }}</p>
-        <p class="card-text prix">EUR {{ video.get_prix }}</p>
+        <p class="card-text prix" data-prix="{{video.get_prix}}">EUR {{ video.get_prix }}</p>
         <p class="card-text description">{{ video.get_description|nl2br }}</p>
       </div>
 
@@ -34,6 +34,11 @@
     <div class="tab-content" id="myTabContent">
       <div class="tab-pane fade show active cb" id="cb" role="tabpanel" aria-labelledby="cb-tab">
       {% if carte_exist == 1 %}
+
+          <p class="card_exist"> 1 carte enregistrée </p>
+          <img src="{{BASEURL}}images/cb.jpg" alt="image de CB">
+
+          <button type="button" class="btn btn-success btn-paiement" id="btn-valid-cb" data-id="{{ video.get_id }}" data-prix="{{ video.get_prix }}"><i class="fas fa-check"></i>Valider le paiement</button>
   
           {% if success_message is defined %} 
 
@@ -44,8 +49,10 @@
           {% endif %}
 
       {% else %}
-        <form class="form_cb" id="form-cb">
+        <form class="form_cb" id="form-cb" method="post" action="pay">
 
+          <input type="hidden" name="id_video" value="{{ video.get_id }}">
+          <input type="hidden" name="prix" value="{{ video.get_prix }}">
           <div class="form-row">
 
             <div class="col-sm-12">
@@ -83,7 +90,7 @@
             </div>
           </div>
           <button type="button" class="btn btn-primary" id="save-info" onclick="saveInfo()"><i class="fas fa-save"></i>Enregistrer ma carte</button>
-          <button type="button" class="btn btn-success" id="valid-cb"><i class="fas fa-check"></i>Valider le paiement</button>
+          <button class="btn btn-success" id="valid-cb"><i class="fas fa-check"></i>Valider le paiement</button>
 
           {% if error_message is defined %} 
 

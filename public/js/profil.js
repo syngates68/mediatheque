@@ -4,7 +4,17 @@ $(function(){
         $('.profil_infos #mail_user').css('display', 'none');
         $(this).css('display', 'none');
         $('#supp_user').css('display', 'none');
-        $('#mail_valid').css('display', 'block');
+        $('#mail_valid').css('display', 'inline-block');
+        $('#mail_annule').css('display', 'inline-block');
+    });
+
+    $('#mail_annule').on('click', function(){
+        $('.profil_infos #input_mail').css('display', 'none');
+        $('.profil_infos #mail_user').css('display', 'block');
+        $('#modif_mail').css('display', 'inline-block');
+        $('#supp_user').css('display', 'inline-block');
+        $('#mail_valid').css('display', 'none');
+        $(this).css('display', 'none');
     });
 
     $("#delete_user").on('click', function() {
@@ -28,6 +38,26 @@ $(function(){
             },
         });
 
+    });
+
+    $(document).on('click', '#stop_abo', function(){
+        $('#resilier_abonnement').show();
+    });
+
+    $(document).on('click', '.annuler', function(){
+        $('#resilier_abonnement').hide();
+    });
+
+    $(document).on('click', '#delete_abo', function(){
+        var id = $(this).attr('data-id');
+        
+        $.post('http://localhost/mediatheque/public/ajax/fin_abo', {
+            id : id
+        },
+    
+        function(){
+            location.reload();
+        });
     });
 
 });

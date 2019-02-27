@@ -2,6 +2,8 @@
 
 namespace Model;
 
+use PDO;
+
 //use Model;
 
 /**
@@ -50,6 +52,38 @@ class Notes extends Model{
     }
     
 	// Requêtes BDD
+
+	public function note_create(){
+		return self::_create('notes', [
+			['key' => 'id_video', 'value' => $this->get_id_video(), 'type' => PDO::PARAM_INT],
+			['key' => 'id_utilisateur', 'value' => $this->get_id_utilisateur(), 'type' => PDO::PARAM_INT],
+			['key' => 'note', 'value' => $this->get_note(), 'type' => PDO::PARAM_INT]
+		]);
+
+		$this->set_id($n['id']);
+
+        return ($n['count'] > 0) ? $this : false;
+	}
+
+	public static function getNoteByUser($id_video, $id_utilisateur){
+		return self::_getOne('notes ', ' * ', '', 'id_video = :id_video AND id_utilisateur = :id_utilisateur', [
+			['key' => ':id_video', 'value' => $id_video, 'type' => PDO::PARAM_INT],
+			['key' => ':id_utilisateur', 'value' => $id_utilisateur, 'type' => PDO::PARAM_INT],
+		]);
+	}
+
+	public static function getMoyenneByVideo($id_video){
+		return self::_getInner('notes ', ' *, COUNT(*) as nbr_notes, COALESCE (AVG(note), 0) as moyenne ', '', 'id_video = :id_video', '', '', [
+			['key' => ':id_video', 'value' => $id_video, 'type' => PDO::PARAM_INT],
+		]);
+	}
+
+	public static function deleteNote($id_user, $id_video){
+		return self::_delete('notes ', 'notes ', '', 'id_video = :id_video AND id_utilisateur = :id_user', [
+			['key' => 'id_video', 'value' => $id_video, 'type' => PDO::PARAM_INT],
+			['key' => 'id_user', 'value' => $id_user, 'type' => PDO::PARAM_INT]
+		]);
+	}
 	
 	/***************************************/
 	public static function buildModel(array $line){
@@ -60,6 +94,18 @@ class Notes extends Model{
             "note" => $line['note']
 		]);
         return $n;
+	}
+
+	public static function buildInner(array $line){
+		$tab = array(
+			"id" => $line['id'],
+			"id_video" => $line['id_video'],
+			"id_utilisateur" => $line['id_utilisateur'],
+			"note" => $line['note'],
+            "nbr_notes" => $line['nbr_notes'],
+            "moyenne" => $line['moyenne']
+		);
+		return $tab;
 	}
 
 

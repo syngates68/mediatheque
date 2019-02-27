@@ -6,22 +6,46 @@ $(function(){
 
     });
 
-    $('.v_infos').on('click', 'button', function(){
-        //alert($('.my_video').width());
-        if( $('.my_video').width() < 1300){
-            $('.my_video').css('padding', '0');
-        }
-        else{
-            $('.my_video').css('padding', '40px 150px');
-        }
+    $(document).on('click', '#showSupprimer', function(){
+        var id_com = $(this).attr('data-commentaire');
+        $('#supprimer-commentaire_'+id_com).show();
+    });    
+
+    $(document).on('click', '.supprimer-commentaire .annuler', function(){
+        var id_com = $('#showSupprimer').attr('data-commentaire');
+        $('#supprimer-commentaire_'+id_com).css('display', 'none');
     });
 
-    $('#note .fa-star').on('mouseover', function(){
-        var current = $('.current-note');
-        current.removeClass('current-note');
-        $(this).addClass('checked').addClass('current-note');
-        $(this).prevAll('.fa-star').addClass('checked').removeClass('current-note');  
-        $(this).nextAll('.fa-star').removeClass('checked').removeClass('current-note');
+    $(document).on('mouseover', '#note ul li', function(){
+        var onStar = parseInt($(this).attr('id'), 10); 
+
+        $(this).parent().children('li.fa').each(function(e){
+            if (e < onStar) {
+              $(this).addClass('checked');
+            }
+            else {
+              $(this).removeClass('checked');
+            }
+          });
+          
+        }).on('mouseout', function(){
+          $(this).parent().children('li.fa').each(function(e){
+            $(this).removeClass('checked');
+          });
+    });
+
+    $(document).on('click', '#note ul li', function(){
+        var onStar = parseInt($(this).attr('id'), 10); // The star currently selected
+        var stars = $(this).parent().children('li.fa');
+        
+        for (i = 0; i < stars.length; i++) {
+          $(stars[i]).removeClass('selected');
+        }
+        
+        for (i = 0; i < onStar; i++) {
+          $(stars[i]).addClass('selected');
+        }
+        
     });
 
     $(document).on('keyup', '#com_contain', function(){
@@ -31,6 +55,9 @@ $(function(){
             $('#btn_com').css('visibility', 'hidden');
             $('#note').css('visibility', 'hidden');
         }
+        //var text = $(this).val().replace(':)', '<img src="http://localhost/mediatheque/public/images/smile.png" contentEditable="true">');
+        //alert(text);
+        //$(this).html(text);
     });
 
     $(document).on('click', '#btn_com', function(){
@@ -41,11 +68,17 @@ $(function(){
         else{
             var id = $('.video #video-control').attr('data-id');
         }
+
+        // JUST RESPONSE (Not needed)
         var content = $('#com_contain').val();
+        var note = parseInt($('#note li.selected').last().attr('id'), 10);
+
+        //alert(note);
 
         $.post('http://localhost/mediatheque/public/ajax/comment', {
             id : id,
-            content : content
+            content : content,
+            note : note
         },
 
         function(data){
@@ -55,28 +88,6 @@ $(function(){
 
         return false;
 
-    });
-
-    var popupCenter = function(url, title, width, height){
-        var popupWidth = width || 640;
-        var popupHeight = height || 320;
-        var windowLeft = window.screenLeft || window.screenX;
-        var windowTop = window.screenTop || window.screenY;
-        var windowWidth = window.innerWidth || document.documentElement.clientWidth;
-        var windowHeight = window.innerHeight || document.documentElement.clientHeight;
-        var popupLeft = windowLeft + windowWidth / 2 - popupWidth / 2;
-        var popupTop = windowTop + windowHeight / 2 - popupHeight / 2;
-        var popup = window.open(url, title, 'scrollbars=yes, width = ' + popupWidth + ', height = ' + popupHeight + ', top=' + popupTop + ', left = ' + popupLeft);
-        popup.focus();
-        return true;
-    }
-
-    document.querySelector('.fb-share-button').addEventListener('click', function(e){
-        e.preventDefault();
-        var url = this.getAttribute('data-url');
-        var title = this.getAttribute('date-title');
-        var shareUrl = "https://www.facebook.com/sharer/sharer.php?u=" + encodeURIComponent(url) + "&t=" + encodeURIComponent(title);
-        popupCenter(shareUrl, "Partager sur Facebook");
     });
 
     $(document).on('click', '#delete_comment', function(){
@@ -89,18 +100,44 @@ $(function(){
         else{
             var id_video = $('.video video').attr('data-id');
         }
+
+        var id_user = $(this).attr('data-user');
         
         $.post('http://localhost/mediatheque/public/ajax/delete_comment', {
             id_com : id_com,
-            id_video : id_video
+            id_video : id_video,
+            id_user : id_user
         },
         function(data){
             $('.commentaires').html(data);
-            $('body').removeClass('modal-open').css('padding-right', '0');
-            $('.modal-backdrop').css('display', 'none');
         });
 
         return false;
+    });
+
+    $(document).on('click', '#see_description', function(){
+        $('.description p').css('display', 'block');
+        $(this).addClass('close_description').text('Fermer la description');
+    });
+
+    $(document).on('click', '.close_description', function(){
+        $('.description p').css('display', 'none');
+        $(this).removeClass('close_description').text('Voir la description');
+    });
+
+    $(document).on('click', '#btn-valid-cb', function(){
+        var id_video = $(this).attr('data-id');
+        var prix = $(this).attr('data-prix');
+        
+        $.post('http://localhost/mediatheque/public/video/pay_video_cb', {
+            id_video : id_video,
+            prix : prix
+        },
+        function(){
+            $('#success_payment').html('Votre paiement a bien été accepté! Veuillez patienter, vous allez être redirigé vers la vidéo!').css('display', 'block');
+            setTimeout(function(){ window.location.replace('http://localhost/mediatheque/public/video/watch/'+id_video); }, 3000);
+        });
+
     });
 
 });

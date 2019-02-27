@@ -24,9 +24,15 @@
       <li class="nav-item">
         <a class="nav-link" href="{{BASEURL}}utilisateur/achats">Mes achats</a>
       </li>
-      <li class="nav-item">
+      {% if abonne is defined %}
+      <div class="nav_item">
+        <p class="nav-link is_abonne" href="{{BASEURL}}home/abonnement"><i class="fas fa-check"></i>Abonné</p>
+      </div> 
+      {% else %}
+      <div class="nav_item">
         <a class="nav-link" href="{{BASEURL}}home/abonnement">S'abonner</a>
-      </li>
+      </div> 
+      {% endif %}
     </ul>
     <div class="dropdown dropleft">
       <a href="#" class="account dropdown-toggle" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><img src="{{ BASEURL ~ profil.get_pic }}"></a>
@@ -39,26 +45,28 @@
 </nav>
 
     <nav class="hide_navbar">
+      <div class="nav_item account">
+        <a href="{{BASEURL}}utilisateur/profil"><img src="{{ BASEURL ~ profil.get_pic }}"></a>
+        <p>{{ profil.get_pseudo }}</p>
+      </div>  
       <div class="nav_item">
         <i class="fas fa-home"></i><a href="{{BASEURL}}home/board">Accueil</a>
       </div>
       <div class="nav_item">
-        <i class="fas fa-sliders-h"></i><a href="{{BASEURL}}home/board">Filtrer</a>
-      </div>
-      <div class="nav_item">
-        <i class="fas fa-user"></i><a href="{{BASEURL}}utilisateur/profil">Mon compte</a>
-      </div>  
-      <div class="nav_item">
         <i class="fas fa-shopping-cart"></i><a href="{{BASEURL}}utilisateur/achats">Mes achats</a>
       </div>  
-      <div class="nav_item search">
-        <i class="fas fa-search"></i><a href="{{BASEURL}}utilisateur/profil">Rechercher</a>
-      </div>
+      {% if abonne is defined %}
+      <div class="nav_item">
+        <i class="fas fa-video"></i><a href="{{BASEURL}}home/abonnement">Abonné</a>
+      </div> 
+      {% else %}
       <div class="nav_item">
         <i class="fas fa-video"></i><a href="{{BASEURL}}home/abonnement">S'abonner</a>
-      </div>   
-      <div class="separator"></div>
-      <a class="btn btn-success sign_out" role="button" href="{{BASEURL}}utilisateur/sign_out"><i class="fas fa-sign-out-alt"></i>Déconnexion</a>
+      </div> 
+      {% endif %}  
+      <div class="nav_item">
+        <i class="fas fa-sign-out-alt"></i><a href="{{BASEURL}}utilisateur/sign_out">Déconnexion</a>
+      </div>
     </nav>
 
     <div class="site_content">

@@ -40,6 +40,16 @@ class Controller{
             if (isset($_SESSION['auth']['id'])){
                 $profil = Utilisateur::getUserById($_SESSION['auth']['id']);
                 self::$twig->addGlobal('profil', $profil);
+                foreach (Abonnement::getByUser($_SESSION['auth']['id']) as $a){
+                    if ($a['date_end'] <= date("Y-m-d H:i:s")){
+                        Abonnement::stopAbo($_SESSION['auth']['id'], $a['id']);
+                    }
+                } 
+                $abo = Abonnement::getByUser($_SESSION['auth']['id']);
+                //var_dump($abo);
+                if (!empty($abo)){            
+                    self::$twig->addGlobal('abonne', $abo);
+                } 
             }
             self::$twig->addExtension(new \Twig_Extension_Debug());
             self::$twig->addExtension(new FormatDate());

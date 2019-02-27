@@ -146,15 +146,19 @@ class Utilisateur extends Model{
 		]);
 	}
 
-	public static function addUser($nom, $prenom, $pseudo, $mail, $pass, $confirm_key){
-		return self::_create('utilisateur ', ' (nom, prenom, pseudo, mail, pass, confirm_key)', '(:nom, :prenom, :pseudo, :mail, :pass, :confirm_key)', [
-			'nom' => $nom,
-			'prenom' => $prenom,
-			'pseudo' => $pseudo,
-			'mail' => $mail,
-			'pass' => $pass,
-			'confirm_key' => $confirm_key
+	public function utilisateur_create(){
+		return self::_create('utilisateur', [
+			['key' => 'nom', 'value' => $this->get_nom(), 'type' => PDO::PARAM_STR],
+			['key' => 'prenom', 'value' => $this->get_prenom(), 'type' => PDO::PARAM_STR],
+			['key' => 'pseudo', 'value' => $this->get_pseudo(), 'type' => PDO::PARAM_STR],
+			['key' => 'mail', 'value' => $this->get_mail(), 'type' => PDO::PARAM_STR],
+			['key' => 'pass', 'value' => $this->get_pass(), 'type' => PDO::PARAM_STR],
+			['key' => 'confirm_key', 'value' => $this->get_confirm_key(), 'type' => PDO::PARAM_INT]
 		]);
+
+		$this->set_id($u['id']);
+
+        return ($u['count'] > 0) ? $this : false;
 	}
 
 	public static function updateMail($mail, $id_user){
@@ -185,7 +189,7 @@ class Utilisateur extends Model{
 	}
 
 	public static function deleteUser($id_user){
-		return self::_delete('utilisateur u', 'u, a, ac, c, p', ' LEFT JOIN abonnement a ON u.id = a.id_utilisateur LEFT JOIN achat ac ON u.id = ac.id_utilisateur LEFT JOIN commentaire c ON u.id = c.id_utilisateur LEFT JOIN paiements p ON u.id = p.payer_id', 'u.id = :id_user', [
+		return self::_delete('utilisateur u', 'u, a, ac, c, p, n, x', ' LEFT JOIN abonnement a ON u.id = a.id_utilisateur LEFT JOIN achat ac ON u.id = ac.id_utilisateur LEFT JOIN commentaire c ON u.id = c.id_utilisateur LEFT JOIN paiements p ON u.id = p.payer_id LEFT JOIN notes n ON u.id = n.id_utilisateur LEFT JOIN carte x ON u.id = x.id_user', 'u.id = :id_user', [
 			['key' => 'id_user', 'value' => $id_user, 'type' => PDO::PARAM_INT]
 		]);
 	}

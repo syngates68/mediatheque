@@ -2,49 +2,44 @@
 {% block title %} Abonnements {% endblock %}
 {% block content %}
 
-<div class="abo_content">
 
-  <div class="abo_header">
-    <div class="abo_infos">
-      <h1>Abonnements</h1>
+  <div class="container container-abonnements">
 
-      <p> 
-        Pour profiter pleinement de toutes les vidéos présentes sur la plateforme, <strong>D<span class="violet">o</span>ntatune</strong>
-        vous propose de souscrire à l'abonnement qui vous correspond. 
-      </p>
-      <p> 
-        Alors n'hésitez plus et rejoignez la communauté <strong>D<span class="violet">o</span>ntatune</strong> et trouvez
-        votre bonheur parmi notre médiathèque variée.
-      </p>
-    </div>
-  </div>
+    {% if abo_exist is defined %}
 
-  <div class="container">
-    <div class="card-deck mb-3 text-center">
+      <p> Vous avez déjà souscrit à un abonnement </p>
+    
+    {% else %}
+
       {% for a in abos %}
-      <div class="elmt_abo">
-      <div class="card mb-4 shadow-sm">
-        <div class="card-header">
-          <h4 class="my-0 font-weight-normal">{{ a.get_nom }}</h4>
-        </div>
-        <div class="card-body">
-          <ul>
-            <li>{{ a.get_description }}</li>
-            <li>{{ a.get_prix }}€</li>
-            {% if a.get_essai == 1 %} 
-            <li>Période d'essai de 7 jours</li>
-            {% endif %}
-          </ul>
-          <button type="button" class="btn btn-lg btn-block btn-outline-primary">{% if a.get_essai == 1 %} Essayer {% else %} Souscrire {% endif %}</button>
-        </div>
-      </div>
-      </div>
+
+      <div class="columns">
+        <ul class="price-abo">
+          <li class="header" {% if a.id != 2 %} style="color:#000; background: #FFF;" {% endif %}>
+            {{ a.nom }}
+          </li>
+          <li class="grey grey-price">
+          {{ a.prix }}<span class="small-price">€</span>
+          {% if a.essai == 1 and a.periode_essai == 0 %} <span class="try"> 7 jours d'essai </span>{% endif %}
+          </li>
+          <li>{{ a.description }}</li>
+          <li class="grey">
+          {% if a.essai == 1 and a.periode_essai == 0 %}
+            <a href="{{ BASEURL }}home/valid_abo" class="button"> Essayer </a>
+          {% else %}
+            <a href="{{ BASEURL }}home/pay/{{ a.id }}" class="button"> Souscrire </a>
+          {% endif %}
+          </li>
+        </ul>
+        {% if a.nbr_achats != 0 %}
+          <p class="badge badge-success"><i class="fas fa-thumbs-up"></i>Top des ventes</p>
+        {% endif %}
+      </div> 
       
       {% endfor %}
 
-    </div>
+    {% endif %}
+
   </div>
-
-</div>
-
+  
 {% endblock %}

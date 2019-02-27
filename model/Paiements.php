@@ -4,6 +4,8 @@ namespace Model;
 
 //use Model\Model;
 
+use PDO;
+
 /**
  * Class model : Paiements
  * @author Quentin SCHIFFERLE
@@ -90,12 +92,41 @@ class Paiements extends Model{
     public static function getAllByUser($id_user){
 
         return self::_getInner('paiements p', ' p.id, p.payment_id, p.payment_status, p.payment_amount, p.payment_currency, p.payment_date, p.payer_email, p.payer_id ', ' left join utilisateur u on p.payer_id = u.id ', 'p.payer_id = :id', '', ' ORDER BY p.payment_date DESC', [
-            'id' => $id_user 
+            ['key' => ':id', 'value' => $id_user, 'type' => PDO::PARAM_INT],
         ]);
 
 	}
 
+	public function paiement_create(){
+		return self::_create('paiements', [
+			['key' => 'payment_id', 'value' => $this->get_payment_id(), 'type' => PDO::PARAM_STR],
+			['key' => 'payment_status', 'value' => $this->get_payment_status(), 'type' => PDO::PARAM_STR],
+			['key' => 'payment_amount', 'value' => $this->get_payment_amount(), 'type' => PDO::PARAM_STR],
+			['key' => 'payment_currency', 'value' => $this->get_payment_currency(), 'type' => PDO::PARAM_STR],
+			['key' => 'payer_email', 'value' => $this->get_payer_email(), 'type' => PDO::PARAM_STR],
+			['key' => 'payer_id', 'value' => $this->get_payer_id(), 'type' => PDO::PARAM_INT]
+		]);
+
+		$this->set_id($p['id']);
+
+        return ($p['count'] > 0) ? $this : false;
+	}
+
 	/***************************************/
+
+	public static function buildModel(array $line){
+		$p = new Paiements([
+			"id" => $line['id'],
+			"payment_id" => $line['payment_id'],
+			"payment_status" => $line['payment_status'],
+			"payment_amount" => $line['payment_amount'],
+            "payment_currency" => $line['payment_currency'],
+            "payment_date" => $line['payment_date'],
+            "payer_email" => $line['payer_email'],
+            "payer_id" => $line['payer_id']
+		]);
+        return $p;
+	}
     
     public static function buildInner(array $line){
 		$tab = array(

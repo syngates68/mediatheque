@@ -1,0 +1,307 @@
+{% extends 'template.twig' %}
+
+{% block title %} Paiement de la vidéo {% endblock %}
+{% block content %}
+
+<div class="container commande" id="commande">
+  <h1> Récapitulatif de la commande </h1>
+  <div class="row">
+
+  <div class="col-sm-12 col-lg-6">
+
+    <div class="columns">
+      <ul class="price-abo">
+        <li class="header">{{ abo.get_nom }}</li>
+        <li class="grey grey-price">
+        {{ abo.get_prix }}<span class="small-price">€</span>
+        {% if abo.get_essai == 1 %} <span class="try"> 7 jours d'essai </span>{% endif %}
+        </li>
+        <li>{{ abo.get_description }}</li>
+      </ul>
+    </div> 
+
+  </div>
+  <div class="col-sm-12 col-lg-6 choix_paie">
+    <h2> Choisir un moyen de paiement </h2>
+
+    <ul class="nav nav-tabs" id="myTab" role="tablist">
+        <li class="nav-item">
+            <a class="nav-link active" id="cb-tab" data-toggle="tab" href="#cb" role="tab" aria-controls="cb" aria-selected="true"> <i class="fas fa-money-check"></i> Carte bancaire </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" id="paypal-tab" data-toggle="tab" href="#paypal" role="tab" aria-controls="paypal" aria-selected="false"> <i class="fab fa-paypal"></i> PayPal </a>
+        </li>
+    </ul>
+
+    <div class="tab-content" id="myTabContent">
+      <div class="tab-pane fade show active cb" id="cb" role="tabpanel" aria-labelledby="cb-tab">
+      {% if carte_exist == 1 %}
+
+          <p class="card_exist"> 1 carte enregistrée </p>
+          <img src="{{BASEURL}}images/cb.jpg" alt="image de CB">
+
+          <button type="button" class="btn btn-success btn-paiement" id="btn-valid-cb" data-id="{{ abo.get_id }}" data-prix="{{ abo.get_prix }}"><i class="fas fa-check"></i>Valider le paiement</button>
+  
+          {% if success_message is defined %} 
+
+          <div class="alert alert-success" role="alert">
+            <i class="fas fa-info-check"></i>{{ success_message }}
+          </div>
+
+          {% endif %}
+
+      {% else %}
+        <form class="form_cb" id="form-cb" method="post" action="pay">
+
+          <input type="hidden" name="id_type" value="{{ abo.get_id }}">
+          <input type="hidden" name="prix" value="{{ abo.get_prix }}">
+          <div class="form-row">
+
+            <div class="col-sm-12">
+              <label> Numéro de carte </label>
+              <div class="form-group input-group">
+                <div class="input-group-prepend">
+                  <span class="input-group-text" id="basic-addon1"><i class="fas fa-money-check"></i></span>
+                </div>
+                <input type="text" class="form-control" id="numero" name="numero" maxlength="16" value="{{ value_numero }}">
+              </div>
+            </div>
+
+          </div>
+
+          <div class="form-row">
+
+            <div class="col-sm-6">
+              <label> Date d'expiration </label>
+              <div class="form-group input-group">
+                <div class="input-group-prepend">
+                  <span class="input-group-text" id="basic-addon1"><i class="far fa-calendar-alt"></i></span>
+                </div>
+                <input type="text" class="form-control" id="date_expir" name="date_expir" placeholder="MM/VV" maxlength="5" value="{{ value_date_expir }}">
+              </div>
+            </div>
+
+            <div class="col-sm-6">
+              <label> Cryptogramme </label>
+              <div class="form-group input-group">
+                <div class="input-group-prepend">
+                  <span class="input-group-text" id="basic-addon1"><i class="fas fa-edit"></i></span>
+                </div>
+                <input type="text" class="form-control" id="crypto" name="crypto" placeholder="CVC" maxlength="3" value="{{ value_crypto }}">
+              </div>
+            </div>
+          </div>
+          <button type="button" class="btn btn-primary" id="save-info" onclick="saveInfo()"><i class="fas fa-save"></i>Enregistrer ma carte</button>
+          <button class="btn btn-success" id="valid-cb"><i class="fas fa-check"></i>Valider le paiement</button>
+
+          {% if error_message is defined %} 
+
+          <div class="alert alert-danger" role="alert">
+            <i class="fas fa-info-circle"></i>{{ error_message }}
+          </div>
+
+          {% endif %}
+
+          {% if success_message is defined %} 
+
+          <div class="alert alert-success" role="alert">
+            <i class="fas fa-info-check"></i>{{ success_message }}
+          </div>
+
+          {% endif %}
+
+        {% endif %}
+        </form>
+      </div>
+      <div class="tab-pane fade paypal" id="paypal" role="tabpanel" aria-labelledby="paypal-tab">
+          <p class="cgv_p"> <i class="fas fa-info-circle"></i>En cliquant sur ce bouton, vous vous engagez à avoir lu et compris les <a data-toggle="modal" data-target="#cgv" href="#"> Conditions 
+            Générales de Vente </a></p>
+          <div id="paypal-button" class="btn_paypal"></div>
+      </div>
+    </div>
+
+    <script src="{{BASEURL}}js/abonnement.js"></script>
+
+    <script>
+
+    function saveInfo(){
+      var numero = $('#numero').val();
+      var date_expir = $('#date_expir').val();
+      var crypto = $('#crypto').val();
+
+      $.post('http://localhost/mediatheque/public/video/addCarte', {
+          numero : numero,
+          date_expir : date_expir,
+          crypto : crypto
+      },
+      function(){
+          location.reload();
+      });
+    }
+
+    paypal.Button.render({
+      env: 'sandbox',
+      client: {
+        sandbox: 'AS-5mDifqkwXocxDPyY43-McUUu61r1bBXJguRsTe4kLMYi825nJqpleIe8gX0a3k2F8Xoch3oNDjIEx'
+      },
+      style: {
+        color: 'blue',   // 'gold, 'blue', 'silver', 'black'
+        size:  'responsive', // 'medium', 'small', 'large', 'responsive'
+        shape: 'pill'    // 'rect', 'pill'
+      },
+      payment: function (data, actions) {
+        var id_video = $('#commande img').attr('data-id');
+        var id_utilisateur = $('#commande img').attr('data-user');
+        var CREATE_URL = 'http://localhost/mediatheque/payment.php?ref='+id_video+'&user='+id_utilisateur;
+
+        //alert(id_video);
+
+        return paypal.request.post(CREATE_URL)
+          .then(function(data) { 
+            if (data.success) { 
+               return data.paypal_response.id;   
+            } else { 
+               alert(data.msg);
+               return false;   
+            }
+        });
+      },
+        onAuthorize: function (data, actions) {
+            var id_video = $('#commande img').attr('data-id');
+            var id_utilisateur = $('#commande img').attr('data-user');
+            var EXECUTE_URL = 'http://localhost/mediatheque/payment_execute.php?ref='+id_video+'&user='+id_utilisateur;
+            var REDIRECT_URL = 'http://localhost/mediatheque/public/video/watch/'+id_video;
+            
+            var data = {
+            paymentID: data.paymentID,
+            payerID: data.payerID
+            };
+            return paypal.request.post(EXECUTE_URL, data)
+            .then(function (data) { 
+                $('#success_payment').html('Votre paiement a bien été accepté! Veuillez patienter, vous allez être redirigé vers la vidéo!').css('display', 'block');
+                setTimeout(function(){ window.location.replace(REDIRECT_URL); }, 3000);
+            if (data.success) { 
+          } else {
+            alert(data.msg);
+          }
+        });
+      },
+      onCancel: function(data, actions) {
+        $('#error_payment').html('La fenêtre de paiement a été fermée').css('display', 'block');
+      },
+      onError: function(err) {
+        $('#error_payment').html('Une erreur s\'est produite durant la communication avec les serveurs de PayPal, veuillez réessayer ultérieurement').css('display', 'block');
+      }
+    }, '#paypal-button');
+  </script>
+  <div id="error_payment" class="alert alert-danger"></div>
+  <div id="success_payment" class="alert alert-success"></div>
+
+  </div>
+  </div>
+</div>
+
+<div class="modal fade" id="cgv" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1><i class="fas fa-video"></i>D<span class="violet">o</span>ntatune</h1>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body cgu_modal">
+        <h2>Conditions générales de vente du site</h2>
+
+        <div class="sommaire">
+            <a href="#1"> ARTICLE 1 : Objet </a>
+            <a href="#2"> ARTICLE 2 : Présentation des produits </a>
+            <a href="#3"> ARTICLE 3 : Durée de validité des offres de vente </a>
+            <a href="#4"> ARTICLE 4 : Commande </a>
+            <a href="#5"> ARTICLE 5 : Modalités de paiement </a>
+            <a href="#6"> ARTICLE 6 : Délai de rétractation </a>
+            <a href="#7"> ARTICLE 7 : Relations clients - Service après-vente </a>
+        </div>
+
+        <h2 id="1">Article 1 : Objet</h2>
+
+        <p>
+        Les conditions générales de ventes décrites ci-après détaillent les droits et 
+        obligations de l'entreprise Dontatune et de ses clients dans le cadre de la vente des 
+        vidéo présente sur le site internet de ladite entreprise
+        </p>
+        <p>
+        Toute prestation accomplie par la société Dontatune implique l'adhésion sans 
+        réserve de l'acheteur aux présentes conditions générales de vente.
+        </p>
+
+        <h2 id="2">Article 2 : Présentation des produits</h2>
+
+        <p>
+        Les caractéristiques des produits proposés à la vente sont présentées sur la page
+        d'accueil de notre site. Les photographies n'entrent pas dans le champ contractuel. 
+        La responsabilité de la société Dontatune ne peut être engagée si des erreurs 
+        s'y sont introduites. Tous les textes et images présentés sur le site de la société Dontatune 
+        sont réservés, pour le monde entier, au titre des droits d'auteur et de propriété intellectuelle; 
+        leur reproduction, même partielle, est strictement interdite.
+        </p>
+
+        <h2 id="3">Article 3 : Durée de validité des offres de vente</h2>
+
+        <p>La page d'accueil de notre site indique les prix en euros toutes taxes comprises. </p>
+
+        <p>
+        La société Dontatune se réserve le droit de modifier ses prix à tout moment mais les 
+        produits commandés sont facturés au prix en vigueur lors de l'enregistrement de la commande.
+        </p>
+
+        <p>
+        Les tarifs proposés comprennent les rabais et ristournes que l'entreprise Dontatune
+        serait amenée à octroyer compte tenu de ses résultats ou de la prise en charge par l'acheteur 
+        de certaines prestations.
+        </p>
+
+        <p>Aucun escompte ne sera accordé en cas de paiement anticipé.</p>
+
+        <h2 id="4">Article 4 : Commande</h2>
+
+        <p>
+        Le client valide sa commande lorsqu'il active le lien 
+        "Confirmez votre commande " en bas de la page " Récapitulatif de votre commande " 
+        après avoir accepté les présentes conditions de vente. 
+        Avant cette validation, il est systématiquement proposé au client de vérifier 
+        chacun des éléments de sa commande; il peut ainsi corriger ses erreurs éventuelles.
+        </p>
+
+        <h2 id="5">Article 5 : Modalités de paiement</h2>
+
+        <p>Le règlement des commandes s'effectue par carte bancaire ou via PayPal.</p>
+
+        <h2 id="6">Article 6 : Délai de rétractation</h2>
+
+        <p>L'Acheteur dispose d'un délai de quatorze jours francs, à compter de la réception des produits, 
+        pour exercer son droit de rétractation sans avoir à justifier de motifs ni à payer de pénalités, 
+        à l'exception, le cas échéant, des frais de retour. Si le délai de quatorze jours vient à expirer un 
+        samedi, un dimanche ou un jour férié ou chômé, il est prorogé jusqu'au premier jour ouvrable suivant.</p>
+
+        <p>En cas d'exercice du droit de rétractation, la société rembourse l'Acheteur de la totalité des 
+        sommes versées, dans les meilleurs délais et au plus tard dans les quatorze jours suivant la 
+        date à laquelle ce droit a été exercé.</p>
+
+        <h2 id="7">Article 7 : Relations clients - Service après-vente</h2>
+
+        <p>Pour toute information, question ou réclamation, le client 
+        peut s'adresser du lundi au vendredi, de 9 h à 18 h au service Relations Clients de la société </p>
+
+        <ul>
+            <li>Adresse:. . . . .</li>
+            <li>Tél: 01 . . . . .</li>
+            <li>Fax: 01 . . . . .</li>
+            <li>e-mail: . . . . .</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}

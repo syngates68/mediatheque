@@ -7,6 +7,9 @@ use Model\Theme;
 use Model\TypeAbonnement;
 use Model\Utilisateur;
 use Model\Achat;
+use Model\Carte;
+use Model\Abonnement;
+use Model\Paiements;
 
 use Library\Form;
 
@@ -25,14 +28,20 @@ class HomeController extends Controller{
     public function getBoard(){
         if (isset($_SESSION['auth']['id'])){
             if (isset($_SESSION['success_connect'])){
-                $this->set('success_connect', $_SESSION['success_connect']);
+                $this->set('success_message', $_SESSION['success_connect']);
                 unset($_SESSION['success_connect']);
             }
+            if (isset($_SESSION['success_add'])){
+                $this->set('success_message', $_SESSION['success_add']);
+                unset($_SESSION['success_add']);
+            }
             $videos = Video::getAllVideos($_SESSION['auth']['id']); 
+            $nb_videos = sizeof(Video::getAllVideos($_SESSION['auth']['id']));
             $last_video = Video::getLastVideo();
-            $abos = TypeAbonnement::getAllTypeAbonnements();
+            $abos = TypeAbonnement::getAllTypeAbonnements($_SESSION['auth']['id']);
             $themes = Theme::getAllThemes();
             $this->set('videos', $videos);
+            $this->set('nb_videos', $nb_videos);
             $this->set('last_video', $last_video);
             $this->set('abos', $abos);
             $this->set('themes', $themes);
@@ -52,7 +61,11 @@ class HomeController extends Controller{
     **/
     public function getAbonnement(){
         if (isset($_SESSION['auth']['id'])){
-            $abos = TypeAbonnement::getAllTypeAbonnements();
+            $abos = TypeAbonnement::getAllTypeAbonnements($_SESSION['auth']['id']);
+            $a = Abonnement::getByUser($_SESSION['auth']['id']);
+            if (!empty($a)){
+                $this->set('abo_exist', $a);
+            }
             $this->set('abos', $abos);
             $this->render('abonnement');
         }
@@ -62,6 +75,55 @@ class HomeController extends Controller{
             exit;
         }
     }
+
+    /**
+     * Method: GET
+     * URL : /home/valid_abo/
+     * Permet d'accéder à la période d'essai de l'abonnement mensuel
+    **/
+    public function getValid_abo(){
+        if (isset($_SESSION['auth']['id'])){
+            $abonnement = new Abonnement([
+                'id_type' => 3,
+                'id_utilisateur' => $_SESSION['auth']['id']
+            ]);
+            $abonnement->abonnement_create();
+
+            $_SESSION['success_add'] = 'Votre choix a bien été pris en compte, votre période d\'essai prendra fin dans 7 jours';
+
+            header('location:'.BASEURL.'home/board');
+            exit;
+        }
+        else{
+            $_SESSION['error_access'] = 'Vous devez être connecté pour accéder à cette page';
+            header('Location:'.BASEURL.'home/login');
+            exit;
+        }
+    }
+
+    public function postPay_abo_cb(){
+        $abonnement = new Abonnement([
+            'id_type' => $_POST['id_abo'],
+            'id_utilisateur' => $_SESSION['auth']['id']
+        ]);
+        $abonnement->abonnement_create();
+        
+        $user = Utilisateur::getUserById($_SESSION['auth']['id']);
+                                  
+        $paiement = new Paiements([
+            'payment_id' => 'CB0000'.$_SESSION['auth']['id'].$_POST['id_type'].date('Y_m_d'),
+            'payment_status' => 'approved',
+            'payment_amount' => $_POST['prix'],
+            'payment_currency' => 'EUR',
+            'payer_email' => $user->get_mail(),
+            'payer_id' => $_SESSION['auth']['id']
+        ]);
+        $paiement->paiement_create();
+
+        $_SESSION['success_add'] = 'Votre paiement a bien été pris en compte!';
+
+    }
+
 
     /**
      * Method: GET
@@ -144,6 +206,7 @@ class HomeController extends Controller{
     **/
     static function postLogin(){
         if (isset($_COOKIE['auth'])){
+            //setcookie('auth', '', time() - 3600, '/', '', false, true);
             //echo 'ok';
             $auth = $_COOKIE['auth'];
             $auth = explode('----', $auth);
@@ -176,7 +239,7 @@ class HomeController extends Controller{
                         }
                         $_SESSION['auth']['id'] = $user->get_id();
     
-                        //$_SESSION['success_connect'] = 'Content de vous revoir '.$u->get_pseudo();
+                        $_SESSION['success_connect'] = 'Content de vous revoir '.$user->get_prenom();
     
                         header('location:'.BASEURL.'home/board');
                         exit;
@@ -201,7 +264,7 @@ class HomeController extends Controller{
                             }
                             $_SESSION['auth']['id'] = $user->get_id();
     
-                            $_SESSION['success_connect'] = 'Content de vous revoir '.$user->get_pseudo();
+                            $_SESSION['success_connect'] = 'Content de vous revoir '.$user->get_prenom();
     
                             header('location:'.BASEURL.'home/board');
                             exit;
@@ -255,72 +318,115 @@ class HomeController extends Controller{
             $pass = $_POST['pass'];
             $pass2 = $_POST['pass2'];
 
-            if ($pass == $pass2){
-                $pseudo_count = Utilisateur::getUserExist($pseudo);
-                if (!$pseudo_count){
-                    $mail_count = Utilisateur::getMailExist($mail);
-                    if (!$mail_count){
-                        if (filter_var($mail, FILTER_VALIDATE_EMAIL)){
-                            $code = '';
+            if (preg_match("/[a-zA-Z0-9]{1,20}/", $nom) && preg_match("/[a-zA-Z0-9]{1,20}/", $prenom) && preg_match("/[a-zA-Z0-9]{1,20}/", $pseudo)){
 
-                            for ($i = 0; $i < 4; $i++){
-                                $s = rand(0,9);
-                                $code .= $s;
+                if (strlen($pseudo) >= 5){
+
+                    if ($pass == $pass2){
+                        $pseudo_count = Utilisateur::getUserExist($pseudo);
+                        if (!$pseudo_count){
+                            $mail_count = Utilisateur::getMailExist($mail);
+                            if (!$mail_count){
+                                if (filter_var($mail, FILTER_VALIDATE_EMAIL)){
+                                    $code = '';
+        
+                                    for ($i = 0; $i < 4; $i++){
+                                        $s = rand(0,9);
+                                        $code .= $s;
+                                    }
+        
+                                    $user = new Utilisateur([
+                                        'nom' => $nom,
+                                        'prenom' => $prenom,
+                                        'pseudo' => $pseudo,
+                                        'mail' => $mail,
+                                        'pass' => md5(sha1($pass)),
+                                        'confirm_key' => $code
+                                    ]);
+                                    $user->utilisateur_create();
+        
+                                    //$user = Utilisateur::addUser($nom, $prenom, $pseudo, $mail, md5(sha1($pass)), $code);
+                                    $u = Utilisateur::getUserByPseudo($pseudo, md5(sha1($pass)));
+                                    $_SESSION['pseudo'] = $pseudo;
+                                    mkdir("profils/".$pseudo, 0700); //Création d'un dossier au nom de l'utilisateur
+                                    MailController::confirm_inscription($u, $code);
+                                    header('location:'.BASEURL.'home/confirm');
+                                    exit;
+                                }
+                                else{
+                                    $_SESSION['error_inscription'] = 'L\'adresse mail rentrée n\'a pas un format correct';
+                
+                                    $_SESSION['value_nom_insc'] = $nom;
+                                    $_SESSION['value_prenom_insc'] = $prenom;
+                                    $_SESSION['value_pseudo_insc'] = $pseudo;
+                                    $_SESSION['value_mail_insc'] = $mail;
+                                    $_SESSION['value_pass_insc'] = $pass;
+                                    $_SESSION['value_pass2_insc'] = $pass2;
+            
+                                    header('location:'.BASEURL.'home/signUp');
+                                    exit;
+                                }
                             }
-
-                            $user = Utilisateur::addUser($nom, $prenom, $pseudo, $mail, md5(sha1($pass)), $code);
-                            $u = Utilisateur::getUserByPseudo($pseudo, md5(sha1($pass)));
-                            $_SESSION['pseudo'] = $pseudo;
-                            mkdir("profils/".$pseudo, 0700); //Création d'un dossier au nom de l'utilisateur
-                            MailController::confirm_inscription($u, $code);
-                            header('location:'.BASEURL.'home/confirm');
-                            exit;
+                            else{
+                                $_SESSION['error_inscription'] = 'Cette adresse mail est déjà associée à un autre compte';
+                
+                                $_SESSION['value_nom_insc'] = $nom;
+                                $_SESSION['value_prenom_insc'] = $prenom;
+                                $_SESSION['value_pseudo_insc'] = $pseudo;
+                                $_SESSION['value_mail_insc'] = $mail;
+                                $_SESSION['value_pass_insc'] = $pass;
+                                $_SESSION['value_pass2_insc'] = $pass2;
+        
+                                header('location:'.BASEURL.'home/signUp');
+                                exit;
+                            }
                         }
                         else{
-                            $_SESSION['error_inscription'] = 'L\'adresse mail rentrée n\'a pas un format correct';
-        
+                            $_SESSION['error_inscription'] = 'Ce nom d\'utilisateur n\'est pas disponible';
+                
                             $_SESSION['value_nom_insc'] = $nom;
                             $_SESSION['value_prenom_insc'] = $prenom;
                             $_SESSION['value_pseudo_insc'] = $pseudo;
                             $_SESSION['value_mail_insc'] = $mail;
                             $_SESSION['value_pass_insc'] = $pass;
                             $_SESSION['value_pass2_insc'] = $pass2;
-    
+        
                             header('location:'.BASEURL.'home/signUp');
                             exit;
                         }
                     }
                     else{
-                        $_SESSION['error_inscription'] = 'Cette adresse mail est déjà associée à un autre compte';
-        
+                        $_SESSION['error_inscription'] = 'Les mots de passe doivent être identiques';
+                
                         $_SESSION['value_nom_insc'] = $nom;
                         $_SESSION['value_prenom_insc'] = $prenom;
                         $_SESSION['value_pseudo_insc'] = $pseudo;
                         $_SESSION['value_mail_insc'] = $mail;
                         $_SESSION['value_pass_insc'] = $pass;
                         $_SESSION['value_pass2_insc'] = $pass2;
-
+        
                         header('location:'.BASEURL.'home/signUp');
                         exit;
                     }
                 }
                 else{
-                    $_SESSION['error_inscription'] = 'Ce nom d\'utilisateur n\'est pas disponible';
-        
+                    $_SESSION['error_inscription'] = 'Le nom d\'utilisateur doit posséder au moins 5 caractères';
+                
                     $_SESSION['value_nom_insc'] = $nom;
                     $_SESSION['value_prenom_insc'] = $prenom;
                     $_SESSION['value_pseudo_insc'] = $pseudo;
                     $_SESSION['value_mail_insc'] = $mail;
                     $_SESSION['value_pass_insc'] = $pass;
                     $_SESSION['value_pass2_insc'] = $pass2;
-
+    
                     header('location:'.BASEURL.'home/signUp');
                     exit;
                 }
+
             }
             else{
-                $_SESSION['error_inscription'] = 'Les mots de passe doivent être identiques';
-        
+                $_SESSION['error_inscription'] = 'Les caractères spéciaux ne sont pas autorisés';
+            
                 $_SESSION['value_nom_insc'] = $nom;
                 $_SESSION['value_prenom_insc'] = $prenom;
                 $_SESSION['value_pseudo_insc'] = $pseudo;
@@ -331,6 +437,7 @@ class HomeController extends Controller{
                 header('location:'.BASEURL.'home/signUp');
                 exit;
             }
+
         }
         else{
             $_SESSION['error_inscription'] = 'Tous les champs doivent être remplis';
@@ -524,6 +631,145 @@ class HomeController extends Controller{
             header('Location:'.BASEURL.'home/code_mail');
             exit;
         }
+    }
+
+    /**
+     * Method: GET
+     * URL : /home/pay/
+     * Permet d'accéder à la page de paiement d'un abonnement
+    **/
+    public function getPay($id){
+        if (isset($_SESSION['auth']['id'])){
+            if (isset($_SESSION['error_add'])){
+                $this->set('error_message', $_SESSION['error_add']);
+                unset($_SESSION['error_add']);
+            }
+            if (isset($_SESSION['success_add'])){
+                $this->set('success_message', $_SESSION['success_add']);
+                unset($_SESSION['success_add']);
+            }
+            if (isset($_SESSION['value_numero'])){
+                $this->set('value_numero', $_SESSION['value_numero']);
+                unset($_SESSION['value_numero']);
+            }
+            if (isset($_SESSION['value_date_expir'])){
+                $this->set('value_date_expir', $_SESSION['value_date_expir']);
+                unset($_SESSION['value_date_expir']);
+            }
+            if (isset($_SESSION['value_crypto'])){
+                $this->set('value_crypto', $_SESSION['value_crypto']);
+                unset($_SESSION['value_crypto']);
+            }
+            $abo = TypeAbonnement::getById($id);
+            $carte_exist = sizeof(Carte::getByUser($_SESSION['auth']['id']));
+            $this->set('abo', $abo);
+            $this->set('carte_exist', $carte_exist);
+            $this->set('id_utilisateur', $_SESSION['auth']['id']);
+            $this->render('pay');
+        }
+        else{
+            $_SESSION['error_access'] = 'Vous devez être connecté pour accéder à cette page';
+            header('Location:'.BASEURL.'home/login');
+            exit;
+        }
+    }
+    
+    public function postPay(){
+
+        $form = new Form();
+        if ($form->check_post_raw_values_not_empty(['numero', 'date_expir', 'crypto'])){
+
+            $numero = $_POST['numero'];
+            $date_expir = $_POST['date_expir'];
+            $crypto = $_POST['crypto'];
+
+            if (ctype_digit($numero) && strlen($numero) == 16){
+                if (ctype_digit($crypto) && strlen($crypto) == 3){
+                    $regex = "^\\d{2}/\\d{2}^";
+                    if (preg_match($regex, $date_expir)) {
+                        $date_expir_tab = explode('/', $date_expir);
+                        $mois_valid = ['01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12'];
+
+                        if (in_array($date_expir_tab[0], $mois_valid)){
+                            $abonnement = new Abonnement([
+                                'id_type' => $_POST['id_type'],
+                                'id_utilisateur' => $_SESSION['auth']['id']
+                            ]);
+                            $abonnement->abonnement_create();
+                    
+                            $user = Utilisateur::getUserById($_SESSION['auth']['id']);
+                                  
+                            $paiement = new Paiements([
+                                'payment_id' => 'CB0000'.$_SESSION['auth']['id'].$_POST['id_type'].date('Y_m_d'),
+                                'payment_status' => 'approved',
+                                'payment_amount' => $_POST['prix'],
+                                'payment_currency' => 'EUR',
+                                'payer_email' => $user->get_mail(),
+                                'payer_id' => $_SESSION['auth']['id']
+                            ]);
+                            $paiement->paiement_create();
+
+                            $_SESSION['success_add'] = 'Votre paiement a bien été pris en compte!';
+
+                            header('Location:'.BASEURL.'home/board');
+                            exit;
+                        }
+                        else{
+                            $_SESSION['error_add'] = 'Le mois de la date d\'expiration n\'est pas valide';
+
+                            $_SESSION['value_numero'] = $numero;
+                            $_SESSION['value_date_expir'] = $date_expir;
+                            $_SESSION['value_crypto'] = $crypto;
+
+                            header('location:'.BASEURL.'video/pay/'.$_POST['id_video']);
+                            exit;
+                        }
+
+                    } 
+                    else {
+                        $_SESSION['error_add'] = 'La date d\'expiration n\'est pas au format valide';
+
+                        $_SESSION['value_numero'] = $numero;
+                        $_SESSION['value_date_expir'] = $date_expir;
+                        $_SESSION['value_crypto'] = $crypto;
+
+                        header('location:'.BASEURL.'video/pay/'.$_POST['id_video']);
+                        exit;
+                    }
+                }
+                else{
+                    $_SESSION['error_add'] = 'Le cryptogramme n\'est pas au format valide';
+
+                    $_SESSION['value_numero'] = $numero;
+                    $_SESSION['value_date_expir'] = $date_expir;
+                    $_SESSION['value_crypto'] = $crypto;
+
+                    header('location:'.BASEURL.'video/pay/'.$_POST['id_video']);
+                    exit;
+                }
+            } 
+            else{
+                $_SESSION['error_add'] = 'Le numéro de carte n\'est pas au format valide';
+
+                $_SESSION['value_numero'] = $numero;
+                $_SESSION['value_date_expir'] = $date_expir;
+                $_SESSION['value_crypto'] = $crypto;
+
+                header('location:'.BASEURL.'video/pay/'.$_POST['id_video']);
+                exit;
+            }
+        }   
+        else{
+            $_SESSION['error_add'] = 'Tous les champs doivent être remplis';
+
+            $_SESSION['value_numero'] = $_POST['numero'];
+            $_SESSION['value_date_expir'] = $_POST['date_expir'];
+            $_SESSION['value_crypto'] = $_POST['crypto'];
+
+            header('location:'.BASEURL.'video/pay/'.$_POST['id_video']);
+            exit;
+        }
+
     }
 
     /**

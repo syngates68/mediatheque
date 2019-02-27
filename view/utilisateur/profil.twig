@@ -60,14 +60,15 @@
             <h1> {{ profil.get_prenom }} {{ profil.get_nom }} </h1>
             <p class="pseudo"> @{{ profil.get_pseudo }} </p>  
             <p class="member_since"> Membre depuis le {{ profil.get_date_creation | date("d/m/Y") }} </p>
-            <p id="mail_user"> Mail : {{ profil.get_mail }} </p>
-            <form method="post" action="updateMail" name="test" enctype="multipart/form-data">
+            <p id="mail_user" class="mail_user"> Mail : {{ profil.get_mail }} </p>
+            <form method="post" action="updateMail" class="update_mail" enctype="multipart/form-data">
                 <input type="email" id="input_mail" class="form-control" name="mail" placeholder="Votre nouvelle adresse mail">
                 <button class="btn btn-success mail_valid" id="mail_valid" type="submit"><i class="fas fa-check"></i>Valider</button>
+                <button class="btn btn-danger mail_annule" id="mail_annule" type="button"><i class="fas fa-times"></i>Annuler</button>
             </form>
             <button type="button" class="btn btn-success" id="modif_mail"><i class="fas fa-edit"></i>Modifier</button>
             <button type="button" class="btn btn-danger" id="supp_user" data-toggle="modal" data-target="#delete_user_modal"><i class="fas fa-trash-alt"></i>Supprimer</button>
-            </div>
+        </div>
         <div class="col-sm-12 col-lg-6 user_infos">
 
             <ul class="nav nav-tabs" id="myTab" role="tablist">
@@ -83,12 +84,35 @@
             </ul>
                 <div class="tab-content" id="myTabContent">
                     <div class="tab-pane fade show active p_abos" id="abo" role="tabpanel" aria-labelledby="abo-tab">
+                        {% if abonnement is defined %}
+                            {% for a in abonnement %}
+                            <div class="abo-recap">
+                            <p class="header">Abonnement {{ a.nom }}</p>
+                            <p class="abo-prix"> {{ a.prix }}<span class="small-prix">€</span> </p> 
+                            <p class="date-abo">Souscrit le {{ a.date_souscription | date("d/m/Y") }}</p>
+                            <p class="date-abo">Prend fin le {{ a.date_end | date("d/m/Y") }}</p>
+                                {% if a.essai == 1 and a.periode_essai == 1 %}
+                                    {% set difference = date(a.date_souscription|date("m/d/Y H:s")).diff(date("now"|date("m/d/Y H:s"))) %}
+                                    {% if difference.days <= 7 %}
+                                        <p class="periode_essai"> Votre période d'essai prend fin  {% if difference.days == 6 %} demain {% elseif difference.days == 7 %} dans quelques heures {% else %} dans {{ 7 - difference.days }} jours {% endif %}</p>
+                                        <button class="btn btn-danger" id="stop_abo">Résilier abonnement </button>
+                                        <div class="resilier_abonnement" id="resilier_abonnement">
+                                            <p> Etes-vous sûr de vouloir résilier votre abonnement? </p>
+                                            <button type="button" class="btn btn-danger annuler">Annuler</button>
+                                            <button type="button" class="btn btn-success" id="delete_abo" data-id="{{ a.id }}">Oui</button>
+                                        </div>
+                                    {% endif %}
+                                {% endif %}
+                            </div>
+                            {% endfor %}
+                        {% else %}
                         <div class="alert alert-info"> 
                             <p> Vous n'avez encore souscrit à aucun abonnement </p>
                             <hr>
                             <p class="mb-0">Vous pouvez sélectionner un abonnement qui vous convient afin d'accéder à toutes les vidéos de la 
                             plateforme en cliquant <a href={{BASEURL}}home/abonnement>ici</a></p>
                         </div>
+                        {% endif %}
                     </div>
                     <div class="tab-pane fade paiements" id="paie" role="tabpanel" aria-labelledby="paie-tab">
                     {% if nb_paiements != 0 %}
@@ -113,7 +137,20 @@
                         {% for c in commentaires %}
                         <div class="commentaire">
                             <div class="c_infos">
-                                <p class="c_infos_user"> <span>{{ c.date_commentaire|formatDate }} </span> pour la vidéo <B> {{ c.titre }} </B> </p>
+                                <p class="c_infos_user_profil"> <i class="fas fa-comments"></i> <span>{{ c.date_commentaire|formatDate }} </span> pour la vidéo <B> {{ c.titre }} </B></p>
+                                {% if c.note != 0 %}
+                                <div class="c_note">
+                                    {% for i in 1.. c.note %}
+                                    <span class="fa fa-star checked"></span>
+                                    {% endfor %}
+
+                                    {% if 5- c.note != 0 %}
+                                    {% for i in 1..(5- c.note) %}
+                                        <span class="fa fa-star"></span>
+                                    {% endfor %}
+                                    {% endif %}
+                                </div>
+                                {% endif %}
                                 <p class="com">{{ c.commentaire|nl2br }}</p>
                             </div>
                         </div>

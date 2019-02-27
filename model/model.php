@@ -47,16 +47,21 @@ abstract class Model{
         $sql .= $order;
 
         //print_r($sql);
-        
-        if (!empty($param)){
-            $req = $db->prepare($sql);
-            $req->execute($param);
-        }
-        else{
-            $req = $db->query($sql);
+
+        $req = $db->prepare($sql);
+
+        foreach($param as $p) {
+            //var_dump($p['value']);
+            //print_r($p['value'])."<br/>";
+            if(isset($p['type']))
+                $req->bindValue($p['key'], $p['value'], $p['type']);
+            else
+                $req->bindValue($p['key'], $p['value']);
         }
     
-        $res = [];
+        $r = $req->execute();
+
+        $res = array();
 
         while ($line = $req->fetch()){
             array_push($res, static::buildInner($line));
@@ -94,7 +99,7 @@ abstract class Model{
 
     }
 
-    protected static function _create($table, $table_v, $values, $param = []){
+    /*protected static function _create($table, $table_v, $values, $param = []){
         $db = Database::dbConnect();
         $sql = 'INSERT INTO '.$table.$table_v.' VALUES '.$values;
         //print_r($sql);
@@ -102,6 +107,49 @@ abstract class Model{
         $req->execute($param);
 
         return true;
+    }*/
+
+    protected static function _create($table, array $values) {
+        $db = Database::dbConnect();
+        $sql = "INSERT INTO ".$table." (";
+  
+        $start = true;
+        foreach($values as $p) {
+            if(!$start) {
+                $sql.=", ".$p['key'];
+            } else {
+                $sql.=$p['key'];
+                $start = false;
+            }
+        }
+
+        $sql.=") VALUES (";
+        $start = true;        
+        foreach($values as $p) {
+            //print_r($p['key']."-".$p['value']);
+            if(!$start) {
+                $sql.=", :".$p['key'];
+            } else {
+                $sql.=":".$p['key'];
+                $start = false;
+            }
+        }
+        $sql.=")";
+
+        $req = $db->prepare($sql);
+        
+        //print_r($sql);
+
+        foreach($values as $p) {
+            if(isset($p['type']))
+            $req->bindValue(":".$p['key'], $p['value'], $p['type']);
+        else
+            $req->bindValue(":".$p['key'], $p['value']);
+        }
+
+        $res = $req->execute();
+
+        return [ 'id' => $db->lastInsertId(), 'count' => ($res != false) ? $req->rowCount() : -1];
     }
 
     protected static function _update($table, $set, $where, $param = []){
@@ -174,64 +222,10 @@ abstract class Model{
             }
         }
     }
-        
-    /*public function formatDate($date){
-        setlocale(LC_TIME, 'fra', 'fr_FR');
-        $date = strtotime($date);
-        $date = strftime("%d/%m/%y", $date);
-    
-        return $date;
-    }*/
 
     public function __destruct(){
 
     }
     
-    /*public function getTime($date){
-        setlocale(LC_TIME, 'fra', 'fr_FR');
-        $date = strtotime($date)-7200;
-        $now = time();
-        $diff = $now-$date;
-    
-        $m = ($diff)/(60);
-        $h = ($diff)/(60*60);
-        $d = ($diff)/(60*60*24);
-        $s = ($diff)/(60*60*24*7);
-        $mth = ($diff)/(60*60*24*7*4);
-        $y = ($diff)/(60*60*24*7*4*12);
-    
-        if ($diff < 60){
-            return 'Il y a quelques secondes';
-        }
-    
-        elseif ($diff >= 60 && $diff <= 3600){
-            $minute = (floor($m) == 1) ? ' minute' : ' minutes';
-            return 'Il y a ' . floor($m) . ' minutes';
-        }
-    
-        elseif ($m >= 60 && $h < 24){
-            $hour = (floor($h) == 1) ? ' heure' : ' heures';
-            return 'Il y a ' . floor($h) . $hour;
-        }
-    
-        elseif ($d >= 1 && $d < 7){
-            $day = (floor($d) == 1) ? ' jour' : ' jours';
-            return 'Il y a ' . floor($d) . $day;
-        }
-    
-        elseif ($s >= 1 && $s < 4){
-            $week = (floor($s) == 1) ? ' semaine' : ' semaines';
-            return 'Il y a ' . floor($s) . $week;
-        }
-    
-        elseif ($mth >= 1 && $mth < 12){
-            return 'Il y a ' . floor($mth) . ' mois';
-        }
-    
-        else{
-            $year = (floor($y) == 1) ? ' an' : ' ans';
-            return 'Il y a ' . floor($y) . $year;
-        } 
-    }*/
 }
 
