@@ -2,8 +2,6 @@
 
 namespace Model;
 
-//use Model;
-
 /**
  * Class model : Theme
  * @author Quentin SCHIFFERLE
@@ -51,8 +49,8 @@ class Theme extends Model{
 	/***************************************/
 	public static function buildModel(array $line){
 		$t = new Theme([
-			"id" => $line['id'],
-			"nom" => $line['nom'],
+			"id"      => $line['id'],
+			"nom"     => $line['nom'],
 			"couleur" => $line['couleur']
 		]);
         return $t;

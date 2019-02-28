@@ -2,7 +2,6 @@
 
 namespace Model;
 
-//use Model;
 use PDO;
 
 /**
@@ -97,7 +96,6 @@ class Video extends Model{
     
 	// Requêtes BDD
 
-	//SELECT v.id, v.titre, v.id_theme, v.gratuite, v.lien, v.miniature, v.prix, v.date_ajout, t.nom as theme, t.couleur, COALESCE(a1.nombre, 0) as nbr_achats from video v left join theme t on v.id_theme = t.id left join (SELECT a.id_video as id_video , COUNT(*) as nombre FROM achat a LEFT JOIN video v ON a.id_video = v.id WHERE v.id IN (SELECT id_video FROM achat WHERE id_video = id_video AND id_utilisateur = 1) GROUP BY id_video)a1 on a1.id_video = v.id 
     public static function getAllVideos($id_user){
         return self::_getInner('video v', ' v.id, v.titre, v.description, v.id_theme, v.gratuite, v.lien, v.miniature, v.prix, v.date_ajout, t.nom as theme, t.couleur, COALESCE(a1.nombre, 0) as nbr_achats, COALESCE (AVG(n.note), 0) as moyenne, COALESCE(COUNT(n.note), 0) as nbr_notes ', ' left join theme t on v.id_theme = t.id left join (SELECT a.id_video as id_video , COUNT(*) as nombre FROM achat a LEFT JOIN video v ON a.id_video = v.id WHERE v.id IN (SELECT id_video FROM achat) AND a.id_utilisateur = :id GROUP BY id_video)a1 on a1.id_video = v.id left join notes n on n.id_video = v.id ', '', '', ' GROUP BY v.id ORDER BY v.gratuite DESC', [
 			['key' => ':id', 'value' => $id_user, 'type' => PDO::PARAM_INT],
@@ -109,7 +107,6 @@ class Video extends Model{
 	}
 
 	public static function getVideoById($id){
-		//var_dump($id);
 		return self::_getOne('video v ', '  v.id, v.titre, v.description, v.id_theme, v.gratuite, v.lien, v.miniature, v.prix, v.date_ajout ', '', 'v.id = :id', [
 			['key' => ':id', 'value' => $id, 'type' => PDO::PARAM_INT],
         ]);
@@ -135,35 +132,35 @@ class Video extends Model{
 	/***************************************/
 	public static function buildModel(array $line){
 		$v = new Video([
-			"id" => $line['id'],
-			"titre" => $line['titre'],
+			"id" 		  => $line['id'],
+			"titre" 	  => $line['titre'],
 			"description" => $line['description'],
-			"id_theme" => $line['id_theme'],
-			"date_ajout" => $line['date_ajout'],
-			"gratuite" => $line['gratuite'],
-			"lien" => $line['lien'],
-			"miniature" => $line['miniature'],
-			"prix" => $line['prix']
+			"id_theme" 	  => $line['id_theme'],
+			"date_ajout"  => $line['date_ajout'],
+			"gratuite"    => $line['gratuite'],
+			"lien"		  => $line['lien'],
+			"miniature"   => $line['miniature'],
+			"prix" 		  => $line['prix']
 		]);
 		return $v;
 	}
 
 	public static function buildInner(array $line){
 		$tab = array(
-			"id" => $line['id'],
-			"titre" => $line['titre'],
-			"description" => $line['description'],
-			"id_theme" => $line['id_theme'],
-			"date_ajout" => $line['date_ajout'],
-			"gratuite" => $line['gratuite'],
-			"lien" => $line['lien'],
-			"miniature" => $line['miniature'],
-			"prix" => $line['prix'],
-			"theme" => $line['theme'],
-			"couleur" => $line['couleur'],
-			"nbr_achats" => $line['nbr_achats'],
-			"moyenne" => $line['moyenne'],
-			"nbr_notes" => $line['nbr_notes']
+			"id" 			=> $line['id'],
+			"titre" 		=> $line['titre'],
+			"description"   => $line['description'],
+			"id_theme" 		=> $line['id_theme'],
+			"date_ajout" 	=> $line['date_ajout'],
+			"gratuite"		=> $line['gratuite'],
+			"lien" 			=> $line['lien'],
+			"miniature" 	=> $line['miniature'],
+			"prix" 			=> $line['prix'],
+			"theme" 		=> $line['theme'],
+			"couleur" 		=> $line['couleur'],
+			"nbr_achats" 	=> $line['nbr_achats'],
+			"moyenne" 		=> $line['moyenne'],
+			"nbr_notes" 	=> $line['nbr_notes']
 		);
 		return $tab;
 	}

@@ -16,7 +16,7 @@ function charge_liste_videos(type, themes, tri, search){
     loading(true, 'Chargement des vidéos en cours...');
     $('.lv_container').css('display', 'none');
 
-    $.post('http://localhost/mediatheque/public/ajax/list_videos', {
+    $.post(baseurl+'ajax/list_videos', {
         type : type,
         tri : tri,
         themes : themes,
@@ -26,64 +26,74 @@ function charge_liste_videos(type, themes, tri, search){
     function(data){
         loading(false, '');
         $('.video-content').html(data);
-        // alert(data);
     });
 
 }
 
 $('#search input').on('focus', function(){
     $(this).on('keyup', function(e){
-        if(e.keyCode == 13) { // KeyCode de la touche entrée
-            if ($('#filtre #type_video').val() == 3){
-                $('#filtre .tri_prix').css('display', 'block');
-                var type = $('#filtre #type_video').val();
-                var tri = $('#filtre #tri_video').val();
-                var search = $('#search input').val();
-            }
-            else{
-                $('#filtre .tri_prix').css('display', 'none');
-                var type = $('#filtre #type_video').val();
-                var tri = $('#filtre #tri').val();
-                var search = $('#search input').val();
-            }
+        if ($(this).val() != ""){
 
-            var themes = new Array();
+            $('#button_search').removeClass('disabled');
 
-            $('.themes').each(function(){
-                if ($(this).attr('checked') == 'checked'){
-                    themes.push($(this).attr('value'));
+            if(e.keyCode == 13) { // KeyCode de la touche entrée
+                if ($('#filtre #type_video').val() == 3){
+                    $('#filtre .tri_prix').css('display', 'block');
+                    var type = $('#filtre #type_video').val();
+                    var tri = $('#filtre #tri_video').val();
+                    var search = $('#search input').val();
                 }
-            });
+                else{
+                    $('#filtre .tri_prix').css('display', 'none');
+                    var type = $('#filtre #type_video').val();
+                    var tri = $('#filtre #tri').val();
+                    var search = $('#search input').val();
+                }
+    
+                var themes = new Array();
+    
+                $('.themes').each(function(){
+                    if ($(this).attr('checked') == 'checked'){
+                        themes.push($(this).attr('value'));
+                    }
+                });
+    
+                charge_liste_videos(type, themes, tri, search);
+            }
 
-            charge_liste_videos(type, themes, tri, search);
+        }
+        else{
+            $('#button_search').addClass('disabled');
         }
     });
 });
 
 $('#search button').on('click', function(){
 
-    if ($(this).val() == 3){
-        $('#filtre .tri_prix').css('display', 'block');
-        var type = $('#filtre #type_video').val();
-        var tri = $('#filtre #tri_video').val();
-        var search = $('#search input').val();
-    }
-    else{
-        $('#filtre .tri_prix').css('display', 'none');
-        var type = $('#filtre #type_video').val();
-        var tri = '';
-        var search = $('#search input').val();
-    }
-
-    var themes = new Array();
-
-    $('.themes').each(function(){
-        if ($(this).attr('checked') == 'checked'){
-            themes.push($(this).attr('value'));
+    if (!$(this).hasClass('disabled')){
+        if ($(this).val() == 3){
+            $('#filtre .tri_prix').css('display', 'block');
+            var type = $('#filtre #type_video').val();
+            var tri = $('#filtre #tri_video').val();
+            var search = $('#search input').val();
         }
-    });
-
-    charge_liste_videos(type, themes, tri, search);
+        else{
+            $('#filtre .tri_prix').css('display', 'none');
+            var type = $('#filtre #type_video').val();
+            var tri = '';
+            var search = $('#search input').val();
+        }
+    
+        var themes = new Array();
+    
+        $('.themes').each(function(){
+            if ($(this).attr('checked') == 'checked'){
+                themes.push($(this).attr('value'));
+            }
+        });
+    
+        charge_liste_videos(type, themes, tri, search);
+    }
 });
 
 $('#filtre #type_video').on('change', function(){

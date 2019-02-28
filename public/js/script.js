@@ -27,12 +27,10 @@ $(function(){
             var width = $(window).width();
         
             if (width > 700){
-                //alert('ordi');
                 $('.hide_navbar').css('display', 'none');
                 $('.site_content').removeClass('with_sidebar');
             }
             else{
-                //alert('tel');
                 $('.hide_navbar').css('display', 'block');
                 if ($('.open').hasClass('change')){
                     $('.open').removeClass('change');

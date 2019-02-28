@@ -25,14 +25,12 @@ abstract class Model{
         }
         $sql .= $order;
 
-        //print_r($sql);
         $req = $db->query($sql);
     
         $res = [];
 
         while ($line = $req->fetch()){
             array_push($res, static::buildModel($line));
-            //var_dump($res);
         }
 
         return $res;
@@ -46,13 +44,9 @@ abstract class Model{
         }
         $sql .= $order;
 
-        //print_r($sql);
-
         $req = $db->prepare($sql);
 
         foreach($param as $p) {
-            //var_dump($p['value']);
-            //print_r($p['value'])."<br/>";
             if(isset($p['type']))
                 $req->bindValue($p['key'], $p['value'], $p['type']);
             else
@@ -65,7 +59,6 @@ abstract class Model{
 
         while ($line = $req->fetch()){
             array_push($res, static::buildInner($line));
-            //var_dump($res);
         }
 
         return $res;
@@ -74,14 +67,9 @@ abstract class Model{
     protected static function _getOne($table, $select, $inner, $where, array $param = []){
         $db = Database::dbConnect();
         $sql = 'SELECT'.$select.'FROM '.$table.$inner.'WHERE '.$where;
-        //print_r($sql);
         $req = $db->prepare($sql);
 
-        //var_dump($param);
-
         foreach($param as $p) {
-            //var_dump($p['value']);
-            //print_r($p['value'])."<br/>";
             if(isset($p['type']))
                 $req->bindValue($p['key'], $p['value'], $p['type']);
             else
@@ -98,16 +86,6 @@ abstract class Model{
         }
 
     }
-
-    /*protected static function _create($table, $table_v, $values, $param = []){
-        $db = Database::dbConnect();
-        $sql = 'INSERT INTO '.$table.$table_v.' VALUES '.$values;
-        //print_r($sql);
-        $req = $db->prepare($sql);
-        $req->execute($param);
-
-        return true;
-    }*/
 
     protected static function _create($table, array $values) {
         $db = Database::dbConnect();
@@ -126,7 +104,6 @@ abstract class Model{
         $sql.=") VALUES (";
         $start = true;        
         foreach($values as $p) {
-            //print_r($p['key']."-".$p['value']);
             if(!$start) {
                 $sql.=", :".$p['key'];
             } else {
@@ -137,8 +114,6 @@ abstract class Model{
         $sql.=")";
 
         $req = $db->prepare($sql);
-        
-        //print_r($sql);
 
         foreach($values as $p) {
             if(isset($p['type']))
@@ -170,8 +145,6 @@ abstract class Model{
         $req = $db->prepare($sql);
 
         foreach($param as $p) {
-            //var_dump($p['value']);
-            //print_r($p['value']);
             if(isset($p['type']))
             {
                 $req->bindValue($p['key'], $p['value'], $p['type']);
@@ -182,8 +155,7 @@ abstract class Model{
             }
                 
         }
-
-        //print_r($sql);
+        
         $req->execute();
         $line = $req->fetch();
         return $line['nb'];

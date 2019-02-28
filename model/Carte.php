@@ -2,8 +2,6 @@
 
 namespace Model;
 
-//use Model\Model;
-
 use PDO;
 
 /**
@@ -84,22 +82,22 @@ class Carte extends Model{
 	/***************************************/
 	public static function buildModel(array $line){
 		$c = new Carte([
-            "id" => $line['id'],
-            "numero_carte" => $line['numero_carte'],
+            "id"      		  => $line['id'],
+            "numero_carte" 	  => $line['numero_carte'],
             "date_expiration" => $line['date_expiration'],
-            "cryptogramme" => $line['cryptogramme'],
-			"id_user" => $line['id_user']
+            "cryptogramme" 	  => $line['cryptogramme'],
+			"id_user" 		  => $line['id_user']
 		]);
 		return $c;
     }
 
     public static function buildInner(array $line){
 		$tab = array(
-			"id" => $line['id'],
-            "numero_carte" => $line['numero_carte'],
+			"id" 		      => $line['id'],
+            "numero_carte"    => $line['numero_carte'],
             "date_expiration" => $line['date_expiration'],
-            "cryptogramme" => $line['cryptogramme'],
-			"id_user" => $line['id_user']
+            "cryptogramme" 	  => $line['cryptogramme'],
+			"id_user" 		  => $line['id_user']
 		);
         return $tab;
     }

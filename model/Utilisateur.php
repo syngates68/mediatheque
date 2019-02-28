@@ -2,8 +2,6 @@
 
 namespace Model;
 
-//use Model;
-
 use PDO;
 
 /**
@@ -197,15 +195,15 @@ class Utilisateur extends Model{
 	/***************************************/
 	public static function buildModel(array $line){
 		$u = new Utilisateur([
-			"id" => $line['id'],
-			"nom" => $line['nom'],
-			"prenom" => $line['prenom'],
-			"pseudo" => $line['pseudo'],
+			"id" 			=> $line['id'],
+			"nom" 			=> $line['nom'],
+			"prenom" 		=> $line['prenom'],
+			"pseudo"        => $line['pseudo'],
 			"date_creation" => $line['date_creation'],
-			"mail" => $line['mail'],
-			"pic" => $line['pic'],
-			"pass" => $line['pass'],
-			"confirm_key" => $line['confirm_key']
+			"mail" 			=> $line['mail'],
+			"pic" 			=> $line['pic'],
+			"pass" 			=> $line['pass'],
+			"confirm_key"   => $line['confirm_key']
 		]);
 		return $u;
 	}

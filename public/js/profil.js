@@ -18,7 +18,7 @@ $(function(){
     });
 
     $("#delete_user").on('click', function() {
-        window.location="http://localhost/mediatheque/public/utilisateur/delete_compte"; 
+        window.location=baseurl+"utilisateur/delete_compte"; 
     });
 
     $("input:file").change(function (e){
@@ -28,7 +28,7 @@ $(function(){
         fd.append('file',files);
 
         $.ajax({
-            url: 'http://localhost/mediatheque/public/utilisateur/update_photo',
+            url: baseurl+'utilisateur/update_photo',
             type: 'post',
             data: fd,
             contentType: false,
@@ -51,7 +51,7 @@ $(function(){
     $(document).on('click', '#delete_abo', function(){
         var id = $(this).attr('data-id');
         
-        $.post('http://localhost/mediatheque/public/ajax/fin_abo', {
+        $.post(baseurl+'ajax/fin_abo', {
             id : id
         },
     

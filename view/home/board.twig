@@ -60,7 +60,7 @@
       <div class="input-group mb-4 search_bar" id="search">
         <input type="text" class="form-control" placeholder="Rechercher une vidéo" name="search" aria-label="Example text with button addon" aria-describedby="button-addon1">
         <div class="input-group-prepend">
-          <button class="btn btn-outline-secondary" type="button" id="button-addon1"><i class="fas fa-search"></i></button>
+          <button class="btn btn-outline-secondary disabled" type="button" id="button_search"><i class="fas fa-search"></i></button>
         </div>
       </div>
 
@@ -125,7 +125,6 @@
     var done = false;
     function onPlayerStateChange(event) {
     if (event.data == YT.PlayerState.PLAYING && !done) {
-        //setTimeout(stopVideo, 6000);
         done = true;
     }
     }
@@ -150,9 +149,11 @@
         <i class="fas fa-video"></i><strong>D<span class="violet">o</span>ntatune</strong>
       </div>
       <div class="col-sm-4">
-        <a href="#"> En savoir plus </a>
         <a href="{{ BASEURL }}home/cgu"> Conditions générales d'utilisation </a>
         <a href="{{ BASEURL }}home/cgv"> Conditions générales de vente </a>
+      </div>
+      <div class="col-sm-4">
+        <span class="copyright">&copy; Dontatune {{ "now"|date('Y') }}</span>
       </div>
     </div>
   </footer>

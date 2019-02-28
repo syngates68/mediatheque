@@ -2,8 +2,6 @@
 
 namespace Model;
 
-//use Model;
-
 use PDO;
 
 /**
@@ -102,10 +100,10 @@ class Commentaire extends Model{
 	/***************************************/
 	public static function buildModel(array $line){
 		$c = new Commentaire([
-			"id" => $line['id'],
-			"id_utilisateur" => $line['id_utilisateur'],
-			"id_video" => $line['id_video'],
-			"commentaire" => $line['commentaire'],
+			"id" 		       => $line['id'],
+			"id_utilisateur"   => $line['id_utilisateur'],
+			"id_video" 		   => $line['id_video'],
+			"commentaire" 	   => $line['commentaire'],
 			"date_commentaire" => $line['date_commentaire']
 		]);
 		return $c;
@@ -113,16 +111,16 @@ class Commentaire extends Model{
     
     public static function buildInner(array $line){
 		$tab = array(
-			"id" => $line['id'],
-			"id_utilisateur" => $line['id_utilisateur'],
-			"id_video" => $line['id_video'],
-			"commentaire" => $line['commentaire'],
+			"id" 			   => $line['id'],
+			"id_utilisateur"   => $line['id_utilisateur'],
+			"id_video" 		   => $line['id_video'],
+			"commentaire" 	   => $line['commentaire'],
             "date_commentaire" => $line['date_commentaire'],
-            "pseudo" => $line['pseudo'],
-			"avatar" => $line['avatar'],
-			"id_user" => $line['id_user'],
-			"titre" => $line['titre'],
-			"note" => $line['note']
+            "pseudo" 		   => $line['pseudo'],
+			"avatar" 		   => $line['avatar'],
+			"id_user" 		   => $line['id_user'],
+			"titre"			   => $line['titre'],
+			"note" 			   => $line['note']
 		);
 		return $tab;
 	}

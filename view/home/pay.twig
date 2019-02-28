@@ -1,6 +1,6 @@
 {% extends 'template.twig' %}
 
-{% block title %} Paiement de la vidéo {% endblock %}
+{% block title %} Paiement de votre abonnement {% endblock %}
 {% block content %}
 
 <div class="container commande" id="commande">
@@ -116,7 +116,7 @@
       <div class="tab-pane fade paypal" id="paypal" role="tabpanel" aria-labelledby="paypal-tab">
           <p class="cgv_p"> <i class="fas fa-info-circle"></i>En cliquant sur ce bouton, vous vous engagez à avoir lu et compris les <a data-toggle="modal" data-target="#cgv" href="#"> Conditions 
             Générales de Vente </a></p>
-          <div id="paypal-button" class="btn_paypal"></div>
+          <div id="paypal-button" class="btn_paypal" data-user="{{ id_utilisateur }}" data-id="{{ abo.get_id }}"></div>
       </div>
     </div>
 
@@ -145,32 +145,29 @@
         sandbox: 'AS-5mDifqkwXocxDPyY43-McUUu61r1bBXJguRsTe4kLMYi825nJqpleIe8gX0a3k2F8Xoch3oNDjIEx'
       },
       style: {
-        color: 'blue',   // 'gold, 'blue', 'silver', 'black'
-        size:  'responsive', // 'medium', 'small', 'large', 'responsive'
-        shape: 'pill'    // 'rect', 'pill'
+        color: 'blue',
+        size:  'responsive', 
+        shape: 'pill'    
       },
       payment: function (data, actions) {
-        var id_video = $('#commande img').attr('data-id');
-        var id_utilisateur = $('#commande img').attr('data-user');
-        var CREATE_URL = 'http://localhost/mediatheque/payment.php?ref='+id_video+'&user='+id_utilisateur;
-
-        //alert(id_video);
+        var id_type = $('#paypal-button').attr('data-id');
+        var id_utilisateur = $('#paypal-button').attr('data-user');
+        var CREATE_URL = 'http://localhost/mediatheque/payment.php?abo='+id_type+'&user='+id_utilisateur;
 
         return paypal.request.post(CREATE_URL)
           .then(function(data) { 
             if (data.success) { 
                return data.paypal_response.id;   
-            } else { 
-               alert(data.msg);
+            } else {
                return false;   
             }
         });
       },
         onAuthorize: function (data, actions) {
-            var id_video = $('#commande img').attr('data-id');
-            var id_utilisateur = $('#commande img').attr('data-user');
-            var EXECUTE_URL = 'http://localhost/mediatheque/payment_execute.php?ref='+id_video+'&user='+id_utilisateur;
-            var REDIRECT_URL = 'http://localhost/mediatheque/public/video/watch/'+id_video;
+            var id_type = $('#paypal-button').attr('data-id');
+            var id_utilisateur = $('#paypal-button').attr('data-user');
+            var EXECUTE_URL = 'http://localhost/mediatheque/payment_execute.php?abo='+id_type+'&user='+id_utilisateur;
+            var REDIRECT_URL = 'http://localhost/mediatheque/public/home/board';
             
             var data = {
             paymentID: data.paymentID,
@@ -178,11 +175,10 @@
             };
             return paypal.request.post(EXECUTE_URL, data)
             .then(function (data) { 
-                $('#success_payment').html('Votre paiement a bien été accepté! Veuillez patienter, vous allez être redirigé vers la vidéo!').css('display', 'block');
+                $('#success_payment').html('Votre paiement a bien été accepté! Veuillez patienter, vous allez être redirigé vers la page d\'accueil!').css('display', 'block');
                 setTimeout(function(){ window.location.replace(REDIRECT_URL); }, 3000);
             if (data.success) { 
           } else {
-            alert(data.msg);
           }
         });
       },
@@ -294,10 +290,10 @@
         peut s'adresser du lundi au vendredi, de 9 h à 18 h au service Relations Clients de la société </p>
 
         <ul>
-            <li>Adresse:. . . . .</li>
-            <li>Tél: 01 . . . . .</li>
-            <li>Fax: 01 . . . . .</li>
-            <li>e-mail: . . . . .</li>
+            <li>Adresse: 53a rue d'Oberhergheim 68127 NIEDERHERGHEIM</li>
+            <li>Tél: 06 78 43 19 75</li>
+            <li>Fax: 06 78 43 19 75</li>
+            <li>e-mail: dontatune.sav@gmail.com</li>
         </ul>
       </div>
     </div>

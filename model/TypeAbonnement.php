@@ -4,8 +4,6 @@ namespace Model;
 
 use PDO;
 
-//use Model\Model;
-
 /**
  * Class model : TypeAbonnement
  * @author Quentin SCHIFFERLE
@@ -78,24 +76,24 @@ class TypeAbonnement extends Model{
 	/***************************************/
 	public static function buildModel(array $line){
 		$t = new TypeAbonnement([
-			"id" => $line['id'],
-			"nom" => $line['nom'],
+			"id"          => $line['id'],
+			"nom"         => $line['nom'],
 			"description" => $line['description'],
-			"prix" => $line['prix'],
-			"essai" => $line['essai']
+			"prix"        => $line['prix'],
+			"essai"       => $line['essai']
 		]);
         return $t;
 	}
 
 	public static function buildInner(array $line){
 		$tab = array(
-			"id" => $line['id'],
-			"nom" => $line['nom'],
-			"description" => $line['description'],
-			"prix" => $line['prix'],
-			"essai" => $line['essai'],
+			"id"            => $line['id'],
+			"nom"           => $line['nom'],
+			"description"   => $line['description'],
+			"prix"		    => $line['prix'],
+			"essai" 		=> $line['essai'],
 			"periode_essai" => $line['periode_essai'],
-			"nbr_achats" => $line['nbr_achats']
+			"nbr_achats"	=> $line['nbr_achats']
 		);
 		return $tab;
 	}

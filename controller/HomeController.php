@@ -13,7 +13,6 @@ use Model\Paiements;
 
 use Library\Form;
 
-use Config\Factory;
 use Controller\MailController;
 
 class HomeController extends Controller{
@@ -101,6 +100,11 @@ class HomeController extends Controller{
         }
     }
 
+    /**
+     * Method: POST
+     * URL : /home/pay_abo_cb/
+     * Permet de payer un abonnement avec CB
+    **/
     public function postPay_abo_cb(){
         $abonnement = new Abonnement([
             'id_type' => $_POST['id_abo'],
@@ -206,8 +210,6 @@ class HomeController extends Controller{
     **/
     static function postLogin(){
         if (isset($_COOKIE['auth'])){
-            //setcookie('auth', '', time() - 3600, '/', '', false, true);
-            //echo 'ok';
             $auth = $_COOKIE['auth'];
             $auth = explode('----', $auth);
             $user = Utilisateur::getUserById($auth[0]);
@@ -231,47 +233,23 @@ class HomeController extends Controller{
                 $email = $_POST['mail'];
                 $password = $_POST['pass'];
 
-                $user = Utilisateur::getUserByMail($email, md5(sha1($password)));
-                if (!empty($user)){
-                    if (!empty(Utilisateur::getUserConfirm($user->get_id()))){
-                        if (isset($_POST['cookie_init'])){
-                            setcookie('auth', $user->get_id() . '----' . sha1($user->get_pseudo() . $user->get_pass()), time() + 3600 * 24 * 3, '/', '', false, true);
-                        }
-                        $_SESSION['auth']['id'] = $user->get_id();
-    
-                        $_SESSION['success_connect'] = 'Content de vous revoir '.$user->get_prenom();
-    
-                        header('location:'.BASEURL.'home/board');
-                        exit;
-                    }
-                    else{
-                        $_SESSION['error_connect'] = 'Votre inscription n\'a pas encore été confirmée';
-                    
-                        $_SESSION['value_mail'] = $email;
-                        $_SESSION['value_pass'] = $password;
-    
-                        header('location:'.BASEURL.'home/login');
-                        exit;
-                    }
-                }
-                else{
-                    $user = Utilisateur::getUserByPseudo($email, md5(sha1($password)));
-
+                if (preg_match("/[a-zA-Z0-9]{1,20}/", $email)){
+                    $user = Utilisateur::getUserByMail($email, md5(sha1($password)));
                     if (!empty($user)){
                         if (!empty(Utilisateur::getUserConfirm($user->get_id()))){
                             if (isset($_POST['cookie_init'])){
                                 setcookie('auth', $user->get_id() . '----' . sha1($user->get_pseudo() . $user->get_pass()), time() + 3600 * 24 * 3, '/', '', false, true);
                             }
                             $_SESSION['auth']['id'] = $user->get_id();
-    
+        
                             $_SESSION['success_connect'] = 'Content de vous revoir '.$user->get_prenom();
-    
+        
                             header('location:'.BASEURL.'home/board');
                             exit;
                         }
                         else{
                             $_SESSION['error_connect'] = 'Votre inscription n\'a pas encore été confirmée';
-                    
+                        
                             $_SESSION['value_mail'] = $email;
                             $_SESSION['value_pass'] = $password;
         
@@ -280,15 +258,51 @@ class HomeController extends Controller{
                         }
                     }
                     else{
-                        $_SESSION['error_connect'] = 'Aucun compte ne semble correspondre aux informations rentrées';
-                    
-                        $_SESSION['value_mail'] = $email;
-                        $_SESSION['value_pass'] = $password;
-    
-                        header('location:'.BASEURL.'home/login');
-                        exit;
+                        $user = Utilisateur::getUserByPseudo($email, md5(sha1($password)));
+
+                        if (!empty($user)){
+                            if (!empty(Utilisateur::getUserConfirm($user->get_id()))){
+                                if (isset($_POST['cookie_init'])){
+                                    setcookie('auth', $user->get_id() . '----' . sha1($user->get_pseudo() . $user->get_pass()), time() + 3600 * 24 * 3, '/', '', false, true);
+                                }
+                                $_SESSION['auth']['id'] = $user->get_id();
+        
+                                $_SESSION['success_connect'] = 'Content de vous revoir '.$user->get_prenom();
+        
+                                header('location:'.BASEURL.'home/board');
+                                exit;
+                            }
+                            else{
+                                $_SESSION['error_connect'] = 'Votre inscription n\'a pas encore été confirmée';
+                        
+                                $_SESSION['value_mail'] = $email;
+                                $_SESSION['value_pass'] = $password;
+            
+                                header('location:'.BASEURL.'home/login');
+                                exit;
+                            }
+                        }
+                        else{
+                            $_SESSION['error_connect'] = 'Aucun compte ne semble correspondre aux informations rentrées';
+                        
+                            $_SESSION['value_mail'] = $email;
+                            $_SESSION['value_pass'] = $password;
+        
+                            header('location:'.BASEURL.'home/login');
+                            exit;
+                        }
                     }
                 }
+                else{
+                    $_SESSION['error_connect'] = 'Les caractères spéciaux ne sont pas autorisés';
+
+                    $_SESSION['value_mail'] = $_POST['mail'];
+                    $_SESSION['value_pass'] = $_POST['pass'];
+        
+                    header('location:'.BASEURL.'home/login');
+                    exit;
+                }
+
             }
             else{
                 $_SESSION['error_connect'] = 'Tous les champs doivent êtres remplis';
@@ -345,7 +359,6 @@ class HomeController extends Controller{
                                     ]);
                                     $user->utilisateur_create();
         
-                                    //$user = Utilisateur::addUser($nom, $prenom, $pseudo, $mail, md5(sha1($pass)), $code);
                                     $u = Utilisateur::getUserByPseudo($pseudo, md5(sha1($pass)));
                                     $_SESSION['pseudo'] = $pseudo;
                                     mkdir("profils/".$pseudo, 0700); //Création d'un dossier au nom de l'utilisateur
@@ -455,6 +468,11 @@ class HomeController extends Controller{
         
     }
 
+    /**
+     * Method: GET
+     * URL : /home/confirm/
+     * Permet d'afficher la page de confirmation (mail de confirmation)
+    **/
     public function getConfirm(){
         if (isset($_SESSION['pseudo'])){
             if (isset($_SESSION['error_confirm'])){
@@ -470,6 +488,11 @@ class HomeController extends Controller{
         }
     }
 
+    /**
+     * Method: POST
+     * URL : /home/confirm/
+     * Permet de vérifier le code rentré
+    **/
     public function postConfirm(){
         if (isset($_SESSION['pseudo'])){
             if (isset($_POST['confirm_key']) && !empty($_POST['confirm_key'])){
@@ -509,6 +532,11 @@ class HomeController extends Controller{
         }
     }
 
+    /**
+     * Method: GET
+     * URL : /home/enter_mail/
+     * Permet de rentrer son adresse mail (oubli MDP)
+    **/
     public function getEnter_mail(){
         if (isset($_SESSION['error_mail'])){
             $this->set('error_message', $_SESSION['error_mail']);
@@ -517,6 +545,11 @@ class HomeController extends Controller{
         $this->render('enter_mail');
     }
 
+    /**
+     * Method: POST
+     * URL : /home/enter_mail/
+     * Permet de vérifier l'adresse mail rentrée
+    **/
     public function postEnter_mail(){
         if (isset($_POST['mail'])){
             if (filter_var($_POST['mail'], FILTER_VALIDATE_EMAIL)){
@@ -552,6 +585,11 @@ class HomeController extends Controller{
         }
     }
 
+    /**
+     * Method: GET
+     * URL : /home/code_mail/
+     * Permet de rentrer le MDP temporaire envoyé par mail
+    **/
     public function getCode_mail(){
         if (isset($_SESSION['mail'])){
             if (isset($_SESSION['error_mail'])){
@@ -567,6 +605,11 @@ class HomeController extends Controller{
         }
     }
 
+    /**
+     * Method: POST
+     * URL : /home/code_mail/
+     * Permet de vérifier la validité du MDP temporaire rentré
+    **/
     public function postCode_mail(){
         if (isset($_POST['code_mdp'])){
             if (strlen($_POST['code_mdp']) == 8){
@@ -596,6 +639,11 @@ class HomeController extends Controller{
         }
     }
 
+    /**
+     * Method: GET
+     * URL : /home/reset_password/
+     * Permet d'accéder à la page de réinitialisation du MDP
+    **/
     public function getReset_password(){
         if (isset($_SESSION['temp_id'])){
             if (isset($_SESSION['error_mdp'])){
@@ -611,6 +659,11 @@ class HomeController extends Controller{
         }
     }
 
+    /**
+     * Method: POST
+     * URL : /home/reset_password/
+     * Permet d'envoyer le nouveau MDP
+    **/
     public function postReset_password(){
         if (isset($_POST['pass']) && isset($_POST['pass2'])){
             if ($_POST['pass'] == $_POST['pass2']){
@@ -674,6 +727,11 @@ class HomeController extends Controller{
         }
     }
     
+    /**
+     * Method: POST
+     * URL : /home/pay/
+     * Permet de payer un abonnement
+    **/
     public function postPay(){
 
         $form = new Form();
@@ -804,6 +862,11 @@ class HomeController extends Controller{
         }
     }
 
+    /**
+     * Method: GET
+     * URL : /home/404/
+     * Page 404
+    **/
     public function get404(){
         $this->render('404');
     }

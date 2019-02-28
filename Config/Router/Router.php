@@ -5,6 +5,13 @@ namespace Config\Router;
 use Exception;
 use Config\Config;
 
+/**
+ * Class : Router
+ * Namespace : Config\Router
+ * Author : Quentin SCHIFFERLE
+ * Description :
+ *     Classe permettant de déterminer le controller et sa méthode appelés via l'URL
+**/
 class Router{
 
     private $url;

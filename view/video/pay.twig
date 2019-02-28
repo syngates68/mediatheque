@@ -143,16 +143,14 @@
         sandbox: 'AS-5mDifqkwXocxDPyY43-McUUu61r1bBXJguRsTe4kLMYi825nJqpleIe8gX0a3k2F8Xoch3oNDjIEx'
       },
       style: {
-        color: 'blue',   // 'gold, 'blue', 'silver', 'black'
-        size:  'responsive', // 'medium', 'small', 'large', 'responsive'
-        shape: 'pill'    // 'rect', 'pill'
+        color: 'blue',   
+        size:  'responsive', 
+        shape: 'pill'   
       },
       payment: function (data, actions) {
         var id_video = $('#commande img').attr('data-id');
         var id_utilisateur = $('#commande img').attr('data-user');
         var CREATE_URL = 'http://localhost/mediatheque/payment.php?ref='+id_video+'&user='+id_utilisateur;
-
-        //alert(id_video);
 
         return paypal.request.post(CREATE_URL)
           .then(function(data) { 
@@ -292,10 +290,10 @@
         peut s'adresser du lundi au vendredi, de 9 h à 18 h au service Relations Clients de la société </p>
 
         <ul>
-            <li>Adresse:. . . . .</li>
-            <li>Tél: 01 . . . . .</li>
-            <li>Fax: 01 . . . . .</li>
-            <li>e-mail: . . . . .</li>
+          <li>Adresse: 53a rue d'Oberhergheim 68127 NIEDERHERGHEIM</li>
+          <li>Tél: 06 78 43 19 75</li>
+          <li>Fax: 06 78 43 19 75</li>
+          <li>e-mail: dontatune.sav@gmail.com</li>
         </ul>
       </div>
     </div>

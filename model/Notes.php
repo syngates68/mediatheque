@@ -4,8 +4,6 @@ namespace Model;
 
 use PDO;
 
-//use Model;
-
 /**
  * Class model : Theme
  * @author Quentin SCHIFFERLE
@@ -88,22 +86,22 @@ class Notes extends Model{
 	/***************************************/
 	public static function buildModel(array $line){
 		$n = new Notes([
-			"id" => $line['id'],
-			"id_video" => $line['id_video'],
+			"id"             => $line['id'],
+			"id_video"       => $line['id_video'],
             "id_utilisateur" => $line['id_utilisateur'],
-            "note" => $line['note']
+            "note"		     => $line['note']
 		]);
         return $n;
 	}
 
 	public static function buildInner(array $line){
 		$tab = array(
-			"id" => $line['id'],
-			"id_video" => $line['id_video'],
+			"id" 		     => $line['id'],
+			"id_video"       => $line['id_video'],
 			"id_utilisateur" => $line['id_utilisateur'],
-			"note" => $line['note'],
-            "nbr_notes" => $line['nbr_notes'],
-            "moyenne" => $line['moyenne']
+			"note" 			 => $line['note'],
+            "nbr_notes" 	 => $line['nbr_notes'],
+            "moyenne" 		 => $line['moyenne']
 		);
 		return $tab;
 	}

@@ -2,8 +2,6 @@
 
 namespace Model;
 
-//use Model\Model;
-
 use PDO;
 
 /**
@@ -116,28 +114,28 @@ class Paiements extends Model{
 
 	public static function buildModel(array $line){
 		$p = new Paiements([
-			"id" => $line['id'],
-			"payment_id" => $line['payment_id'],
-			"payment_status" => $line['payment_status'],
-			"payment_amount" => $line['payment_amount'],
+			"id" 			   => $line['id'],
+			"payment_id"       => $line['payment_id'],
+			"payment_status"   => $line['payment_status'],
+			"payment_amount"   => $line['payment_amount'],
             "payment_currency" => $line['payment_currency'],
-            "payment_date" => $line['payment_date'],
-            "payer_email" => $line['payer_email'],
-            "payer_id" => $line['payer_id']
+            "payment_date"     => $line['payment_date'],
+            "payer_email" 	   => $line['payer_email'],
+            "payer_id" 		   => $line['payer_id']
 		]);
         return $p;
 	}
     
     public static function buildInner(array $line){
 		$tab = array(
-			"id" => $line['id'],
-			"payment_id" => $line['payment_id'],
-			"payment_status" => $line['payment_status'],
-			"payment_amount" => $line['payment_amount'],
+			"id" 			   => $line['id'],
+			"payment_id" 	   => $line['payment_id'],
+			"payment_status"   => $line['payment_status'],
+			"payment_amount"   => $line['payment_amount'],
             "payment_currency" => $line['payment_currency'],
-            "payment_date" => $line['payment_date'],
-            "payer_email" => $line['payer_email'],
-            "payer_id" => $line['payer_id']
+            "payment_date" 	   => $line['payment_date'],
+            "payer_email" 	   => $line['payer_email'],
+            "payer_id" 		   => $line['payer_id']
 		);
 		return $tab;
 	}

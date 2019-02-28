@@ -46,7 +46,6 @@ class Controller{
                     }
                 } 
                 $abo = Abonnement::getByUser($_SESSION['auth']['id']);
-                //var_dump($abo);
                 if (!empty($abo)){            
                     self::$twig->addGlobal('abonne', $abo);
                 } 
@@ -54,8 +53,6 @@ class Controller{
             self::$twig->addExtension(new \Twig_Extension_Debug());
             self::$twig->addExtension(new FormatDate());
             self::$twig->addExtension(new ShortText());
-            //self::$twig->addGlobal('session', $_SESSION);
-            //self::$twig->addGlobal('cookie', $_COOKIE);
             return self::$twig;
         }
         return self::$twig;

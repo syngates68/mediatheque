@@ -2,6 +2,13 @@
 
 namespace Config\Router;
 
+/**
+ * Class : Request
+ * Namespace : Config\Router
+ * Author : Quentin SCHIFFERLE
+ * Description :
+ *     Classe représentant une requête au serveur
+**/
 class Request{
 
     public $url;

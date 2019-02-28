@@ -4,11 +4,10 @@ namespace Config\Router;
 
 /**
  * Class : Response
- * Namespace : FrameWork\Routing
- * Author : Florian GOMES
- * Last modification : 08/11/2017
+ * Namespace : Config\Router
+ * Author : Quentin SCHIFFERLE
  * Description :
- *     Class use to store the differents information about a response.
+ *     Classe représentant la réponse à une requête au serveur
 **/
 class Response { 
     private $headers = []; 

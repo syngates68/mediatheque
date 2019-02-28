@@ -8,8 +8,6 @@ use Model\Commentaire;
 use Model\Video;
 use Model\Notes;
 
-use Config\Factory;
-
 class AjaxController extends Controller{
 
     public $controller_name = 'ajax';
@@ -101,8 +99,6 @@ class AjaxController extends Controller{
     public function postList_videos(){
         $f_type = ''; $f_themes = ''; $order = ''; $f_search = '';
 
-        //echo $_POST['type'];
-
         $type = $_POST['type'];
         $themes = (isset($_POST['themes'])) ? $_POST['themes'] : NULL;
         $tri = $_POST['tri'];
@@ -141,11 +137,6 @@ class AjaxController extends Controller{
             }
         }
 
-        //var_dump($themes);
-        //echo sizeof($themes);
-
-        //echo $type;
-
         if (!empty($themes)){
             if ($type != '' && $type != 1){
                 if (sizeof($themes) == 1){
@@ -165,8 +156,6 @@ class AjaxController extends Controller{
             }
         }
 
-        //echo $f_themes;
-
         $videos = Video::getVideosFiltre($f_type, $order, $f_themes, $f_search, $_SESSION['auth']['id']);
         $nb_videos = sizeof(Video::getVideosFiltre($f_type, $order, $f_themes, $f_search, $_SESSION['auth']['id']));
         $this->set('videos', $videos);
@@ -175,6 +164,11 @@ class AjaxController extends Controller{
         $this->render('list_videos');
     }
 
+    /**
+     * Method: POST
+     * URL : /ajax/fin_abo/
+     * Permet de désactiver un abonnement
+    **/
     public function postFin_abo(){
         $abo = Abonnement::stopAbo($_SESSION['auth']['id'], $_POST['id']);
     }

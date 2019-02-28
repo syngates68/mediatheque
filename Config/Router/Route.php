@@ -2,6 +2,13 @@
 
 namespace Config\Router;
 
+/**
+ * Class : Route
+ * Namespace : Config\Router
+ * Author : Quentin SCHIFFERLE
+ * Description :
+ *     Classe représentant les routes définies par les données de l'URL
+**/
 class Route{
 
     private $controller;

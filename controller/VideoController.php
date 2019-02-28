@@ -15,10 +15,6 @@ use Model\Abonnement;
 
 use Library\Form;
 
-//use Vendor\PaypalPayment;
-
-use Config\Factory;
-
 class VideoController extends Controller{
 
     public $controller_name = 'video';
@@ -43,6 +39,10 @@ class VideoController extends Controller{
                     $user_achat = Achat::getByVideo($video->get_id(), $_SESSION['auth']['id']);
                     $abonnement = Abonnement::getByUser($_SESSION['auth']['id']);
                     if ($video->get_prix() == NULL || !empty($user_achat) || !empty($abonnement)){
+                        if (isset($_SESSION['success_add'])){
+                            $this->set('success_add', $_SESSION['success_add']);
+                            unset($_SESSION['success_add']);
+                        }
                         $commentaires = Commentaire::getAllCommentaireByVideo($id);
                         $com = Commentaire::getByUserAndVideo($_SESSION['auth']['id'], $id);
                         $nb_com = sizeof(Commentaire::getAllCommentaireByVideo($id));
@@ -200,6 +200,11 @@ class VideoController extends Controller{
         }
     }
 
+    /**
+     * Method: POST
+     * URL : /video/pay_video_cb/
+     * Permet de payer une vidéo par CB
+    **/
     public function postPay_video_cb(){
         $achat = new Achat([
             'id_utilisateur' => $_SESSION['auth']['id'],
@@ -221,6 +226,11 @@ class VideoController extends Controller{
 
     }
 
+    /**
+     * Method: POST
+     * URL : /video/pay/
+     * Permet de payer une vidéo par CB
+    **/
     public function postPay(){
 
         $form = new Form();

@@ -8,8 +8,8 @@ use PHPMailer\PHPMailer\Exception;
 
 define('MAIL_HOST', 'smtp.orange.fr');
 define('MAIL_SMTPAUTH', false);
-define('MAIL_SMTPSECURE', 'ssl'); // ou ssl
-define('MAIL_PORT', 465); //à vérifier si 25 peut aller
+define('MAIL_SMTPSECURE', 'ssl');
+define('MAIL_PORT', 465);
 define('SMTP_DEBUG', 1);
 
 class MailController extends Controller

@@ -13,6 +13,15 @@
 
 {% block content %}
 
+{% if success_add is defined %}
+  <div class="alert alert-success alert-dismissible fade show success_message" role="alert">
+  {{ success_add }}
+  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+      <span aria-hidden="true">&times;</span>
+  </button>
+  </div>
+{% endif %}
+
 <div class="container-fluid aff_video">
     <div class="row">
 
@@ -31,12 +40,11 @@
         <div class="col-sm-12 col-md-12 col-lg-4">
             <div class="v_infos">
                 <h2> {{ video.get_titre }} </h2>
-                <p class="date_add"> {{ video.get_date_ajout|formatDate }} </p> 
-                <!--<button class="btn btn-success"><i class="fas fa-expand"></i></button>-->
+                <p class="date_add"> {{ video.get_date_ajout|formatDate }} </p>
                 <div class="description">
                 <span> Description </span>
                 <a class="see_description" id="see_description"> Voir la description </a>
-                <p> {{ video.get_description|nl2br }} </p>
+                {{ video.get_description | raw }}
                 </div>
                 <button class="btn btn-success fb-share-button" data-url="https://avekki.000webhostapp.com/public/video/watch/{{video.get_id}}" data-title="{{ video.get_titre }}"> <i class="fab fa-facebook-f"></i> Partager</button>
             </div>

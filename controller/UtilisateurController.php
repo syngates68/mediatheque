@@ -10,8 +10,6 @@ use Model\Commentaire;
 
 use Library\Form;
 
-use Config\Factory;
-
 class UtilisateurController extends Controller{
 
     public $controller_name = 'utilisateur';
@@ -141,7 +139,6 @@ class UtilisateurController extends Controller{
      * Permet de déconnecter un utilisateur
     **/
     static function getSign_Out(){
-        //session_start();
         session_destroy();
         setcookie('auth', '', time() - 3600, '/', '', false, true);
         header('Location:'.BASEURL.'home/login');
@@ -159,7 +156,6 @@ class UtilisateurController extends Controller{
         $fichier_temp = $_FILES['file']['tmp_name'];
 
         $name = $_FILES['file']['name'];
-        //$size = $_FILES['file']['size'];
         $type = $_FILES['file']['type'];
         $dossier = 'profils/';
 
@@ -197,6 +193,11 @@ class UtilisateurController extends Controller{
         }
     }
 
+    /**
+     * Method: GET
+     * URL : /home/paiements/
+     * Permet d'obtenir tous les paiements effectués par l'utilisateur
+    **/
     public function getPaiements(){
         if (isset($_SESSION['auth']['id'])){
             $paiements = Paiements::getAllByUser($_SESSION['auth']['id']);

@@ -35,7 +35,7 @@ $(function(){
     });
 
     $(document).on('click', '#note ul li', function(){
-        var onStar = parseInt($(this).attr('id'), 10); // The star currently selected
+        var onStar = parseInt($(this).attr('id'), 10); 
         var stars = $(this).parent().children('li.fa');
         
         for (i = 0; i < stars.length; i++) {
@@ -55,9 +55,6 @@ $(function(){
             $('#btn_com').css('visibility', 'hidden');
             $('#note').css('visibility', 'hidden');
         }
-        //var text = $(this).val().replace(':)', '<img src="http://localhost/mediatheque/public/images/smile.png" contentEditable="true">');
-        //alert(text);
-        //$(this).html(text);
     });
 
     $(document).on('click', '#btn_com', function(){
@@ -69,13 +66,10 @@ $(function(){
             var id = $('.video #video-control').attr('data-id');
         }
 
-        // JUST RESPONSE (Not needed)
         var content = $('#com_contain').val();
         var note = parseInt($('#note li.selected').last().attr('id'), 10);
 
-        //alert(note);
-
-        $.post('http://localhost/mediatheque/public/ajax/comment', {
+        $.post(baseurl+'ajax/comment', {
             id : id,
             content : content,
             note : note
@@ -83,7 +77,6 @@ $(function(){
 
         function(data){
             $('.commentaires').html(data);
-           // alert(data);
         });
 
         return false;
@@ -103,7 +96,7 @@ $(function(){
 
         var id_user = $(this).attr('data-user');
         
-        $.post('http://localhost/mediatheque/public/ajax/delete_comment', {
+        $.post(baseurl+'ajax/delete_comment', {
             id_com : id_com,
             id_video : id_video,
             id_user : id_user
@@ -129,13 +122,13 @@ $(function(){
         var id_video = $(this).attr('data-id');
         var prix = $(this).attr('data-prix');
         
-        $.post('http://localhost/mediatheque/public/video/pay_video_cb', {
+        $.post(baseurl+'video/pay_video_cb', {
             id_video : id_video,
             prix : prix
         },
         function(){
             $('#success_payment').html('Votre paiement a bien été accepté! Veuillez patienter, vous allez être redirigé vers la vidéo!').css('display', 'block');
-            setTimeout(function(){ window.location.replace('http://localhost/mediatheque/public/video/watch/'+id_video); }, 3000);
+            setTimeout(function(){ window.location.replace(baseurl+'video/watch/'+id_video); }, 3000);
         });
 
     });

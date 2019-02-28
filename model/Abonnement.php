@@ -2,7 +2,6 @@
 
 namespace Model;
 
-//use Model\Model;
 use PDO;
 
 /**
@@ -94,28 +93,28 @@ class Abonnement extends Model{
 	/***************************************/
 	public static function buildModel(array $line){
 		$a = new Abonnement([
-			"id" => $line['id'],
-			"id_type" => $line['id_type'],
-			"id_utilisateur" => $line['id_utilisateur'],
+			"id"                => $line['id'],
+			"id_type"           => $line['id_type'],
+			"id_utilisateur"    => $line['id_utilisateur'],
 			"date_souscription" => $line['date_souscription'],
-			"actif" => $line['actif']
+			"actif"             => $line['actif']
 		]);
 		return $a;
 	}
 
 	public static function buildInner(array $line){
 		$tab = array(
-			"id" => $line['id'],
-			"id_type" => $line['id_type'],
-			"id_utilisateur" => $line['id_utilisateur'],
+			"id"                => $line['id'],
+			"id_type"           => $line['id_type'],
+			"id_utilisateur"    => $line['id_utilisateur'],
 			"date_souscription" => $line['date_souscription'],
-			"actif" => $line['actif'],
-			"periode_essai" => $line['periode_essai'],
+			"actif"             => $line['actif'],
+			"periode_essai"     => $line['periode_essai'],
 			"fin_periode_essai" => $line['fin_periode_essai'],
-			"nom" => $line['nom'],
-			"prix" => $line['prix'],
-			"essai" => $line['essai'],
-			"date_end" => $line['date_end']
+			"nom" 				=> $line['nom'],
+			"prix"			    => $line['prix'],
+			"essai" 			=> $line['essai'],
+			"date_end" 			=> $line['date_end']
 		);
 		return $tab;
 	}

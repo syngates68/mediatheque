@@ -2,8 +2,6 @@
 
 namespace Model;
 
-//use Model\Model;
-
 use PDO;
 
 /**
@@ -77,23 +75,23 @@ class Achat extends Model{
 	/***************************************/
 	public static function buildModel(array $line){
 		$a = new Achat([
-			"id" => $line['id'],
+			"id"    		 => $line['id'],
 			"id_utilisateur" => $line['id_utilisateur'],
-			"id_video" => $line['id_video'],
-			"date_achat" => $line['date_achat']
+			"id_video" 		 => $line['id_video'],
+			"date_achat" 	 => $line['date_achat']
 		]);
 		return $a;
     }
     
     public static function buildInner(array $line){
 		$tab = array(
-			"id" => $line['id'],
+			"id" 			 => $line['id'],
 			"id_utilisateur" => $line['id_utilisateur'],
-			"id_video" => $line['id_video'],
-			"date_achat" => $line['date_achat'],
-            "titre" => $line['titre'],
-            "miniature" => $line['miniature'],
-			"prix" => $line['prix']
+			"id_video" 		 => $line['id_video'],
+			"date_achat" 	 => $line['date_achat'],
+            "titre" 		 => $line['titre'],
+            "miniature" 	 => $line['miniature'],
+			"prix" 		     => $line['prix']
 		);
 		return $tab;
 	}
